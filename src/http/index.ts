@@ -1,4 +1,5 @@
-import axios, { type AxiosResponse } from 'axios'
+import axios, { AxiosHeaders, type AxiosResponse } from 'axios'
+import { useAuthStore } from '../stores/auth'
 import { handleHttpError, rejectHttpError } from './error-handler'
 import { createHttpClient } from './request'
 import { isApiResponse } from './types'
@@ -14,7 +15,12 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  // 预留统一处理认证信息等请求配置的扩展入口
+  const accessToken = useAuthStore.getState().accessToken
+  if (accessToken) {
+    config.headers = AxiosHeaders.from(config.headers)
+    config.headers.set('Authorization', `Bearer ${accessToken}`)
+  }
+
   return config
 })
 

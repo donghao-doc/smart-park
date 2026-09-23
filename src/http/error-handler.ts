@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuthStore } from '../stores/auth'
 import { redirectOnce, showErrorMessage } from './runtime'
 import { isApiResponse, type HttpRequestConfig } from './types'
 
@@ -101,12 +102,13 @@ function createLoginTarget() {
 }
 
 /**
- * 执行统一鉴权跳转，认证状态清理由后续接入的全局 Store 负责
+ * 执行统一鉴权副作用，skipAuthRedirect 不影响失效会话清理
  * @param status HTTP 状态码或业务鉴权状态码
  * @param config 当前请求配置
  */
 function handleAuthStatus(status: number | undefined, config?: HttpRequestConfig) {
   if (status === 401 && !isLoginRequest(config)) {
+    useAuthStore.getState().clearSession()
     if (!config?.skipAuthRedirect && window.location.pathname !== LOGIN_PAGE_PATH) {
       redirectOnce(createLoginTarget())
     }
