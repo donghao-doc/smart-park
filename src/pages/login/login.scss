@@ -1,0 +1,251 @@
+$login-primary: #1677ff;
+$login-text: #102049;
+$login-icon: #617292;
+$login-background: #f8fbff;
+$login-control-border: #d4dfef;
+$login-radius: 8px;
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+.login-page {
+  box-sizing: border-box;
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 24px 96px;
+  background: $login-background url('../../assets/images/login-background.png') center center / cover no-repeat;
+  color: $login-text;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.login-header {
+  position: absolute;
+  top: 39px;
+  right: 47px;
+  left: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.login-brand {
+  color: $login-text;
+  font-size: 32px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.login-tagline {
+  color: #72809e;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.login-card {
+  box-sizing: border-box;
+  width: min(560px, 100%);
+  padding: 42px 50px 40px;
+  border: 1px solid #d8e2f2;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 96%);
+  box-shadow: 0 8px 28px rgb(24 63 122 / 3%);
+}
+
+.login-card-heading {
+  margin-bottom: 31px;
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    color: $login-text;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 0.035em;
+    line-height: 1.35;
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: #73809d;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    line-height: 1.5;
+  }
+}
+
+.login-form {
+  .ant-form-item {
+    margin-bottom: 27px;
+  }
+
+  .ant-form-item-label {
+    padding-bottom: 9px;
+
+    > label {
+      height: auto;
+      color: #172448;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    height: 52px;
+    padding: 0 16px;
+    border-color: $login-control-border;
+    border-radius: $login-radius;
+    box-shadow: none;
+
+    &:hover,
+    &.ant-input-affix-wrapper-focused {
+      border-color: $login-primary;
+    }
+  }
+
+  .ant-input-prefix {
+    margin-right: 13px;
+    color: $login-icon;
+    font-size: 19px;
+  }
+
+  .ant-input {
+    color: $login-text;
+    font-size: 16px;
+
+    &::placeholder {
+      color: #a9b6cb;
+    }
+  }
+
+  .ant-input-password-icon {
+    color: $login-icon;
+  }
+
+  .ant-checkbox-wrapper {
+    color: #6c7a98;
+    font-size: 16px;
+  }
+
+  .ant-checkbox-inner {
+    width: 18px;
+    height: 18px;
+    border-color: #bbcbe1;
+    border-radius: 4px;
+  }
+}
+
+.login-submit.ant-btn {
+  height: 52px;
+  margin-top: 27px;
+  border-radius: $login-radius;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.login-demo-divider.ant-divider {
+  margin: 27px 0 23px;
+  color: #8c99b3;
+  font-size: 15px;
+  font-weight: 600;
+
+  &::before,
+  &::after {
+    border-color: #e0e8f3;
+  }
+}
+
+.login-demo-accounts {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.login-demo-button.ant-btn {
+  display: inline-flex;
+  height: 48px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 7px;
+  border-color: #d5e1f1;
+  border-radius: $login-radius;
+  background: $login-background;
+  color: #253653;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  .anticon {
+    color: $login-primary;
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: #eef5ff;
+  }
+}
+
+.login-demo-error {
+  width: 100%;
+  color: #8c99b3;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .login-page {
+    padding: 112px 16px 48px;
+    background-position: center bottom;
+  }
+
+  .login-header {
+    top: 24px;
+    right: 22px;
+    left: 22px;
+  }
+
+  .login-brand {
+    font-size: 24px;
+  }
+
+  .login-tagline {
+    display: none;
+  }
+
+  .login-card {
+    padding: 36px 25px;
+  }
+
+  .login-card-heading {
+    h1 {
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 17px;
+    }
+  }
+
+  .login-demo-accounts {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .login-demo-button.ant-btn {
+    flex: 1 1 calc(50% - 5px);
+  }
+}

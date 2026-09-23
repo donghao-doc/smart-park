@@ -77,7 +77,7 @@ function resolveErrorMessage({ value, status }: ErrorPayload) {
 }
 
 /**
- * 判断当前错误是否来自登录接口，避免登录失败时误清理已有会话和重复跳转
+ * 判断当前错误是否来自登录接口，避免登录失败时误清理会话或跳转异常页
  * @param config 当前请求配置
  */
 function isLoginRequest(config?: HttpRequestConfig) {
@@ -117,6 +117,7 @@ function handleAuthStatus(status: number | undefined, config?: HttpRequestConfig
 
   if (
     status === 403 &&
+    !isLoginRequest(config) &&
     !config?.skipAuthRedirect &&
     window.location.pathname !== FORBIDDEN_PAGE_PATH
   ) {
