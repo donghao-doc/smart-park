@@ -125,8 +125,6 @@ export interface LoginResult {
   accessToken: string
   /** Token 有效期秒数 */
   expiresIn: number
-  /** 当前登录用户 */
-  user: UserDto
 }
 
 /**

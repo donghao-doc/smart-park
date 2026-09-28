@@ -68,7 +68,6 @@ export const authHandlers = [
       {
         accessToken: session.accessToken,
         expiresIn: mockSessionDurationSeconds,
-        user: toUserDto(state, user),
       },
       '登录成功',
     )

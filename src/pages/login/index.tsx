@@ -15,7 +15,7 @@ const REMEMBERED_ACCOUNT_KEY = 'smart-park.remembered-account'
  */
 function LoginPage() {
   const navigate = useNavigate()
-  const setSession = useAuthStore((state) => state.setSession)
+  const setAccessToken = useAuthStore((state) => state.setAccessToken)
   const [form] = Form.useForm<LoginRequest>()
   const [rememberAccount, setRememberAccount] = useState(
     () => Boolean(localStorage.getItem(REMEMBERED_ACCOUNT_KEY)),
@@ -51,7 +51,7 @@ function LoginPage() {
   }, [])
 
   /**
-   * 登录成功后保存模拟会话，仅在勾选时记住账号名称
+   * 登录成功后建立会话，仅在勾选时记住账号名称
    */
   async function handleSubmit(values: LoginRequest) {
     setSubmitting(true)
@@ -59,7 +59,7 @@ function LoginPage() {
     try {
       const username = values.username.trim()
       const session = await reqLogin({ username, password: values.password })
-      setSession(session)
+      setAccessToken(session.accessToken)
 
       if (rememberAccount) {
         localStorage.setItem(REMEMBERED_ACCOUNT_KEY, username)
