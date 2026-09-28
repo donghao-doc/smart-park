@@ -45,8 +45,8 @@ $login-radius: 8px;
 }
 
 .login-card {
-  width: min(560px, 100%);
-  padding: 42px 50px 40px;
+  width: min(520px, 100%);
+  padding: 32px 40px;
   border: 1px solid #d8e2f2;
   border-radius: 10px;
   background: rgb(255 255 255 / 96%);
@@ -54,7 +54,7 @@ $login-radius: 8px;
 }
 
 .login-card-heading {
-  margin-bottom: 31px;
+  margin-bottom: 24px;
   text-align: center;
 
   h1 {
@@ -67,7 +67,7 @@ $login-radius: 8px;
   }
 
   p {
-    margin: 8px 0 0;
+    margin: 4px 0 0;
     color: #73809d;
     font-size: 14px;
     font-weight: 500;
@@ -78,11 +78,11 @@ $login-radius: 8px;
 
 .login-form {
   .ant-form-item {
-    margin-bottom: 27px;
+    margin-bottom: 20px;
   }
 
   .ant-form-item-label {
-    padding-bottom: 9px;
+    padding-bottom: 8px;
 
     > label {
       height: auto;
@@ -93,7 +93,7 @@ $login-radius: 8px;
   }
 
   .ant-input-affix-wrapper {
-    height: 52px;
+    height: 48px;
     padding: 0 16px;
     border-color: $login-control-border;
     border-radius: $login-radius;
@@ -106,7 +106,7 @@ $login-radius: 8px;
   }
 
   .ant-input-prefix {
-    margin-right: 13px;
+    margin-right: 12px;
     color: $login-icon;
     font-size: 19px;
   }
@@ -138,15 +138,15 @@ $login-radius: 8px;
 }
 
 .login-submit.ant-btn {
-  height: 52px;
-  margin-top: 27px;
+  height: 48px;
+  margin-top: 20px;
   border-radius: $login-radius;
   font-size: 14px;
   font-weight: 600;
 }
 
 .login-demo-divider.ant-divider {
-  margin: 27px 0 23px;
+  margin: 20px 0 16px;
   color: #8c99b3;
   font-size: 12px;
   font-weight: 600;
@@ -159,19 +159,19 @@ $login-radius: 8px;
 
 .login-demo-accounts {
   display: flex;
-  min-height: 48px;
+  min-height: 44px;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
+  gap: 12px;
 }
 
 .login-demo-button.ant-btn {
   display: inline-flex;
-  height: 48px;
+  height: 44px;
   flex: 1 1 0;
   align-items: center;
   justify-content: center;
-  padding: 0 7px;
+  padding: 0 8px;
   border-color: #d5e1f1;
   border-radius: $login-radius;
   background: $login-background;
@@ -203,25 +203,25 @@ $login-radius: 8px;
   }
 
   .login-card {
-    padding: 32px 50px 28px;
+    padding: 24px 40px;
   }
 
   .login-card-heading {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .login-form {
     .ant-form-item {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
   }
 
   .login-submit.ant-btn {
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   .login-demo-divider.ant-divider {
-    margin: 18px 0;
+    margin: 16px 0;
   }
 }
 
@@ -246,7 +246,7 @@ $login-radius: 8px;
   }
 
   .login-card {
-    padding: 36px 25px;
+    padding: 28px 20px;
   }
 
   .login-card-heading {
