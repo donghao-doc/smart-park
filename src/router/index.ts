@@ -22,6 +22,8 @@ const routes = [
   },
   {
     loader: requireAuthentication,
+    // 共同父级路由保持不变时也重新校验，以同步最后访问的已登录页面
+    shouldRevalidate: () => true,
     children: [
       {
         Component: AdminLayout,
