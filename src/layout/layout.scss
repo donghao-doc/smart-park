@@ -202,10 +202,27 @@ $header-height: 62px;
   align-items: center;
   gap: 10px;
   padding: 0;
-  border: 0;
+  border: 1px solid transparent;
   background: transparent;
+  box-shadow: none;
   color: #273755;
   cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.ant-dropdown-open {
+    border-color: transparent;
+    background: #f5f8fc;
+    box-shadow: none;
+    color: #273755;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(22 119 255 / 45%);
+    outline-offset: 1px;
+  }
 }
 
 .admin-account-avatar.ant-avatar {
