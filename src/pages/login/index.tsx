@@ -1,9 +1,10 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Divider, Form, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 
 import { reqGetDemoAccounts, reqLogin } from '../../api/auth'
+import { getPostLoginPath } from '../../router/utils'
 import { useAuthStore } from '../../stores/auth'
 import type { DemoAccountDto, LoginRequest } from '../../types/auth'
 import './login.scss'
@@ -15,6 +16,7 @@ const REMEMBERED_ACCOUNT_KEY = 'smart-park.remembered-account'
  */
 function LoginPage() {
   const navigate = useNavigate()
+  const { search } = useLocation()
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
   const [form] = Form.useForm<LoginRequest>()
   const [rememberAccount, setRememberAccount] = useState(
@@ -67,7 +69,7 @@ function LoginPage() {
         localStorage.removeItem(REMEMBERED_ACCOUNT_KEY)
       }
 
-      void navigate('/dashboard', { replace: true })
+      void navigate(getPostLoginPath(search), { replace: true })
     } catch {
       // 登录错误由统一 HTTP 层展示，保留表单内容便于重试
     } finally {
