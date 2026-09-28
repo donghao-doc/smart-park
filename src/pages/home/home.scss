@@ -1,0 +1,45 @@
+.dashboard-page {
+  min-height: calc(100svh - 110px);
+}
+
+.dashboard-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  h1 {
+    margin: 0;
+    color: #0d1d49;
+    font-size: 29px;
+    font-weight: 750;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: #73809c;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  time {
+    padding-top: 7px;
+    color: #667493;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-heading {
+    h1 {
+      font-size: 25px;
+    }
+
+    time {
+      display: none;
+    }
+  }
+}

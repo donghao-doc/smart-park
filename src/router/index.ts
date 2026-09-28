@@ -1,14 +1,34 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 
+import AdminLayout from '../layout'
 import ForbiddenPage from '../pages/403'
 import NotFoundPage from '../pages/404'
 import HomePage from '../pages/home'
 import LoginPage from '../pages/login'
 
+/**
+ * 尚未实现的业务页面占位，仅保留后台通用布局
+ */
+function EmptyPage() {
+  return null
+}
+
 const routes = [
   {
-    path: '/dashboard',
-    Component: HomePage,
+    Component: AdminLayout,
+    children: [
+      {
+        path: '/dashboard',
+        Component: HomePage,
+      },
+      { path: '/enterprises', Component: EmptyPage },
+      { path: '/personnel', Component: EmptyPage },
+      { path: '/visitors/appointments', Component: EmptyPage },
+      { path: '/parking/vehicles', Component: EmptyPage },
+      { path: '/work-orders', Component: EmptyPage },
+      { path: '/devices', Component: EmptyPage },
+      { path: '/system/users', Component: EmptyPage },
+    ],
   },
   {
     path: '/login',
