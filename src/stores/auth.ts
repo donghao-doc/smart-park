@@ -4,6 +4,36 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 const AUTH_STORAGE_KEY = 'smart-park.auth'
 
 /**
+ * 从持久化认证状态中读取访问令牌
+ */
+function getStoredAccessToken() {
+  if (typeof localStorage === 'undefined') {
+    return null
+  }
+
+  try {
+    const persistedAuth = localStorage.getItem(AUTH_STORAGE_KEY)
+    if (!persistedAuth) {
+      return null
+    }
+
+    const parsedAuth: unknown = JSON.parse(persistedAuth)
+    if (!parsedAuth || typeof parsedAuth !== 'object' || !('state' in parsedAuth)) {
+      return null
+    }
+
+    const persistedState = parsedAuth.state
+    if (!persistedState || typeof persistedState !== 'object' || !('accessToken' in persistedState)) {
+      return null
+    }
+
+    return typeof persistedState.accessToken === 'string' ? persistedState.accessToken : null
+  } catch {
+    return null
+  }
+}
+
+/**
  * 全局认证状态及其修改方法
  */
 export interface AuthStoreState {
@@ -21,7 +51,7 @@ export interface AuthStoreState {
 export const useAuthStore = create<AuthStoreState>()(
   persist(
     (set) => ({
-      accessToken: null,
+      accessToken: getStoredAccessToken(),
       setAccessToken: (accessToken) => {
         set({ accessToken })
       },

@@ -18,6 +18,7 @@ import { Avatar, Badge, Button, Drawer, Dropdown, Input, Menu, Typography, type 
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
+import { useAuthStore } from '../stores/auth'
 import './layout.scss'
 
 const navigationItems = [
@@ -89,6 +90,7 @@ function SidebarContent({ activeNavigationKey, onNavigate }: SidebarContentProps
 function AdminLayout() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const clearSession = useAuthStore((state) => state.clearSession)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const activeNavigationKey =
@@ -108,6 +110,7 @@ function AdminLayout() {
    */
   function handleAccountMenu({ key }: { key: string }) {
     if (key === 'logout') {
+      clearSession()
       void navigate('/login')
     }
   }
