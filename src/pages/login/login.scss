@@ -78,7 +78,7 @@ $login-radius: 8px;
 
 .login-form {
   .ant-form-item {
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
 
   .ant-form-item-label {
@@ -90,6 +90,23 @@ $login-radius: 8px;
       font-size: 14px;
       font-weight: 600;
     }
+  }
+
+  .ant-form-item-control {
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .ant-form-item-additional {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+  }
+
+  .ant-form-item-explain {
+    min-height: 20px;
+    font-size: 12px;
+    line-height: 20px;
   }
 
   .ant-input-affix-wrapper {
@@ -208,12 +225,6 @@ $login-radius: 8px;
 
   .login-card-heading {
     margin-bottom: 16px;
-  }
-
-  .login-form {
-    .ant-form-item {
-      margin-bottom: 16px;
-    }
   }
 
   .login-submit.ant-btn {
