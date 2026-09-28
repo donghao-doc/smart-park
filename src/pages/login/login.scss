@@ -38,7 +38,7 @@ $login-radius: 8px;
 
 .login-tagline {
   color: #72809e;
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.12em;
   white-space: nowrap;
@@ -69,7 +69,7 @@ $login-radius: 8px;
   p {
     margin: 8px 0 0;
     color: #73809d;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.025em;
     line-height: 1.5;
@@ -87,7 +87,7 @@ $login-radius: 8px;
     > label {
       height: auto;
       color: #172448;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
     }
   }
@@ -111,9 +111,9 @@ $login-radius: 8px;
     font-size: 19px;
   }
 
-  .ant-input {
+  .ant-input-affix-wrapper-lg .ant-input {
     color: $login-text;
-    font-size: 16px;
+    font-size: 14px;
 
     &::placeholder {
       color: #a9b6cb;
@@ -126,7 +126,7 @@ $login-radius: 8px;
 
   .ant-checkbox-wrapper {
     color: #6c7a98;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .ant-checkbox-inner {
@@ -141,14 +141,14 @@ $login-radius: 8px;
   height: 52px;
   margin-top: 27px;
   border-radius: $login-radius;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
 }
 
 .login-demo-divider.ant-divider {
   margin: 27px 0 23px;
   color: #8c99b3;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
 
   &::before,
@@ -193,7 +193,7 @@ $login-radius: 8px;
 .login-demo-error {
   width: 100%;
   color: #8c99b3;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -255,7 +255,7 @@ $login-radius: 8px;
     }
 
     p {
-      font-size: 17px;
+      font-size: 14px;
     }
   }
 

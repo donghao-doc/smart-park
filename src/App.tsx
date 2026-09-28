@@ -1,4 +1,4 @@
-import { App as AntdApp } from 'antd'
+import { App as AntdApp, ConfigProvider } from 'antd'
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router/dom'
 import { setErrorMessageHandler, setHttpNavigator } from './http/runtime'
@@ -32,10 +32,19 @@ function HttpRuntimeBridge() {
  */
 function App() {
   return (
-    <AntdApp>
-      <HttpRuntimeBridge />
-      <RouterProvider router={router} />
-    </AntdApp>
+    <ConfigProvider
+      theme={{
+        token: {
+          fontSize: 14,
+          fontSizeSM: 12,
+        },
+      }}
+    >
+      <AntdApp>
+        <HttpRuntimeBridge />
+        <RouterProvider router={router} />
+      </AntdApp>
+    </ConfigProvider>
   )
 }
 
