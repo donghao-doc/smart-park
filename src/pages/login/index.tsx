@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router'
 import { reqGetDemoAccounts, reqLogin } from '../../api/auth'
 import { getPostLoginPath } from '../../router/utils'
 import { useAuthStore } from '../../stores/auth'
+import { useMenuStore } from '../../stores/menu'
 import type { DemoAccountDto, LoginRequest } from '../../types/auth'
 import './login.scss'
 
@@ -18,6 +19,7 @@ function LoginPage() {
   const navigate = useNavigate()
   const { search } = useLocation()
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
+  const resetMenus = useMenuStore((state) => state.resetMenus)
   const [form] = Form.useForm<LoginRequest>()
   const [rememberAccount, setRememberAccount] = useState(
     () => Boolean(localStorage.getItem(REMEMBERED_ACCOUNT_KEY)),
@@ -61,6 +63,7 @@ function LoginPage() {
     try {
       const username = values.username.trim()
       const session = await reqLogin({ username, password: values.password })
+      resetMenus()
       setAccessToken(session.accessToken)
 
       if (rememberAccount) {
