@@ -1,0 +1,49 @@
+.status-page {
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  padding: 24px;
+  background: #f8fbff;
+
+  .ant-result {
+    padding: 32px;
+  }
+
+  .ant-result-title {
+    color: #102049;
+  }
+
+  .ant-result-subtitle {
+    color: #667493;
+    font-size: 14px;
+  }
+
+  .ant-result-extra {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    .ant-btn {
+      min-width: 112px;
+      height: 40px;
+      margin-inline-end: 0;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .status-page {
+    padding: 16px;
+
+    .ant-result {
+      padding: 24px 0;
+    }
+
+    .ant-result-extra {
+      flex-wrap: wrap;
+    }
+  }
+}
