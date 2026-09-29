@@ -21,8 +21,8 @@ export interface MenuItemDto {
   path: string
   /** 前端组件白名单标识，目录节点为 layout */
   componentKey: string
-  /** Ant Design 图标组件名称 */
-  icon: string
+  /** Ant Design 图标组件名称，未配置图标时为 null */
+  icon: string | null
   /** 菜单排序值，数值越小越靠前 */
   sort: number
   /** 是否在侧边栏显示 */

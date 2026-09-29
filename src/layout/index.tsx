@@ -29,7 +29,7 @@ function createSidebarMenuItems(menus: MenuItemDto[]): MenuProps['items'] {
 
       return {
         key: menu.path,
-        icon: menuIconMap[menu.icon] ?? defaultMenuIcon,
+        icon: menu.icon ? (menuIconMap[menu.icon] ?? defaultMenuIcon) : undefined,
         label: menu.title,
         children: children?.length ? children : undefined,
       }

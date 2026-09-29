@@ -1,21 +1,13 @@
 import {
   ApartmentOutlined,
   AppstoreOutlined,
-  AuditOutlined,
   BankOutlined,
-  CalendarOutlined,
   CarOutlined,
   DashboardOutlined,
-  DatabaseOutlined,
-  FieldTimeOutlined,
   HddOutlined,
-  HistoryOutlined,
-  IdcardOutlined,
-  ProfileOutlined,
   SettingOutlined,
   TeamOutlined,
   ToolOutlined,
-  UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons'
 import type { ReactNode } from 'react'
@@ -26,21 +18,13 @@ import type { ReactNode } from 'react'
 export const menuIconMap: Readonly<Record<string, ReactNode>> = {
   ApartmentOutlined: <ApartmentOutlined />,
   AppstoreOutlined: <AppstoreOutlined />,
-  AuditOutlined: <AuditOutlined />,
   BankOutlined: <BankOutlined />,
-  CalendarOutlined: <CalendarOutlined />,
   CarOutlined: <CarOutlined />,
   DashboardOutlined: <DashboardOutlined />,
-  DatabaseOutlined: <DatabaseOutlined />,
-  FieldTimeOutlined: <FieldTimeOutlined />,
   HddOutlined: <HddOutlined />,
-  HistoryOutlined: <HistoryOutlined />,
-  IdcardOutlined: <IdcardOutlined />,
-  ProfileOutlined: <ProfileOutlined />,
   SettingOutlined: <SettingOutlined />,
   TeamOutlined: <TeamOutlined />,
   ToolOutlined: <ToolOutlined />,
-  UserOutlined: <UserOutlined />,
   UserSwitchOutlined: <UserSwitchOutlined />,
 }
 
