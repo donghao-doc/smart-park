@@ -54,7 +54,31 @@ $header-height: 62px;
 
 .admin-navigation {
   flex: 1;
+  min-height: 0;
   padding: 13px 12px 24px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #c2cee0 transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #c2cee0;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #9faec5;
+  }
 
   .ant-spin-nested-loading,
   .ant-spin-container {
