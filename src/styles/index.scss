@@ -1,0 +1,23 @@
+// 统一项目内所有可滚动区域的滚动条外观
+* {
+  scrollbar-color: #c2cee0 transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #c2cee0;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #9faec5;
+  }
+}

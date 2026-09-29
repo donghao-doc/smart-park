@@ -59,26 +59,7 @@ $header-height: 62px;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-color: #c2cee0 transparent;
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: #c2cee0;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #9faec5;
-  }
 
   .ant-spin-nested-loading,
   .ant-spin-container {
