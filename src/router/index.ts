@@ -3,16 +3,21 @@ import { createBrowserRouter, type RouteObject } from 'react-router'
 import AdminLayout from '../layout'
 import ForbiddenPage from '../pages/403'
 import NotFoundPage from '../pages/404'
-import HomePage from '../pages/home'
+import DashboardPage from '../pages/dashboard'
+import DeviceListPage from '../pages/device-list'
+import EnterpriseListPage from '../pages/enterprise-list'
 import LoginPage from '../pages/login'
+import MockDataManagementPage from '../pages/mock-data-management'
+import OperationLogsPage from '../pages/operation-logs'
+import ParkProfilePage from '../pages/park-profile'
+import ParkingRecordsPage from '../pages/parking-records'
+import PersonnelListPage from '../pages/personnel-list'
+import SystemUsersPage from '../pages/system-users'
+import VehicleListPage from '../pages/vehicle-list'
+import VisitorAppointmentsPage from '../pages/visitor-appointments'
+import VisitorRecordsPage from '../pages/visitor-records'
+import WorkOrderListPage from '../pages/work-order-list'
 import { preventRepeatedLogin, requireAuthentication } from './utils'
-
-/**
- * 尚未实现的业务页面占位，仅保留后台通用布局
- */
-function EmptyPage() {
-  return null
-}
 
 const routes = [
   {
@@ -30,15 +35,20 @@ const routes = [
         children: [
           {
             path: '/dashboard',
-            Component: HomePage,
+            Component: DashboardPage,
           },
-          { path: '/enterprises', Component: EmptyPage },
-          { path: '/personnel', Component: EmptyPage },
-          { path: '/visitors/appointments', Component: EmptyPage },
-          { path: '/parking/vehicles', Component: EmptyPage },
-          { path: '/work-orders', Component: EmptyPage },
-          { path: '/devices', Component: EmptyPage },
-          { path: '/system/users', Component: EmptyPage },
+          { path: '/park/profile', Component: ParkProfilePage },
+          { path: '/enterprises', Component: EnterpriseListPage },
+          { path: '/personnel', Component: PersonnelListPage },
+          { path: '/visitors/appointments', Component: VisitorAppointmentsPage },
+          { path: '/visitors/records', Component: VisitorRecordsPage },
+          { path: '/parking/vehicles', Component: VehicleListPage },
+          { path: '/parking/records', Component: ParkingRecordsPage },
+          { path: '/work-orders', Component: WorkOrderListPage },
+          { path: '/devices', Component: DeviceListPage },
+          { path: '/system/users', Component: SystemUsersPage },
+          { path: '/system/logs', Component: OperationLogsPage },
+          { path: '/system/mock-data', Component: MockDataManagementPage },
         ],
       },
       {
