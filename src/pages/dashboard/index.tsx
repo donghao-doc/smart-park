@@ -1,19 +1,11 @@
-import {
-  BankOutlined,
-  CarOutlined,
-  DesktopOutlined,
-  ProfileOutlined,
-  RightOutlined,
-  TeamOutlined,
-  UserAddOutlined,
-} from '@ant-design/icons'
+import { RightOutlined } from '@ant-design/icons'
 import { LineChart, PieChart } from 'echarts/charts'
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
 import type { EChartsOption } from 'echarts'
 import { graphic, use as registerEChartsModules } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { Alert, Badge, Button, DatePicker, Empty, Segmented, Skeleton, Spin, Table, Tag } from 'antd'
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import {
@@ -25,8 +17,6 @@ import {
 } from '../../api/dashboard'
 import EChartsView from '../../components/echarts-view'
 import type {
-  DashboardMetricDto,
-  DashboardMetricKey,
   DashboardSummaryDto,
   DashboardTaskDto,
   DashboardTaskPriority,
@@ -36,6 +26,7 @@ import type {
   VisitorTrendPointDto,
   WorkOrderTrendPointDto,
 } from '../../types/dashboard'
+import MetricCard from './components/metric-card'
 import './dashboard.scss'
 
 registerEChartsModules([
@@ -48,34 +39,6 @@ registerEChartsModules([
 ])
 
 const { RangePicker } = DatePicker
-
-const metricPresentation: Record<
-  DashboardMetricKey,
-  { icon: ReactNode; className: string; path: string }
-> = {
-  enterprise: { icon: <BankOutlined />, className: 'is-blue', path: '/enterprises' },
-  personnel: { icon: <TeamOutlined />, className: 'is-green', path: '/personnel' },
-  visitor: {
-    icon: <UserAddOutlined />,
-    className: 'is-cyan',
-    path: '/visitors/records?date=today',
-  },
-  vehicle: {
-    icon: <CarOutlined />,
-    className: 'is-indigo',
-    path: '/parking/records?status=present',
-  },
-  workOrder: {
-    icon: <ProfileOutlined />,
-    className: 'is-orange',
-    path: '/work-orders?status=pending',
-  },
-  device: {
-    icon: <DesktopOutlined />,
-    className: 'is-teal',
-    path: '/devices?status=online',
-  },
-}
 
 const taskPriorityPresentation: Record<
   DashboardTaskPriority,
@@ -91,45 +54,6 @@ const deviceStatusColors: Record<DeviceStatusDto['key'], string> = {
   offline: '#1677ff',
   warning: '#ff8a00',
   maintenance: '#8d9ab2',
-}
-
-interface MetricCardProps {
-  metric: DashboardMetricDto
-  onNavigate: (path: string) => void
-}
-
-/**
- * 展示核心运营指标，并提供对应业务列表入口
- */
-function MetricCard({ metric, onNavigate }: MetricCardProps) {
-  const presentation = metricPresentation[metric.key]
-  const isHealthyDecrease = metric.key === 'vehicle' || metric.key === 'workOrder'
-  const isBeneficial = metric.direction === 'down' && isHealthyDecrease
-
-  return (
-    <Button
-      type="text"
-      className="dashboard-metric-card"
-      onClick={() => onNavigate(presentation.path)}
-    >
-      <span className={`dashboard-metric-icon ${presentation.className}`} aria-hidden="true">
-        {presentation.icon}
-      </span>
-      <span className="dashboard-metric-content">
-        <span className="dashboard-metric-title">{metric.title}</span>
-        <span className="dashboard-metric-value-row">
-          <strong>{metric.value.toLocaleString('zh-CN')}</strong>
-          <span>{metric.unit}</span>
-        </span>
-        <span className="dashboard-metric-comparison">
-          <span className={isBeneficial ? 'is-positive' : 'is-negative'}>
-            {metric.direction === 'up' ? '↑' : '↓'} {metric.change}
-          </span>
-          <span>{metric.comparison}</span>
-        </span>
-      </span>
-    </Button>
-  )
 }
 
 /**
@@ -540,7 +464,7 @@ function DashboardPage() {
           <Alert className="dashboard-section-error" type="error" showIcon message="核心指标加载失败" />
         ) : summary ? (
           summary.metrics.map((metric) => (
-            <MetricCard key={metric.key} metric={metric} onNavigate={(path) => void navigate(path)} />
+            <MetricCard key={metric.key} metric={metric} />
           ))
         ) : (
           Array.from({ length: 6 }, (_, index) => (
