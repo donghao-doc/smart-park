@@ -1,5 +1,6 @@
 import { redirect, type LoaderFunction, type RouteObject } from 'react-router'
 
+import RouteLoadingFallback from '../components/route-loading'
 import { useAuthStore } from '../stores/auth'
 import { useMenuStore } from '../stores/menu'
 import type { MenuItemDto } from '../types/menu'
@@ -101,6 +102,7 @@ function createMenuRoutes(menus: MenuItemDto[]): RouteObject[] {
           id: `dynamic-directory-${menu.id}`,
           path: menu.path,
           loader: createDirectoryLoader(menu.path),
+          Component: RouteLoadingFallback,
         },
         ...createMenuRoutes(menu.children),
       ]

@@ -1,5 +1,6 @@
 import { createBrowserRouter, redirect, type RouteObject } from 'react-router'
 
+import RouteLoadingFallback from '../components/route-loading'
 import AdminLayout from '../layout'
 import { useAuthStore } from '../stores/auth'
 import {
@@ -29,11 +30,13 @@ const routes = [
   {
     path: '/login',
     loader: preventRepeatedLogin,
+    HydrateFallback: RouteLoadingFallback,
     lazy: lazyPage(() => import('../pages/login')),
   },
   {
     id: 'authenticated-root',
     loader: requireAuthentication,
+    HydrateFallback: RouteLoadingFallback,
     // 共同父级路由保持不变时也重新校验，以同步最后访问的已登录页面
     shouldRevalidate: () => true,
     children: [
@@ -45,6 +48,7 @@ const routes = [
           {
             index: true,
             loader: redirectToFirstMenu,
+            Component: RouteLoadingFallback,
           },
         ],
       },
