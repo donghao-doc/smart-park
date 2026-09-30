@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react'
 import { redirect, type LoaderFunctionArgs } from 'react-router'
 
 import { useAuthStore } from '../stores/auth'
@@ -5,6 +6,18 @@ import { useAuthStore } from '../stores/auth'
 const LOGIN_PATH = '/login'
 const DEFAULT_AUTHENTICATED_PATH = '/dashboard'
 const LAST_AUTHENTICATED_PATH_KEY = 'smart-park.last-authenticated-path'
+
+/**
+ * 将页面模块转换为 React Router 路由级懒加载函数
+ * @param importPage 页面模块动态导入函数
+ */
+export function lazyPage(importPage: () => Promise<{ default: ComponentType }>) {
+  return async () => {
+    const pageModule = await importPage()
+
+    return { Component: pageModule.default }
+  }
+}
 
 /**
  * 校验并规范化应用内部跳转地址，避免跳转到登录页或外部站点
