@@ -10,10 +10,10 @@ import {
 import { LineChart, PieChart } from 'echarts/charts'
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
 import type { EChartsOption } from 'echarts'
-import { graphic, init, use as registerEChartsModules } from 'echarts/core'
+import { graphic, use as registerEChartsModules } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { Alert, Badge, Button, DatePicker, Empty, Segmented, Skeleton, Spin, Table, Tag } from 'antd'
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 
 import {
@@ -23,6 +23,7 @@ import {
   reqGetVisitorTrend,
   reqGetWorkOrderTrend,
 } from '../../api/dashboard'
+import EChartsView from '../../components/echarts-view'
 import type {
   DashboardMetricDto,
   DashboardMetricKey,
@@ -90,50 +91,6 @@ const deviceStatusColors: Record<DeviceStatusDto['key'], string> = {
   offline: '#1677ff',
   warning: '#ff8a00',
   maintenance: '#8d9ab2',
-}
-
-interface DashboardChartProps {
-  ariaLabel: string
-  className?: string
-  option: EChartsOption
-}
-
-/**
- * 创建可随容器尺寸变化的 ECharts 图表，并在组件卸载时释放实例
- */
-function DashboardChart({ ariaLabel, className = '', option }: DashboardChartProps) {
-  const chartContainerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const container = chartContainerRef.current
-    if (!container) {
-      return
-    }
-
-    const chart = init(container)
-    chart.setOption(option)
-    let resizeFrame = 0
-    const resizeObserver = new ResizeObserver(() => {
-      cancelAnimationFrame(resizeFrame)
-      resizeFrame = requestAnimationFrame(() => chart.resize())
-    })
-    resizeObserver.observe(container)
-
-    return () => {
-      resizeObserver.disconnect()
-      cancelAnimationFrame(resizeFrame)
-      chart.dispose()
-    }
-  }, [option])
-
-  return (
-    <div
-      ref={chartContainerRef}
-      className={`dashboard-chart ${className}`.trim()}
-      role="img"
-      aria-label={ariaLabel}
-    />
-  )
 }
 
 interface MetricCardProps {
@@ -624,7 +581,11 @@ function DashboardPage() {
             {visitorError ? (
               <Alert type="error" showIcon message="访客趋势加载失败" />
             ) : visitorTrend.length > 0 ? (
-              <DashboardChart ariaLabel="访客人数趋势折线图" option={visitorOption} />
+              <EChartsView
+                className="dashboard-chart"
+                ariaLabel="访客人数趋势折线图"
+                option={visitorOption}
+              />
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无访客数据" />
             )}
@@ -660,7 +621,11 @@ function DashboardPage() {
             {workOrderError ? (
               <Alert type="error" showIcon message="工单趋势加载失败" />
             ) : workOrderTrend.length > 0 ? (
-              <DashboardChart ariaLabel="新增与完成工单趋势折线图" option={workOrderOption} />
+              <EChartsView
+                className="dashboard-chart"
+                ariaLabel="新增与完成工单趋势折线图"
+                option={workOrderOption}
+              />
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无工单数据" />
             )}
@@ -704,8 +669,8 @@ function DashboardPage() {
               <Alert type="error" showIcon message="设备状态加载失败" />
             ) : deviceStatuses.length > 0 ? (
               <div className="dashboard-device-content">
-                <DashboardChart
-                  className="dashboard-device-chart"
+                <EChartsView
+                  className="dashboard-chart dashboard-device-chart"
                   ariaLabel="设备状态环形图"
                   option={deviceOption}
                 />
