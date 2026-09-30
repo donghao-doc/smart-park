@@ -2,6 +2,8 @@ import type { EChartsOption, EChartsType } from 'echarts'
 import { init } from 'echarts/core'
 import { useEffect, useRef } from 'react'
 
+import './echarts-view.scss'
+
 /**
  * 通用 ECharts 图表容器属性
  */

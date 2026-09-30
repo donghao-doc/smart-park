@@ -1,0 +1,82 @@
+$trend-primary: #1677ff;
+
+.trend-chart-card {
+  position: relative;
+  height: 303px;
+  padding: 12px 18px 10px;
+
+  .ant-spin-nested-loading,
+  .ant-spin-container {
+    height: calc(100% - 42px);
+  }
+
+  .ant-alert,
+  .ant-empty {
+    margin-top: 64px;
+  }
+}
+
+.trend-chart-card-heading {
+  .ant-segmented {
+    padding: 0;
+    border: 1px solid #d9e2ee;
+    border-radius: 5px;
+    background: #fff;
+
+    .ant-segmented-item {
+      min-width: 68px;
+      border-radius: 4px;
+      color: #596885;
+    }
+
+    .ant-segmented-item-selected {
+      background: $trend-primary;
+      color: #fff;
+      box-shadow: none;
+    }
+  }
+}
+
+.trend-chart-card-range {
+  position: absolute;
+  z-index: 2;
+  top: 48px;
+  right: 18px;
+  width: 232px;
+}
+
+.trend-chart-card-chart {
+  min-height: 220px;
+}
+
+@media (max-width: 720px) {
+  .trend-chart-card {
+    height: 350px;
+
+    .ant-spin-nested-loading,
+    .ant-spin-container {
+      height: calc(100% - 76px);
+    }
+  }
+
+  .trend-chart-card-range {
+    position: static;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trend-chart-card-heading .ant-segmented {
+    width: 100%;
+
+    .ant-segmented-group {
+      width: 100%;
+    }
+
+    .ant-segmented-item {
+      min-width: 0;
+      flex: 1;
+    }
+  }
+}

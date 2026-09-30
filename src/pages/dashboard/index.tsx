@@ -4,7 +4,7 @@ import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/compon
 import type { EChartsOption } from 'echarts'
 import { graphic, use as registerEChartsModules } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
-import { Alert, Badge, Button, DatePicker, Empty, Segmented, Skeleton, Spin, Table, Tag } from 'antd'
+import { Alert, Badge, Button, Empty, Skeleton, Spin, Table, Tag } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -27,6 +27,7 @@ import type {
   WorkOrderTrendPointDto,
 } from '../../types/dashboard'
 import MetricCard from './components/metric-card'
+import TrendChartCard from './components/trend-chart-card'
 import './dashboard.scss'
 
 registerEChartsModules([
@@ -37,8 +38,6 @@ registerEChartsModules([
   TooltipComponent,
   CanvasRenderer,
 ])
-
-const { RangePicker } = DatePicker
 
 const taskPriorityPresentation: Record<
   DashboardTaskPriority,
@@ -476,85 +475,37 @@ function DashboardPage() {
       </section>
 
       <section className="dashboard-trends" aria-label="运营趋势">
-        <article className="dashboard-panel dashboard-trend-panel">
-          <div className="dashboard-panel-heading">
-            <h2>近7日访客趋势</h2>
-            <Segmented<DashboardTrendRange>
-              size="small"
-              value={visitorParams.range}
-              options={[
-                { label: '近7日', value: '7d' },
-                { label: '近30日', value: '30d' },
-                { label: '自定义', value: 'custom' },
-              ]}
-              onChange={(value) => handleTrendRangeChange('visitor', value)}
-            />
-          </div>
-          {visitorParams.range === 'custom' && (
-            <RangePicker
-              className="dashboard-range-picker"
-              size="small"
-              format="YYYY-MM-DD"
-              allowClear={false}
-              onChange={(_, dateStrings) =>
-                handleCustomRangeChange('visitor', dateStrings as [string, string])
-              }
-            />
-          )}
-          <Spin spinning={visitorLoading}>
-            {visitorError ? (
-              <Alert type="error" showIcon message="访客趋势加载失败" />
-            ) : visitorTrend.length > 0 ? (
-              <EChartsView
-                className="dashboard-chart"
-                ariaLabel="访客人数趋势折线图"
-                option={visitorOption}
-              />
-            ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无访客数据" />
-            )}
-          </Spin>
-        </article>
+        <TrendChartCard
+          title="近7日访客趋势"
+          range={visitorParams.range}
+          loading={visitorLoading}
+          error={visitorError}
+          hasData={visitorTrend.length > 0}
+          errorMessage="访客趋势加载失败"
+          emptyDescription="暂无访客数据"
+          chartAriaLabel="访客人数趋势折线图"
+          option={visitorOption}
+          onRangeChange={(range) => handleTrendRangeChange('visitor', range)}
+          onCustomRangeChange={(dateStrings) =>
+            handleCustomRangeChange('visitor', dateStrings)
+          }
+        />
 
-        <article className="dashboard-panel dashboard-trend-panel">
-          <div className="dashboard-panel-heading">
-            <h2>工单趋势</h2>
-            <Segmented<DashboardTrendRange>
-              size="small"
-              value={workOrderParams.range}
-              options={[
-                { label: '近7日', value: '7d' },
-                { label: '近30日', value: '30d' },
-                { label: '自定义', value: 'custom' },
-              ]}
-              onChange={(value) => handleTrendRangeChange('workOrder', value)}
-            />
-          </div>
-          {workOrderParams.range === 'custom' && (
-            <RangePicker
-              className="dashboard-range-picker"
-              size="small"
-              format="YYYY-MM-DD"
-              allowClear={false}
-              onChange={(_, dateStrings) =>
-                handleCustomRangeChange('workOrder', dateStrings as [string, string])
-              }
-            />
-          )}
-          <Spin spinning={workOrderLoading}>
-            {workOrderError ? (
-              <Alert type="error" showIcon message="工单趋势加载失败" />
-            ) : workOrderTrend.length > 0 ? (
-              <EChartsView
-                className="dashboard-chart"
-                ariaLabel="新增与完成工单趋势折线图"
-                option={workOrderOption}
-              />
-            ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无工单数据" />
-            )}
-          </Spin>
-        </article>
+        <TrendChartCard
+          title="工单趋势"
+          range={workOrderParams.range}
+          loading={workOrderLoading}
+          error={workOrderError}
+          hasData={workOrderTrend.length > 0}
+          errorMessage="工单趋势加载失败"
+          emptyDescription="暂无工单数据"
+          chartAriaLabel="新增与完成工单趋势折线图"
+          option={workOrderOption}
+          onRangeChange={(range) => handleTrendRangeChange('workOrder', range)}
+          onCustomRangeChange={(dateStrings) =>
+            handleCustomRangeChange('workOrder', dateStrings)
+          }
+        />
       </section>
 
       <section className="dashboard-details" aria-label="今日待办和设备状态">
@@ -594,7 +545,7 @@ function DashboardPage() {
             ) : deviceStatuses.length > 0 ? (
               <div className="dashboard-device-content">
                 <EChartsView
-                  className="dashboard-chart dashboard-device-chart"
+                  className="dashboard-device-chart"
                   ariaLabel="设备状态环形图"
                   option={deviceOption}
                 />
