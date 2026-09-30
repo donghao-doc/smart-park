@@ -1,7 +1,29 @@
-import { createBrowserRouter, type RouteObject } from 'react-router'
+import { createBrowserRouter, redirect, type RouteObject } from 'react-router'
 
 import AdminLayout from '../layout'
+import { useAuthStore } from '../stores/auth'
+import {
+  DYNAMIC_ROUTE_PARENT_ID,
+  getFirstMenuPath,
+  initializeMenuRoutes,
+} from './dynamic-routes'
 import { lazyPage, preventRepeatedLogin, requireAuthentication } from './utils'
+
+/**
+ * 初始化当前登录会话的动态路由后跳转至首个可访问页面
+ */
+async function redirectToFirstMenu() {
+  if (!useAuthStore.getState().accessToken) {
+    return null
+  }
+
+  const menus = await initializeDynamicRoutes()
+  if (!useAuthStore.getState().accessToken) {
+    return null
+  }
+
+  throw redirect(getFirstMenuPath(menus) ?? '/403')
+}
 
 const routes = [
   {
@@ -10,53 +32,25 @@ const routes = [
     lazy: lazyPage(() => import('../pages/login')),
   },
   {
+    id: 'authenticated-root',
     loader: requireAuthentication,
     // 共同父级路由保持不变时也重新校验，以同步最后访问的已登录页面
     shouldRevalidate: () => true,
     children: [
       {
+        id: DYNAMIC_ROUTE_PARENT_ID,
+        path: '/',
         Component: AdminLayout,
         children: [
           {
-            path: '/dashboard',
-            lazy: lazyPage(() => import('../pages/dashboard')),
-          },
-          { path: '/park/profile', lazy: lazyPage(() => import('../pages/park-profile')) },
-          { path: '/enterprises', lazy: lazyPage(() => import('../pages/enterprise-list')) },
-          { path: '/personnel', lazy: lazyPage(() => import('../pages/personnel-list')) },
-          {
-            path: '/visitors/appointments',
-            lazy: lazyPage(() => import('../pages/visitor-appointments')),
-          },
-          {
-            path: '/visitors/records',
-            lazy: lazyPage(() => import('../pages/visitor-records')),
-          },
-          {
-            path: '/parking/vehicles',
-            lazy: lazyPage(() => import('../pages/vehicle-list')),
-          },
-          {
-            path: '/parking/records',
-            lazy: lazyPage(() => import('../pages/parking-records')),
-          },
-          { path: '/work-orders', lazy: lazyPage(() => import('../pages/work-order-list')) },
-          { path: '/devices', lazy: lazyPage(() => import('../pages/device-list')) },
-          { path: '/system/users', lazy: lazyPage(() => import('../pages/system-users')) },
-          { path: '/system/logs', lazy: lazyPage(() => import('../pages/operation-logs')) },
-          {
-            path: '/system/mock-data',
-            lazy: lazyPage(() => import('../pages/mock-data-management')),
+            index: true,
+            loader: redirectToFirstMenu,
           },
         ],
       },
       {
         path: '/403',
         lazy: lazyPage(() => import('../pages/403')),
-      },
-      {
-        path: '*',
-        lazy: lazyPage(() => import('../pages/404')),
       },
     ],
   },
@@ -65,6 +59,17 @@ const routes = [
 /**
  * 应用浏览器路由实例
  */
-const router = createBrowserRouter(routes)
+const router = createBrowserRouter(routes, {
+  patchRoutesOnNavigation: async ({ patch, signal }) => {
+    await initializeMenuRoutes(patch, signal)
+  },
+})
+
+/**
+ * 初始化当前登录会话的菜单和动态路由，重复调用时复用菜单缓存和已注册路由
+ */
+export function initializeDynamicRoutes() {
+  return initializeMenuRoutes((routeId, children) => router.patchRoutes(routeId, children))
+}
 
 export default router

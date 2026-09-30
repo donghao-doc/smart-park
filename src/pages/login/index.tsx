@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
 import { reqGetDemoAccounts, reqLogin } from '../../api/auth'
+import { initializeDynamicRoutes } from '../../router'
 import { getPostLoginPath } from '../../router/utils'
 import { useAuthStore } from '../../stores/auth'
 import { useMenuStore } from '../../stores/menu'
@@ -65,6 +66,7 @@ function LoginPage() {
       const session = await reqLogin({ username, password: values.password })
       resetMenus()
       setAccessToken(session.accessToken)
+      await initializeDynamicRoutes()
 
       if (rememberAccount) {
         localStorage.setItem(REMEMBERED_ACCOUNT_KEY, username)

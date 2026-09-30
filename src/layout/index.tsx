@@ -7,7 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { Avatar, Badge, Button, Drawer, Dropdown, Input, Menu, Spin, Typography, type MenuProps } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 import { useAuthStore } from '../stores/auth'
@@ -155,7 +155,6 @@ function AdminLayout() {
   const clearSession = useAuthStore((state) => state.clearSession)
   const menus = useMenuStore((state) => state.menus)
   const menuLoading = useMenuStore((state) => state.loading)
-  const reqLoadMenus = useMenuStore((state) => state.reqLoadMenus)
   const resetMenus = useMenuStore((state) => state.resetMenus)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openMenuKeys, setOpenMenuKeys] = useState<string[]>([])
@@ -173,10 +172,6 @@ function AdminLayout() {
     () => [...new Set([...openMenuKeys, ...activeAncestorMenuKeys])],
     [activeAncestorMenuKeys, openMenuKeys],
   )
-
-  useEffect(() => {
-    void reqLoadMenus()
-  }, [reqLoadMenus])
 
   /**
    * 切换菜单后关闭移动端抽屉，保持内容区域可见
