@@ -1,0 +1,183 @@
+$navigation-primary: #1677ff;
+$navigation-border: #e1e9f3;
+$navigation-header-height: 62px;
+
+.admin-sidebar,
+.admin-mobile-sidebar {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}
+
+.admin-sidebar {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  height: 100svh;
+  border-right: 1px solid $navigation-border;
+}
+
+.admin-brand.ant-typography {
+  display: flex;
+  width: 100%;
+  height: $navigation-header-height;
+  flex: 0 0 $navigation-header-height;
+  align-items: center;
+  margin: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid $navigation-border;
+  background: #fff;
+  color: #091946;
+  font-size: 27px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.admin-brand-short {
+  display: none;
+}
+
+.admin-navigation {
+  flex: 1;
+  min-height: 0;
+  padding: 13px 12px 24px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+
+  .ant-spin-nested-loading,
+  .ant-spin-container {
+    min-height: 48px;
+  }
+}
+
+.admin-navigation-menu.ant-menu.ant-menu-inline {
+  width: 100%;
+  background: transparent;
+  color: #405276;
+  font-size: 14px;
+  font-weight: 600;
+  border-inline-end: 0;
+
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    margin: 0 0 4px;
+    padding-inline: 28px 20px !important;
+    border-radius: 0 8px 8px 0;
+    color: #405276;
+    line-height: 48px;
+    transition: background-color 160ms ease, color 160ms ease;
+
+    &:hover {
+      background: #f1f6fe;
+      color: $navigation-primary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgb(22 119 255 / 45%);
+      outline-offset: -3px;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .ant-menu-item-icon {
+    min-width: 22px;
+    font-size: 20px;
+  }
+
+  .ant-menu-title-content {
+    margin-inline-start: 20px;
+  }
+
+  // 子菜单不显示图标，补齐图标占位宽度以对齐目录文案
+  .ant-menu-sub.ant-menu-inline > .ant-menu-item {
+    padding-inline-start: 50px !important;
+  }
+
+  .ant-menu-item-selected {
+    background: #eaf3ff;
+    color: $navigation-primary;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 5px;
+      background: $navigation-primary;
+      content: '';
+    }
+  }
+
+  .ant-menu-submenu-selected > .ant-menu-submenu-title {
+    color: $navigation-primary;
+  }
+}
+
+.admin-layout.is-sidebar-collapsed {
+  .admin-brand.ant-typography {
+    justify-content: center;
+    padding: 0;
+    letter-spacing: 0;
+  }
+
+  .admin-brand-full {
+    display: none;
+  }
+
+  .admin-brand-short {
+    display: inline;
+  }
+
+  .admin-navigation {
+    padding-right: 0;
+    scrollbar-gutter: auto;
+  }
+
+  .admin-navigation-menu.ant-menu-inline-collapsed {
+    width: 100%;
+
+    .ant-menu-item-icon {
+      min-width: 22px;
+      font-size: 20px;
+    }
+
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      padding-inline: 25px !important;
+    }
+  }
+}
+
+.admin-sidebar-drawer {
+  .ant-drawer-mask {
+    background: rgb(15 30 55 / 28%);
+  }
+
+  .ant-drawer-content-wrapper {
+    max-width: calc(100vw - 48px);
+  }
+
+  .ant-drawer-body {
+    padding: 0;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    display: none;
+  }
+}
