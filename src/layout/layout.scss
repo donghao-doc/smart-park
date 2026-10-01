@@ -4,6 +4,7 @@ $layout-secondary-text: #667493;
 $layout-border: #e1e9f3;
 $layout-canvas: #f5f8fc;
 $sidebar-width: 242px;
+$sidebar-collapsed-width: 72px;
 $header-height: 62px;
 
 .admin-layout {
@@ -14,6 +15,10 @@ $header-height: 62px;
   color: $layout-text;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   transition: grid-template-columns 180ms ease;
+}
+
+.admin-layout.is-sidebar-collapsed {
+  grid-template-columns: $sidebar-collapsed-width minmax(0, 1fr);
 }
 
 .admin-sidebar,
@@ -50,6 +55,10 @@ $header-height: 62px;
   line-height: 1;
   text-align: left;
   white-space: nowrap;
+}
+
+.admin-brand-short {
+  display: none;
 }
 
 .admin-navigation {
@@ -133,6 +142,41 @@ $header-height: 62px;
 
   .ant-menu-submenu-selected > .ant-menu-submenu-title {
     color: $layout-primary;
+  }
+}
+
+.admin-layout.is-sidebar-collapsed {
+  .admin-brand.ant-typography {
+    justify-content: center;
+    padding: 0;
+    letter-spacing: 0;
+  }
+
+  .admin-brand-full {
+    display: none;
+  }
+
+  .admin-brand-short {
+    display: inline;
+  }
+
+  .admin-navigation {
+    padding-right: 0;
+    scrollbar-gutter: auto;
+  }
+
+  .admin-navigation-menu.ant-menu-inline-collapsed {
+    width: 100%;
+
+    .ant-menu-item-icon {
+      min-width: 22px;
+      font-size: 20px;
+    }
+
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      padding-inline: 25px !important;
+    }
   }
 }
 
@@ -258,7 +302,15 @@ $header-height: 62px;
     grid-template-columns: 1fr;
   }
 
+  .admin-layout.is-sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
   .admin-sidebar {
+    display: none;
+  }
+
+  .admin-sidebar-toggle-desktop.ant-btn {
     display: none;
   }
 

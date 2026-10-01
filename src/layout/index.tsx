@@ -2,6 +2,7 @@ import {
   BellOutlined,
   DownOutlined,
   LogoutOutlined,
+  MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
 } from '@ant-design/icons'
@@ -104,6 +105,7 @@ const accountMenuItems: MenuProps['items'] = [
 
 interface SidebarContentProps {
   activeNavigationKey?: string
+  collapsed: boolean
   menuItems: MenuProps['items']
   menuLoading: boolean
   openMenuKeys: string[]
@@ -116,6 +118,7 @@ interface SidebarContentProps {
  */
 function SidebarContent({
   activeNavigationKey,
+  collapsed,
   menuItems,
   menuLoading,
   openMenuKeys,
@@ -124,8 +127,11 @@ function SidebarContent({
 }: SidebarContentProps) {
   return (
     <>
-      <Typography.Title level={2} className="admin-brand">
-        智慧园区
+      <Typography.Title level={2} className="admin-brand" aria-label="智慧园区">
+        <span className="admin-brand-full">智慧园区</span>
+        <span className="admin-brand-short" aria-hidden="true">
+          智
+        </span>
       </Typography.Title>
 
       <nav className="admin-navigation">
@@ -133,9 +139,10 @@ function SidebarContent({
           <Menu
             className="admin-navigation-menu"
             mode="inline"
+            inlineCollapsed={collapsed}
             items={menuItems}
             selectedKeys={activeNavigationKey ? [activeNavigationKey] : []}
-            openKeys={openMenuKeys}
+            openKeys={collapsed ? undefined : openMenuKeys}
             onOpenChange={onOpenChange}
             onClick={({ key }) => onNavigate(key)}
           />
@@ -155,6 +162,7 @@ function AdminLayout() {
   const menus = useMenuStore((state) => state.menus)
   const menuLoading = useMenuStore((state) => state.loading)
   const resetMenus = useMenuStore((state) => state.resetMenus)
+  const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openMenuKeys, setOpenMenuKeys] = useState<string[]>([])
 
@@ -192,10 +200,11 @@ function AdminLayout() {
   }
 
   return (
-    <div className="admin-layout">
-      <aside className="admin-sidebar" aria-label="后台主导航">
+    <div className={`admin-layout${desktopSidebarCollapsed ? ' is-sidebar-collapsed' : ''}`}>
+      <aside id="admin-sidebar" className="admin-sidebar" aria-label="后台主导航">
         <SidebarContent
           activeNavigationKey={activeNavigationKey}
+          collapsed={desktopSidebarCollapsed}
           menuItems={menuItems}
           menuLoading={menuLoading}
           openMenuKeys={displayedOpenMenuKeys}
@@ -215,6 +224,7 @@ function AdminLayout() {
         <aside className="admin-mobile-sidebar" aria-label="移动端后台主导航">
           <SidebarContent
             activeNavigationKey={activeNavigationKey}
+            collapsed={false}
             menuItems={menuItems}
             menuLoading={menuLoading}
             openMenuKeys={displayedOpenMenuKeys}
@@ -226,6 +236,16 @@ function AdminLayout() {
 
       <div className="admin-workspace">
         <header className="admin-header">
+          <Button
+            type="text"
+            className="admin-sidebar-toggle admin-sidebar-toggle-desktop"
+            icon={desktopSidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            aria-label={desktopSidebarCollapsed ? '展开导航菜单' : '折叠导航菜单'}
+            aria-controls="admin-sidebar"
+            aria-expanded={!desktopSidebarCollapsed}
+            onClick={() => setDesktopSidebarCollapsed((collapsed) => !collapsed)}
+          />
+
           <Button
             type="text"
             className="admin-sidebar-toggle admin-sidebar-toggle-mobile"
