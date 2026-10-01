@@ -4,7 +4,7 @@ import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/compon
 import type { EChartsOption } from 'echarts'
 import { graphic, use as registerEChartsModules } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
-import { Alert, Badge, Button, Empty, Skeleton, Spin, Table, Tag } from 'antd'
+import { Alert, Badge, Button, Empty, Skeleton, Spin } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -19,7 +19,6 @@ import EChartsView from '../../components/echarts-view'
 import type {
   DashboardSummaryDto,
   DashboardTaskDto,
-  DashboardTaskPriority,
   DashboardTrendParams,
   DashboardTrendRange,
   DeviceStatusDto,
@@ -27,6 +26,7 @@ import type {
   WorkOrderTrendPointDto,
 } from '../../types/dashboard'
 import MetricCard from './components/metric-card'
+import TodayTasksCard from './components/today-tasks-card'
 import TrendChartCard from './components/trend-chart-card'
 import './dashboard.scss'
 
@@ -38,15 +38,6 @@ registerEChartsModules([
   TooltipComponent,
   CanvasRenderer,
 ])
-
-const taskPriorityPresentation: Record<
-  DashboardTaskPriority,
-  { label: string; className: string }
-> = {
-  high: { label: '高', className: 'is-high' },
-  medium: { label: '中', className: 'is-medium' },
-  low: { label: '低', className: 'is-low' },
-}
 
 const deviceStatusColors: Record<DeviceStatusDto['key'], string> = {
   online: '#11b88b',
@@ -60,14 +51,6 @@ const deviceStatusColors: Record<DeviceStatusDto['key'], string> = {
  */
 function formatTrendDate(value: string) {
   return value.slice(5)
-}
-
-/**
- * 将待办创建时间格式化为月日与时分
- */
-function formatTaskTime(value: string) {
-  const [date, time] = value.split('T')
-  return `${date.slice(5)}  ${time.slice(0, 5)}`
 }
 
 /**
@@ -380,42 +363,6 @@ function DashboardPage() {
     [deviceStatuses],
   )
 
-  const taskColumns = [
-    {
-      title: '#',
-      dataIndex: 'index',
-      width: 46,
-      render: (_: unknown, __: DashboardTaskDto, index: number) => index + 1,
-    },
-    { title: '任务标题', dataIndex: 'title', ellipsis: true },
-    { title: '类型', dataIndex: 'category', width: 114 },
-    {
-      title: '优先级',
-      dataIndex: 'priority',
-      width: 96,
-      render: (priority: DashboardTaskPriority) => {
-        const presentation = taskPriorityPresentation[priority]
-        return <Tag className={`dashboard-priority-tag ${presentation.className}`}>{presentation.label}</Tag>
-      },
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      width: 146,
-      render: (value: string) => formatTaskTime(value),
-    },
-    {
-      title: '操作',
-      key: 'action',
-      width: 82,
-      render: (_: unknown, task: DashboardTaskDto) => (
-        <Button type="link" className="dashboard-task-action" onClick={() => void navigate(task.actionPath)}>
-          去处理
-        </Button>
-      ),
-    },
-  ]
-
   /**
    * 切换趋势预设范围，自定义范围默认选中设计稿对应的最近七日
    */
@@ -509,28 +456,13 @@ function DashboardPage() {
       </section>
 
       <section className="dashboard-details" aria-label="今日待办和设备状态">
-        <article className="dashboard-panel dashboard-task-panel">
-          <div className="dashboard-panel-heading">
-            <h2>今日待办任务</h2>
-            <Button type="link" className="dashboard-view-more" onClick={() => void navigate('/work-orders')}>
-              查看更多 <RightOutlined />
-            </Button>
-          </div>
-          {tasksError ? (
-            <Alert type="error" showIcon message="今日待办加载失败" />
-          ) : (
-            <Table<DashboardTaskDto>
-              className="dashboard-task-table"
-              rowKey="id"
-              columns={taskColumns}
-              dataSource={tasks}
-              loading={tasksLoading}
-              pagination={false}
-              size="small"
-              scroll={{ x: 680 }}
-            />
-          )}
-        </article>
+        <TodayTasksCard
+          tasks={tasks}
+          loading={tasksLoading}
+          error={tasksError}
+          onViewMore={() => void navigate('/work-orders')}
+          onProcessTask={(task) => void navigate(task.actionPath)}
+        />
 
         <article className="dashboard-panel dashboard-device-panel">
           <div className="dashboard-panel-heading">
