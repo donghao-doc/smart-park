@@ -1,0 +1,49 @@
+$breadcrumb-primary: #1677ff;
+$breadcrumb-text: #273755;
+$breadcrumb-secondary-text: #74829b;
+
+.admin-header-breadcrumb.ant-breadcrumb {
+  min-width: 0;
+  margin-left: 8px;
+  overflow: hidden;
+  color: $breadcrumb-secondary-text;
+  font-size: 14px;
+
+  ol {
+    flex-wrap: nowrap;
+  }
+
+  li {
+    min-width: 0;
+  }
+
+  .ant-breadcrumb-link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  a {
+    color: $breadcrumb-secondary-text;
+
+    &:hover {
+      color: $breadcrumb-primary;
+    }
+  }
+
+  li:last-child .ant-breadcrumb-link {
+    color: $breadcrumb-text;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-header-breadcrumb.ant-breadcrumb {
+    margin-left: 4px;
+
+    .ant-breadcrumb-link {
+      max-width: 96px;
+    }
+  }
+}

@@ -12,6 +12,7 @@ import { Outlet, useNavigate } from 'react-router'
 
 import { useAuthStore } from '../stores/auth'
 import { useMenuStore } from '../stores/menu'
+import HeaderBreadcrumb from './components/header-breadcrumb'
 import SidebarNavigation from './components/sidebar-navigation'
 import './layout.scss'
 
@@ -79,6 +80,8 @@ function AdminLayout() {
             aria-label="打开导航菜单"
             onClick={() => setMobileMenuOpen(true)}
           />
+
+          <HeaderBreadcrumb />
 
           <div className="admin-header-tools">
             <Badge dot offset={[-2, 4]}>
