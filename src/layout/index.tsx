@@ -3,10 +3,9 @@ import {
   DownOutlined,
   LogoutOutlined,
   MenuUnfoldOutlined,
-  SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import { Avatar, Badge, Button, Drawer, Dropdown, Input, Menu, Spin, Typography, type MenuProps } from 'antd'
+import { Avatar, Badge, Button, Drawer, Dropdown, Menu, Spin, Typography, type MenuProps } from 'antd'
 import { useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
@@ -236,14 +235,6 @@ function AdminLayout() {
           />
 
           <div className="admin-header-tools">
-            <Input
-              className="admin-global-search"
-              prefix={<SearchOutlined />}
-              placeholder="搜索企业、人员、设备等"
-              aria-label="全局搜索"
-              allowClear
-            />
-
             <Badge dot offset={[-2, 4]}>
               <Button
                 type="text"

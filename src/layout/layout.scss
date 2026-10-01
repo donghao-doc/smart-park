@@ -175,38 +175,6 @@ $header-height: 62px;
   gap: 18px;
 }
 
-.admin-global-search.ant-input-affix-wrapper {
-  width: 274px;
-  height: 38px;
-  padding: 0 13px;
-  border-color: #dbe5f1;
-  border-radius: 7px;
-  background: #f7f9fc;
-  box-shadow: none;
-
-  .ant-input-prefix {
-    margin-right: 10px;
-    color: #75839d;
-    font-size: 16px;
-  }
-
-  .ant-input {
-    background: transparent;
-    color: $layout-text;
-    font-size: 14px;
-
-    &::placeholder {
-      color: #99a5b9;
-    }
-  }
-
-  &:hover,
-  &.ant-input-affix-wrapper-focused {
-    border-color: #8cbcff;
-    background: #fff;
-  }
-}
-
 .admin-notification-button.ant-btn {
   display: inline-flex;
   width: 36px;
@@ -308,10 +276,6 @@ $header-height: 62px;
     gap: 8px;
   }
 
-  .admin-global-search.ant-input-affix-wrapper {
-    width: min(42vw, 210px);
-  }
-
   .admin-account-name,
   .admin-account-arrow {
     display: none;
@@ -323,10 +287,6 @@ $header-height: 62px;
 }
 
 @media (max-width: 430px) {
-  .admin-global-search.ant-input-affix-wrapper {
-    width: 150px;
-  }
-
   .admin-notification-button.ant-btn {
     display: none;
   }
