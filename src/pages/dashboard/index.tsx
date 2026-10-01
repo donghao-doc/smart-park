@@ -1,10 +1,9 @@
-import { RightOutlined } from '@ant-design/icons'
-import { LineChart, PieChart } from 'echarts/charts'
+import { LineChart } from 'echarts/charts'
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
 import type { EChartsOption } from 'echarts'
 import { graphic, use as registerEChartsModules } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
-import { Alert, Badge, Button, Empty, Skeleton, Spin } from 'antd'
+import { Alert, Skeleton } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -15,7 +14,6 @@ import {
   reqGetVisitorTrend,
   reqGetWorkOrderTrend,
 } from '../../api/dashboard'
-import EChartsView from '../../components/echarts-view'
 import type {
   DashboardSummaryDto,
   DashboardTaskDto,
@@ -26,25 +24,18 @@ import type {
   WorkOrderTrendPointDto,
 } from '../../types/dashboard'
 import MetricCard from './components/metric-card'
+import DeviceStatusCard from './components/device-status-card'
 import TodayTasksCard from './components/today-tasks-card'
 import TrendChartCard from './components/trend-chart-card'
 import './dashboard.scss'
 
 registerEChartsModules([
   LineChart,
-  PieChart,
   GridComponent,
   LegendComponent,
   TooltipComponent,
   CanvasRenderer,
 ])
-
-const deviceStatusColors: Record<DeviceStatusDto['key'], string> = {
-  online: '#11b88b',
-  offline: '#1677ff',
-  warning: '#ff8a00',
-  maintenance: '#8d9ab2',
-}
 
 /**
  * 将趋势日期压缩为横轴使用的月日格式
@@ -319,50 +310,6 @@ function DashboardPage() {
     [workOrderTrend],
   )
 
-  const deviceOption = useMemo<EChartsOption>(
-    () => ({
-      animationDuration: 600,
-      tooltip: { trigger: 'item', formatter: '{b}<br/>{c} 台（{d}%）' },
-      series: [
-        {
-          name: '设备状态',
-          type: 'pie',
-          radius: ['62%', '86%'],
-          center: ['50%', '50%'],
-          startAngle: 90,
-          clockwise: true,
-          itemStyle: { borderColor: '#fff', borderWidth: 2 },
-          label: { show: false },
-          emphasis: { scaleSize: 5 },
-          data: deviceStatuses.map((status) => ({
-            name: status.label,
-            value: status.value,
-            itemStyle: { color: deviceStatusColors[status.key] },
-            ...(status.key === 'online'
-              ? {
-                  label: {
-                    show: true,
-                    position: 'center' as const,
-                    formatter: `{value|${status.value}}\n{name|在线设备}`,
-                    rich: {
-                      value: {
-                        color: '#0d1d4b',
-                        fontSize: 28,
-                        fontWeight: 700,
-                        lineHeight: 38,
-                      },
-                      name: { color: '#667493', fontSize: 12, lineHeight: 20 },
-                    },
-                  },
-                }
-              : {}),
-          })),
-        },
-      ],
-    }),
-    [deviceStatuses],
-  )
-
   /**
    * 切换趋势预设范围，自定义范围默认选中设计稿对应的最近七日
    */
@@ -464,43 +411,12 @@ function DashboardPage() {
           onProcessTask={(task) => void navigate(task.actionPath)}
         />
 
-        <article className="dashboard-panel dashboard-device-panel">
-          <div className="dashboard-panel-heading">
-            <h2>设备状态</h2>
-            <Button type="link" className="dashboard-view-more" onClick={() => void navigate('/devices')}>
-              查看更多 <RightOutlined />
-            </Button>
-          </div>
-          <Spin spinning={deviceLoading}>
-            {deviceError ? (
-              <Alert type="error" showIcon message="设备状态加载失败" />
-            ) : deviceStatuses.length > 0 ? (
-              <div className="dashboard-device-content">
-                <EChartsView
-                  className="dashboard-device-chart"
-                  ariaLabel="设备状态环形图"
-                  option={deviceOption}
-                />
-                <dl className="dashboard-device-legend">
-                  {deviceStatuses.map((status) => (
-                    <div key={status.key}>
-                      <dt>
-                        <Badge color={deviceStatusColors[status.key]} />
-                        {status.label}
-                      </dt>
-                      <dd>
-                        <strong>{status.value}</strong>
-                        <span>{status.percentage}%</span>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无设备数据" />
-            )}
-          </Spin>
-        </article>
+        <DeviceStatusCard
+          statuses={deviceStatuses}
+          loading={deviceLoading}
+          error={deviceError}
+          onViewMore={() => void navigate('/devices')}
+        />
       </section>
     </div>
   )
