@@ -9,7 +9,6 @@ import { lazyPage } from './utils'
 /** 动态业务路由挂载到后台布局时使用的父路由标识 */
 export const DYNAMIC_ROUTE_PARENT_ID = 'admin-layout'
 
-const DYNAMIC_NOT_FOUND_ROUTE_ID = 'dynamic-not-found'
 const registeredRouteIds = new Set<string>()
 
 const pageLazyLoaders: Readonly<Record<string, NonNullable<RouteObject['lazy']>>> = {
@@ -27,8 +26,6 @@ const pageLazyLoaders: Readonly<Record<string, NonNullable<RouteObject['lazy']>>
   'operation-logs': lazyPage(() => import('../pages/operation-logs')),
   'mock-data-management': lazyPage(() => import('../pages/mock-data-management')),
 }
-
-const notFoundPageLoader = lazyPage(() => import('../pages/404'))
 
 /**
  * 在菜单树中按访问路径查找节点
@@ -53,8 +50,9 @@ function findMenuByPath(menus: MenuItemDto[], path: string): MenuItemDto | undef
 /**
  * 创建动态页面访问校验，避免切换账号后已注入的旧路由绕过新菜单权限
  * @param path 动态页面路由路径
+ * @param hasPageComponent 菜单组件标识是否存在对应页面
  */
-function createMenuAccessLoader(path: string): LoaderFunction {
+function createMenuAccessLoader(path: string, hasPageComponent: boolean): LoaderFunction {
   return () => {
     if (!useAuthStore.getState().accessToken) {
       return null
@@ -64,6 +62,10 @@ function createMenuAccessLoader(path: string): LoaderFunction {
 
     if (!menu || menu.type !== 'menu') {
       throw redirect('/403')
+    }
+
+    if (!hasPageComponent) {
+      throw redirect('/404')
     }
 
     return null
@@ -108,20 +110,22 @@ function createMenuRoutes(menus: MenuItemDto[]): RouteObject[] {
       ]
     }
 
+    const pageLazyLoader = pageLazyLoaders[menu.componentKey]
+
     return [
       {
         id: `dynamic-menu-${menu.id}`,
         path: menu.path,
-        loader: createMenuAccessLoader(menu.path),
-        // 组件标识不在白名单时展示 404，禁止通过接口字段导入任意模块
-        lazy: pageLazyLoaders[menu.componentKey] ?? notFoundPageLoader,
+        // 组件标识不在白名单时跳转到独立 404 页面，禁止通过接口字段导入任意模块
+        loader: createMenuAccessLoader(menu.path, Boolean(pageLazyLoader)),
+        lazy: pageLazyLoader,
       },
     ]
   })
 }
 
 /**
- * 将尚未注册的菜单路由注入后台布局，并补充登录后页面的 404 兜底路由
+ * 将尚未注册的菜单路由注入后台布局
  * @param patch React Router 路由注入函数
  * @param menus 当前账号可访问的菜单树
  */
@@ -129,14 +133,9 @@ export function patchMenuRoutes(
   patch: (routeId: string | null, children: RouteObject[]) => void,
   menus: MenuItemDto[],
 ) {
-  const routes = [
-    ...createMenuRoutes(menus),
-    {
-      id: DYNAMIC_NOT_FOUND_ROUTE_ID,
-      path: '*',
-      lazy: notFoundPageLoader,
-    },
-  ].filter((route) => route.id && !registeredRouteIds.has(route.id))
+  const routes = createMenuRoutes(menus).filter(
+    (route) => route.id && !registeredRouteIds.has(route.id),
+  )
 
   if (routes.length === 0) {
     return

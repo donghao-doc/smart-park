@@ -56,6 +56,10 @@ const routes = [
         path: '/403',
         lazy: lazyPage(() => import('../pages/403')),
       },
+      {
+        path: '*',
+        lazy: lazyPage(() => import('../pages/404')),
+      },
     ],
   },
 ] satisfies RouteObject[]
