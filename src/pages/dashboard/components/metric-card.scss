@@ -116,13 +116,19 @@ $metric-border: #e1e8f1;
 
 .dashboard-metric-comparison {
   display: flex;
+  width: 100%;
+  min-width: 0;
   margin-top: 18px;
   align-items: center;
+  flex-wrap: wrap;
   gap: 11px;
   color: #79859c;
   font-size: 12px;
   line-height: 18px;
-  white-space: nowrap;
+
+  > span {
+    white-space: nowrap;
+  }
 
   .is-positive {
     color: #10ad86;

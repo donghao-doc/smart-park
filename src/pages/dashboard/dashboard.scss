@@ -82,11 +82,13 @@ $dashboard-primary: #1677ff;
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1560px) {
   .dashboard-metrics {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
 
+@media (max-width: 1280px) {
   .dashboard-details {
     grid-template-columns: 1fr;
   }
