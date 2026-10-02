@@ -1,7 +1,7 @@
-import { EditOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons'
 import { Alert, App, Button, Skeleton, Table, Tabs, Tag, type TableColumnsType } from 'antd'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 
 import { reqGetEnterprise, reqUpdateEnterprise } from '../../api/enterprises'
 import { useUserStore } from '../../stores/user'
@@ -67,6 +67,7 @@ const workOrderColumns: TableColumnsType<EnterpriseWorkOrderDto> = [
  */
 function EnterpriseDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const { message } = App.useApp()
   const [enterprise, setEnterprise] = useState<EnterpriseDetailDto>()
   const [loading, setLoading] = useState(true)
@@ -157,6 +158,15 @@ function EnterpriseDetailPage() {
 
   return (
     <div className="enterprise-detail-page">
+      <Button
+        type="text"
+        className="enterprise-detail-back-button"
+        icon={<ArrowLeftOutlined />}
+        onClick={() => navigate('/enterprises')}
+      >
+        返回企业管理
+      </Button>
+
       <header className="enterprise-detail-header">
         <div>
           <div className="enterprise-detail-title-row">

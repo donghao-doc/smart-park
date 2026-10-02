@@ -18,6 +18,20 @@ $detail-primary: #1677ff;
   background: #fff;
 }
 
+.enterprise-detail-back-button.ant-btn {
+  width: fit-content;
+  height: 32px;
+  padding: 0 4px;
+  color: $detail-secondary;
+  font-size: 14px;
+  font-weight: 600;
+
+  &:hover {
+    background: transparent;
+    color: $detail-primary;
+  }
+}
+
 .enterprise-detail-header {
   display: flex;
   align-items: flex-start;
