@@ -1,6 +1,5 @@
 import { EditOutlined } from '@ant-design/icons'
-import { Alert, App, Button, Skeleton, Table, Tabs, Tag } from 'antd'
-import type { ColumnsType } from 'antd/es/table'
+import { Alert, App, Button, Skeleton, Table, Tabs, Tag, type TableColumnsType } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 
@@ -17,7 +16,7 @@ import EnterpriseFormModal from '../enterprise-list/components/enterprise-form-m
 import EnterpriseInformation from './components/enterprise-information'
 import './enterprise-detail.scss'
 
-const memberColumns: ColumnsType<EnterpriseMemberDto> = [
+const memberColumns: TableColumnsType<EnterpriseMemberDto> = [
   { title: '姓名', dataIndex: 'name' },
   { title: '部门', dataIndex: 'department' },
   { title: '职务', dataIndex: 'title' },
@@ -33,7 +32,7 @@ const memberColumns: ColumnsType<EnterpriseMemberDto> = [
   },
 ]
 
-const vehicleColumns: ColumnsType<EnterpriseVehicleDto> = [
+const vehicleColumns: TableColumnsType<EnterpriseVehicleDto> = [
   { title: '车牌号', dataIndex: 'plateNumber' },
   { title: '车辆类型', dataIndex: 'type' },
   { title: '车主', dataIndex: 'ownerName' },
@@ -48,7 +47,7 @@ const vehicleColumns: ColumnsType<EnterpriseVehicleDto> = [
   },
 ]
 
-const workOrderColumns: ColumnsType<EnterpriseWorkOrderDto> = [
+const workOrderColumns: TableColumnsType<EnterpriseWorkOrderDto> = [
   { title: '工单编号', dataIndex: 'code' },
   { title: '工单标题', dataIndex: 'title' },
   { title: '创建时间', dataIndex: 'createdAt', render: (value: string) => value.slice(0, 10) },

@@ -1,4 +1,5 @@
 import { App as AntdApp, ConfigProvider } from 'antd'
+import zhCN from 'antd/locale/zh_CN'
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router/dom'
 import { setErrorMessageHandler, setHttpNavigator } from './http/runtime'
@@ -33,6 +34,7 @@ function HttpRuntimeBridge() {
 function App() {
   return (
     <ConfigProvider
+      locale={zhCN}
       theme={{
         token: {
           fontSize: 14,

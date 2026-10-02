@@ -1,6 +1,12 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Alert, Button, Table, Tag } from 'antd'
-import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
+import {
+  Alert,
+  Button,
+  Table,
+  Tag,
+  type TableColumnsType,
+  type TablePaginationConfig,
+} from 'antd'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -53,7 +59,7 @@ function EnterpriseTable({
 }: EnterpriseTableProps) {
   const navigate = useNavigate()
 
-  const columns = useMemo<ColumnsType<EnterpriseListItemDto>>(
+  const columns = useMemo<TableColumnsType<EnterpriseListItemDto>>(
     () => [
       {
         title: '#',
