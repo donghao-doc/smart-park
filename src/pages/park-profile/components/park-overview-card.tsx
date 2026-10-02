@@ -1,11 +1,13 @@
 import {
   BankFilled,
   BorderOutlined,
+  EditOutlined,
   EnvironmentOutlined,
   PhoneOutlined,
   ProfileOutlined,
   UserOutlined,
 } from '@ant-design/icons'
+import { Button, Tooltip } from 'antd'
 
 import type { ParkInfoDto } from '../../../types/park-profile'
 import './park-overview-card.scss'
@@ -13,12 +15,16 @@ import './park-overview-card.scss'
 interface ParkOverviewCardProps {
   /** 园区基础信息 */
   info: ParkInfoDto
+  /** 当前用户是否拥有园区信息编辑权限 */
+  canEdit: boolean
+  /** 打开园区信息编辑弹窗 */
+  onEdit: () => void
 }
 
 /**
  * 展示园区名称、定位和基础档案信息
  */
-function ParkOverviewCard({ info }: ParkOverviewCardProps) {
+function ParkOverviewCard({ info, canEdit, onEdit }: ParkOverviewCardProps) {
   return (
     <section className="park-overview-card" aria-label="园区基础信息">
       <div className="park-identity">
@@ -32,7 +38,21 @@ function ParkOverviewCard({ info }: ParkOverviewCardProps) {
       </div>
 
       <div className="park-basic-information">
-        <h2>基本信息</h2>
+        <div className="park-basic-heading">
+          <h2>基本信息</h2>
+          {canEdit ? (
+            <Tooltip title="编辑园区信息">
+              <Button
+                type="text"
+                shape="circle"
+                className="park-basic-edit-button"
+                icon={<EditOutlined />}
+                aria-label="编辑园区信息"
+                onClick={onEdit}
+              />
+            </Tooltip>
+          ) : null}
+        </div>
         <dl className="park-basic-grid">
           <div className="park-basic-item">
             <dt>

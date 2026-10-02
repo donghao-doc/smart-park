@@ -57,13 +57,35 @@ $park-border: #dfe7f1;
 .park-basic-information {
   min-width: 0;
   padding-left: 28px;
+}
+
+.park-basic-heading {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 
   h2 {
-    margin: 0 0 12px;
+    margin: 0;
     color: $park-text;
     font-size: 18px;
     font-weight: 700;
     line-height: 28px;
+  }
+}
+
+.park-basic-edit-button.ant-btn {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  color: #526a9e;
+  font-size: 18px;
+
+  &:hover,
+  &:focus-visible {
+    background: #ecf4ff;
+    color: #1677ff;
   }
 }
 

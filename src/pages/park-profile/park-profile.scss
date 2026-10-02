@@ -16,20 +16,6 @@ $park-border: #dfe7f1;
   background: #fff;
 }
 
-.park-profile-actions {
-  display: flex;
-  min-height: 36px;
-  justify-content: flex-end;
-
-  .ant-btn {
-    height: 36px;
-    padding-inline: 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    box-shadow: 0 3px 8px rgb(22 119 255 / 18%);
-  }
-}
-
 .park-space-section {
   display: grid;
   min-width: 0;

@@ -1,5 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
-import { Alert, App, Button, Skeleton } from 'antd'
+import { Alert, App, Skeleton } from 'antd'
 import { useEffect, useState } from 'react'
 
 import { reqGetCurrentUser } from '../../api/auth'
@@ -152,16 +151,12 @@ function ParkProfilePage() {
 
   return (
     <div className="park-profile-page">
-      {canEdit ? (
-        <div className="park-profile-actions">
-          <Button type="primary" icon={<EditOutlined />} onClick={() => setEditing(true)}>
-            编辑园区信息
-          </Button>
-        </div>
-      ) : null}
-
       {/* 园区基础信息 */}
-      <ParkOverviewCard info={profile.info} />
+      <ParkOverviewCard
+        info={profile.info}
+        canEdit={canEdit}
+        onEdit={() => setEditing(true)}
+      />
 
       {/* 园区空间概况 */}
       <ParkSpaceSummary summary={profile.summary} />
