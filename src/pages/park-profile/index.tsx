@@ -1,9 +1,6 @@
 import {
   ApartmentOutlined,
-  BarChartOutlined,
   BankFilled,
-  BlockOutlined,
-  DesktopOutlined,
   EditOutlined,
   HomeOutlined,
   SearchOutlined,
@@ -39,49 +36,11 @@ import type {
   UpdateParkInfoRequest,
 } from '../../types/park-profile'
 import ParkOverviewCard from './components/park-overview-card'
+import ParkSpaceSummary from './components/park-space-summary'
 import './park-profile.scss'
 
 const PAGE_SIZE = 8
 const PARK_TREE_ROOT_KEY = 'park-root'
-
-interface SummaryCardConfig {
-  key: keyof ParkProfileDto['summary']
-  title: string
-  unit: string
-  icon: React.ReactNode
-  tone: 'blue' | 'green' | 'purple' | 'orange'
-}
-
-const summaryCards: SummaryCardConfig[] = [
-  {
-    key: 'buildingCount',
-    title: '楼宇数量',
-    unit: '栋',
-    icon: <ApartmentOutlined />,
-    tone: 'blue',
-  },
-  {
-    key: 'floorCount',
-    title: '楼层数量',
-    unit: '层',
-    icon: <BlockOutlined />,
-    tone: 'green',
-  },
-  {
-    key: 'spaceCount',
-    title: '办公空间',
-    unit: '间',
-    icon: <DesktopOutlined />,
-    tone: 'purple',
-  },
-  {
-    key: 'usedSpaceCount',
-    title: '已使用空间',
-    unit: '间',
-    icon: <BarChartOutlined />,
-    tone: 'orange',
-  },
-]
 
 const spaceColumns: TableColumnsType<ParkSpaceDto> = [
   {
@@ -306,22 +265,11 @@ function ParkProfilePage() {
         </div>
       ) : null}
 
+      {/* 园区基础信息 */}
       <ParkOverviewCard info={profile.info} />
 
-      <section className="park-summary-grid" aria-label="园区空间概况">
-        {summaryCards.map((card) => (
-          <article className="park-summary-card" key={card.key}>
-            <div className={`park-summary-icon is-${card.tone}`} aria-hidden="true">
-              {card.icon}
-            </div>
-            <div>
-              <p>{card.title}</p>
-              <strong>{profile.summary[card.key].toLocaleString('zh-CN')}</strong>
-              <span>{card.unit}</span>
-            </div>
-          </article>
-        ))}
-      </section>
+      {/* 园区空间概况 */}
+      <ParkSpaceSummary summary={profile.summary} />
 
       <section className="park-space-section">
         <aside className="park-space-tree-panel">
