@@ -1,10 +1,18 @@
 import { Breadcrumb, type BreadcrumbProps } from 'antd'
 import { useMemo } from 'react'
-import { Link, useLocation } from 'react-router'
+import { Link, matchPath, useLocation } from 'react-router'
 
 import { useMenuStore } from '../../stores/menu'
 import type { MenuItemDto } from '../../types/menu'
 import './header-breadcrumb.scss'
+
+const detailRoutes = [
+  {
+    path: '/enterprises/:id',
+    parentPath: '/enterprises',
+    title: '企业详情',
+  },
+]
 
 /**
  * 从菜单树中查找当前地址对应的完整菜单层级
@@ -38,15 +46,23 @@ function HeaderBreadcrumb() {
 
   const items = useMemo<BreadcrumbProps['items']>(() => {
     const menuTrail = findMenuTrail(menus, pathname)
+    const detailRoute = detailRoutes.find((route) => matchPath(route.path, pathname))
 
-    return menuTrail.map((menu, index) => {
-      const isCurrentPage = index === menuTrail.length - 1
+    const breadcrumbItems = menuTrail.map((menu, index) => {
+      const isDetailParent = detailRoute?.parentPath === menu.path
+      const isCurrentPage = index === menuTrail.length - 1 && !isDetailParent
       const targetPath = menu.type === 'directory' ? (menu.redirect ?? menu.path) : menu.path
 
       return {
         title: isCurrentPage ? menu.title : <Link to={targetPath}>{menu.title}</Link>,
       }
     })
+
+    if (detailRoute) {
+      breadcrumbItems.push({ title: detailRoute.title })
+    }
+
+    return breadcrumbItems
   }, [menus, pathname])
 
   if (!items?.length) {
