@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select } from 'antd'
+import { Button, Col, Form, Input, Row, Select } from 'antd'
 
 import type { EnterpriseStatus } from '../../../types/enterprise'
 import './enterprise-filter.scss'
@@ -39,19 +39,44 @@ function EnterpriseFilter({ onSearch }: EnterpriseFilterProps) {
 
   return (
     <section className="enterprise-filter-panel" aria-label="企业筛选">
-      <Form form={form} layout="inline" onFinish={onSearch}>
-        <Form.Item name="keyword" label="企业名称">
-          <Input allowClear placeholder="请输入企业名称" />
-        </Form.Item>
-        <Form.Item name="status" label="状态">
-          <Select allowClear placeholder="请选择状态" options={statusOptions} />
-        </Form.Item>
-        <div className="enterprise-filter-actions">
-          <Button type="primary" htmlType="submit">
-            查询
-          </Button>
-          <Button onClick={handleReset}>重置</Button>
-        </div>
+      <Form
+        form={form}
+        layout="horizontal"
+        labelAlign="left"
+        labelCol={{ flex: 'none' }}
+        wrapperCol={{ flex: '1 1 0' }}
+        onFinish={onSearch}
+      >
+        <Row gutter={[24, 16]} align="middle">
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="keyword"
+              label={<span className="enterprise-filter-label">企业名称</span>}
+            >
+              <Input allowClear placeholder="请输入企业名称" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="status"
+              label={<span className="enterprise-filter-label">状态</span>}
+            >
+              <Select allowClear placeholder="请选择状态" options={statusOptions} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} lg={8}>
+            <Row gutter={12} justify="end" wrap={false}>
+              <Col>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={handleReset}>重置</Button>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
       </Form>
     </section>
   )
