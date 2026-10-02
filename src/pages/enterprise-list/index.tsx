@@ -7,6 +7,7 @@ import {
   reqGetEnterprises,
   reqUpdateEnterprise,
 } from '../../api/enterprises'
+import { DataTablePageLayout } from '../../components/data-table-panel'
 import { useUserStore } from '../../stores/user'
 import type {
   EnterpriseDetailDto,
@@ -17,7 +18,6 @@ import EnterpriseFilter from './components/enterprise-filter'
 import type { EnterpriseFilterValues } from './components/enterprise-filter'
 import EnterpriseFormModal from './components/enterprise-form-modal'
 import EnterpriseTable from './components/enterprise-table'
-import './enterprise-list.scss'
 
 const DEFAULT_PAGE_SIZE = 10
 
@@ -145,25 +145,27 @@ function EnterpriseListPage() {
   }
 
   return (
-    <div className="enterprise-list-page">
-      {/* 企业筛选 */}
-      <EnterpriseFilter onSearch={handleFilterSearch} />
+    <>
+      <DataTablePageLayout>
+        {/* 企业筛选 */}
+        <EnterpriseFilter onSearch={handleFilterSearch} />
 
-      {/* 企业列表 */}
-      <EnterpriseTable
-        enterprises={enterprises}
-        total={total}
-        page={page}
-        pageSize={pageSize}
-        loading={loading}
-        loadError={loadError}
-        canCreate={canCreate}
-        canUpdate={canUpdate}
-        onCreate={handleOpenCreate}
-        onEdit={(enterpriseId) => void handleOpenEdit(enterpriseId)}
-        onRetry={handleRetry}
-        onPageChange={handlePageChange}
-      />
+        {/* 企业列表 */}
+        <EnterpriseTable
+          enterprises={enterprises}
+          total={total}
+          page={page}
+          pageSize={pageSize}
+          loading={loading}
+          loadError={loadError}
+          canCreate={canCreate}
+          canUpdate={canUpdate}
+          onCreate={handleOpenCreate}
+          onEdit={(enterpriseId) => void handleOpenEdit(enterpriseId)}
+          onRetry={handleRetry}
+          onPageChange={handlePageChange}
+        />
+      </DataTablePageLayout>
 
       {/* 企业新增、编辑弹窗 */}
       <EnterpriseFormModal
@@ -176,7 +178,7 @@ function EnterpriseListPage() {
           setEditingEnterprise(undefined)
         }}
       />
-    </div>
+    </>
   )
 }
 

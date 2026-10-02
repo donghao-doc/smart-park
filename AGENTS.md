@@ -130,6 +130,17 @@
 }
 ```
 
+## 列表页滚动表格规范
+
+- 需要让表格占据页面剩余高度、表体内部滚动且分页器始终位于视口内时，统一使用 `src/components/data-table-panel` 提供的公共组件，不要在业务页面重复实现高度计算和滚动结构
+- 页面根布局使用 `DataTablePageLayout`，筛选区域和表格面板作为其直接子元素；该布局负责列表页满高、纵向间距和阻止页面级滚动
+- 表格区域使用泛型组件 `DataTablePanel<RecordType>`，通过 `tableProps` 传入 `rowKey`、`columns`、`dataSource`、`loading` 等 Ant Design Table 业务属性
+- 页面工具栏通过 `toolbar` 插槽传入，错误或状态提示通过 `feedback` 插槽传入；公共组件负责统一它们与表格、分页器之间的位置和间距
+- 横向滚动宽度通过 `scrollX` 配置；表体纵向滚动高度由公共组件内部的 `ResizeObserver` 自动计算，业务页面不得自行设置 `scroll.y`
+- 分页状态通过 `pagination` 传入。公共组件使用独立的 Ant Design `Pagination` 固定在面板底部，并在切换每页条数时统一回到第一页
+- 业务页面继续负责列定义、单元格渲染、权限判断、路由跳转和数据请求，不应把具体业务规则下沉到公共表格组件
+- 企业管理页面是该模式的参考实现；新增相似列表页面时应复用公共组件，而不是复制 `useTableScrollHeight` 或依赖 Ant Design 表格内部 DOM 结构
+
 ## 异步接口调用规范
 
 - 调用异步接口时默认使用 `async/await` 配合 `try...catch` 处理成功与异常流程，不使用 `.then().catch()` 链式调用

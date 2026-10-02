@@ -1,0 +1,79 @@
+$data-table-secondary: #667493;
+$data-table-border: #dfe7f1;
+
+.data-table-page-layout {
+  height: var(--admin-content-available-height);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  color: #0b1d4b;
+}
+
+.data-table-panel {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid $data-table-border;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-table-wrapper {
+    min-width: 0;
+  }
+
+  .ant-table {
+    color: #536486;
+    font-size: 14px;
+  }
+
+  .ant-table-thead > tr > th {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e2eaf3;
+    background: #f3f7fc;
+    color: #2d4068;
+    font-weight: 650;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 11px 14px;
+    border-bottom-color: #e7edf4;
+  }
+
+  .ant-pagination {
+    flex: none;
+    margin: 16px 0 0;
+  }
+
+  .ant-pagination-total-text {
+    margin-right: auto;
+    color: $data-table-secondary;
+  }
+}
+
+.data-table-panel-toolbar {
+  min-height: 36px;
+  flex: none;
+  margin-bottom: 14px;
+}
+
+.data-table-panel-feedback {
+  flex: none;
+  margin-bottom: 12px;
+}
+
+.data-table-panel-scroll-region {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .data-table-panel {
+    padding: 12px;
+  }
+}

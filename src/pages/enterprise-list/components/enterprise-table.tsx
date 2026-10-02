@@ -1,20 +1,11 @@
 import { PlusOutlined } from '@ant-design/icons'
-import {
-  Alert,
-  Button,
-  Pagination,
-  Table,
-  Tag,
-  type TableColumnsType,
-} from 'antd'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Alert, Button, Flex, Tag, type TableColumnsType } from 'antd'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router'
 
+import DataTablePanel from '../../../components/data-table-panel'
 import type { EnterpriseListItemDto, EnterpriseStatus } from '../../../types/enterprise'
 import './enterprise-table.scss'
-
-const DEFAULT_TABLE_SCROLL_HEIGHT = 240
-const DEFAULT_TABLE_HEADER_HEIGHT = 47
 
 interface EnterpriseTableProps {
   /** 当前页企业数据 */
@@ -61,34 +52,6 @@ function EnterpriseTable({
   onPageChange,
 }: EnterpriseTableProps) {
   const navigate = useNavigate()
-  const tableRegionRef = useRef<HTMLDivElement>(null)
-  const [tableScrollHeight, setTableScrollHeight] = useState(DEFAULT_TABLE_SCROLL_HEIGHT)
-
-  useEffect(() => {
-    const tableRegion = tableRegionRef.current
-    if (!tableRegion) {
-      return
-    }
-
-    // 表体只占用扣除表头后的剩余高度，确保底部分页器始终可见
-    function updateTableScrollHeight() {
-      const currentTableRegion = tableRegionRef.current
-      if (!currentTableRegion) {
-        return
-      }
-
-      const tableHeader = currentTableRegion.querySelector<HTMLElement>('.ant-table-header')
-      const headerHeight = tableHeader?.offsetHeight ?? DEFAULT_TABLE_HEADER_HEIGHT
-      const nextHeight = Math.max(120, currentTableRegion.clientHeight - headerHeight)
-      setTableScrollHeight(nextHeight)
-    }
-
-    updateTableScrollHeight()
-    const resizeObserver = new ResizeObserver(updateTableScrollHeight)
-    resizeObserver.observe(tableRegion)
-
-    return () => resizeObserver.disconnect()
-  }, [])
 
   const columns = useMemo<TableColumnsType<EnterpriseListItemDto>>(
     () => [
@@ -119,7 +82,7 @@ function EnterpriseTable({
         width: canUpdate ? 120 : 64,
         fixed: 'right',
         render: (_value, record) => (
-          <div className="enterprise-table-actions">
+          <Flex className="enterprise-table-actions" gap={2}>
             <Button type="link" onClick={() => void navigate(`/enterprises/${record.id}`)}>
               查看
             </Button>
@@ -128,61 +91,47 @@ function EnterpriseTable({
                 编辑
               </Button>
             ) : null}
-          </div>
+          </Flex>
         ),
       },
     ],
     [canUpdate, navigate, onEdit, page, pageSize],
   )
 
-  /**
-   * 同步独立分页器状态，改变每页条数时回到第一页
-   */
-  function handlePaginationChange(nextPage: number, nextPageSize: number) {
-    const targetPage = nextPageSize === pageSize ? nextPage : 1
-    onPageChange(targetPage, nextPageSize)
-  }
-
   return (
-    <section className="enterprise-table-panel" aria-label="企业列表">
-      <div className="enterprise-table-toolbar">
-        {canCreate ? (
+    <DataTablePanel<EnterpriseListItemDto>
+      ariaLabel="企业列表"
+      toolbar={
+        canCreate ? (
           <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
             新增企业
           </Button>
-        ) : <span />}
-      </div>
-
-      {loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          message="企业列表加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
-        />
-      ) : null}
-
-      <div ref={tableRegionRef} className="enterprise-table-scroll-region">
-        <Table<EnterpriseListItemDto>
-          rowKey="id"
-          columns={columns}
-          dataSource={enterprises}
-          loading={loading}
-          scroll={{ x: 1200, y: tableScrollHeight }}
-          pagination={false}
-        />
-      </div>
-
-      <Pagination
-        current={page}
-        pageSize={pageSize}
-        total={total}
-        showSizeChanger
-        pageSizeOptions={[10, 20, 50]}
-        showTotal={(count) => `共 ${count} 条记录`}
-        onChange={handlePaginationChange}
-      />
-    </section>
+        ) : undefined
+      }
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            message="企业列表加载失败"
+            action={<Button size="small" onClick={onRetry}>重试</Button>}
+          />
+        ) : undefined
+      }
+      tableProps={{
+        rowKey: 'id',
+        columns,
+        dataSource: enterprises,
+        loading,
+      }}
+      scrollX={1200}
+      pagination={{
+        current: page,
+        pageSize,
+        total,
+        onChange: onPageChange,
+      }}
+    />
   )
 }
 
