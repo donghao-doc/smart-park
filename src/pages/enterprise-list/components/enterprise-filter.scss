@@ -1,6 +1,7 @@
 $enterprise-border: #dfe7f1;
 
 .enterprise-filter-panel {
+  container-type: inline-size;
   padding: 18px 20px;
   border: 1px solid $enterprise-border;
   border-radius: 8px;
@@ -9,12 +10,13 @@ $enterprise-border: #dfe7f1;
 
   .ant-form {
     display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(240px, 0.8fr) auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) auto;
     align-items: center;
     gap: 16px 36px;
   }
 
   .ant-form-item {
+    min-width: 0;
     margin: 0;
   }
 
@@ -48,6 +50,7 @@ $enterprise-border: #dfe7f1;
 
 .enterprise-filter-actions {
   display: flex;
+  min-width: 0;
   justify-content: flex-end;
   gap: 10px;
 
@@ -56,7 +59,7 @@ $enterprise-border: #dfe7f1;
   }
 }
 
-@media (max-width: 1060px) {
+@container (max-width: 860px) {
   .enterprise-filter-panel .ant-form {
     grid-template-columns: 1fr 1fr;
   }
@@ -66,7 +69,7 @@ $enterprise-border: #dfe7f1;
   }
 }
 
-@media (max-width: 720px) {
+@container (max-width: 620px) {
   .enterprise-filter-panel .ant-form {
     grid-template-columns: 1fr;
   }
