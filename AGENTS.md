@@ -18,6 +18,106 @@
 - 使用 Ant Design 组件时，交互能力优先通过组件属性配置，视觉样式通过语义化 `className` 和对应 SCSS 文件调整，避免大量内联样式
 - 如果明确不使用已有的 Ant Design 组件，应确保存在兼容性、语义、性能或业务定制方面的合理原因
 
+## 查询筛选表单布局规范
+
+列表页顶部的查询、筛选表单默认采用统一的 Ant Design `Form`、`Row`、`Col` 栅格布局。除非页面存在明确的特殊交互或字段数量要求，否则应遵循以下规范。
+
+### 组件与结构
+
+- 查询筛选区域应封装为页面 `components` 目录中的独立组件，页面组件只负责接收筛选结果并触发数据加载
+- 表单使用 `layout="horizontal"` 和 `labelAlign="left"`，标签文字左对齐
+- 表单设置 `labelCol={{ flex: 'none' }}`，标签区域不参与压缩
+- 表单设置 `wrapperCol={{ flex: '1 1 0' }}`，控件占据当前列的剩余空间；不要使用 `flex: 'auto'`，避免不同长度的标签导致部分表单项单独换行
+- 同一表单项中的标签和控件应保持一致的换行行为，默认均不换行；不得出现某个标签位于控件上方，而其他表单项仍保持水平排列的情况
+- 查询、重置按钮必须使用 Ant Design `Button`，查询按钮设置 `type="primary"` 和 `htmlType="submit"`
+- 重置时应先调用 `form.resetFields()`，再以空筛选条件重新触发查询，确保列表立即恢复为未筛选状态
+
+### 栅格与响应式布局
+
+- 表单的主要布局、列宽、间距和对齐统一由 `Row`、`Col` 负责，不使用 SCSS Grid、Flex 或固定宽度重复实现栅格布局
+- 外层使用 `<Row gutter={[24, 16]} align="middle">`，分别统一控制横向和纵向间距
+- 默认一行包含三个等宽区域：两个筛选项区域和一个操作按钮区域
+- 筛选项使用 `<Col xs={24} md={12} lg={8}>`：手机端单列、平板端两列、桌面端三等分
+- 操作按钮区域使用 `<Col xs={24} lg={8}>`：小屏独占一行，桌面端占第三个等宽列
+- 操作按钮区域内部继续使用 `<Row gutter={12} justify="end" wrap={false}>`，每个按钮放在独立 `Col` 中；按钮整体在所在列中靠右排列且按钮之间不换行
+- 不应通过额外的 `margin`、固定宽度或绝对定位修正栅格位置；确需调整断点时，应优先修改 `Col` 的 `xs`、`md`、`lg`、`xl` 配置
+
+推荐结构：
+
+```tsx
+<Form
+  form={form}
+  layout="horizontal"
+  labelAlign="left"
+  labelCol={{ flex: 'none' }}
+  wrapperCol={{ flex: '1 1 0' }}
+  onFinish={onSearch}
+>
+  <Row gutter={[24, 16]} align="middle">
+    <Col xs={24} md={12} lg={8}>
+      <Form.Item
+        name="keyword"
+        label={<span className="page-filter-label">企业名称</span>}
+      >
+        <Input allowClear placeholder="请输入企业名称" />
+      </Form.Item>
+    </Col>
+    <Col xs={24} md={12} lg={8}>
+      <Form.Item
+        name="status"
+        label={<span className="page-filter-label">状态</span>}
+      >
+        <Select allowClear placeholder="请选择状态" options={statusOptions} />
+      </Form.Item>
+    </Col>
+    <Col xs={24} lg={8}>
+      <Row gutter={12} justify="end" wrap={false}>
+        <Col>
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+        </Col>
+        <Col>
+          <Button onClick={handleReset}>重置</Button>
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+</Form>
+```
+
+### 标签文案与样式职责
+
+- 同一查询表单内长度不同的标签文案应使用统一的文字包装元素，并采用两端对齐，使较短文案在与最长常规标签相同的文字区域内均匀分布
+- 标签文字区域使用相对字号单位 `em`，按当前表单最长常规标签的汉字数量设置，例如四个汉字使用 `inline-size: 4em`；不要给 `labelCol` 设置固定像素宽度
+- 标签文字应设置 `white-space: nowrap`，避免文字内部断行
+- 表单卡片的背景、边框、圆角、阴影、文字颜色和字重由 SCSS 负责；`Form.Item` 在筛选卡片内默认取消底部外边距
+- SCSS 不负责表单主结构、响应式列宽、字段间距或按钮对齐
+
+推荐样式：
+
+```scss
+.page-filter-panel {
+  .ant-form-item {
+    margin: 0;
+  }
+
+  .ant-form-item-label label {
+    color: #273755;
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.page-filter-label {
+  display: inline-block;
+  inline-size: 4em;
+  text-align: justify;
+  text-align-last: justify;
+  white-space: nowrap;
+}
+```
+
 ## 异步接口调用规范
 
 - 调用异步接口时默认使用 `async/await` 配合 `try...catch` 处理成功与异常流程，不使用 `.then().catch()` 链式调用
