@@ -1,0 +1,19 @@
+.enterprise-form-modal {
+  .ant-modal-title {
+    color: #0b1d4b;
+    font-size: 18px;
+  }
+}
+
+.enterprise-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+  padding-top: 12px;
+}
+
+@media (max-width: 720px) {
+  .enterprise-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
