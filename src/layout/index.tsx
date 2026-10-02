@@ -12,6 +12,7 @@ import { Outlet, useNavigate } from 'react-router'
 
 import { useAuthStore } from '../stores/auth'
 import { useMenuStore } from '../stores/menu'
+import { useUserStore } from '../stores/user'
 import HeaderBreadcrumb from './components/header-breadcrumb'
 import SidebarNavigation from './components/sidebar-navigation'
 import './layout.scss'
@@ -39,6 +40,8 @@ function AdminLayout() {
   const navigate = useNavigate()
   const clearSession = useAuthStore((state) => state.clearSession)
   const resetMenus = useMenuStore((state) => state.resetMenus)
+  const currentUserName = useUserStore((state) => state.currentUser?.name ?? '用户')
+  const resetUser = useUserStore((state) => state.resetUser)
   const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -48,6 +51,7 @@ function AdminLayout() {
   function handleAccountMenu({ key }: { key: string }) {
     if (key === 'logout') {
       resetMenus()
+      resetUser()
       clearSession()
       void navigate('/login')
     }
@@ -100,7 +104,7 @@ function AdminLayout() {
             >
               <Button type="text" className="admin-account" aria-label="打开用户菜单">
                 <Avatar className="admin-account-avatar" icon={<UserOutlined />} />
-                <span className="admin-account-name">张三</span>
+                <span className="admin-account-name">{currentUserName}</span>
                 <DownOutlined className="admin-account-arrow" />
               </Button>
             </Dropdown>

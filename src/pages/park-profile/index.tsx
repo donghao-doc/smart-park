@@ -1,12 +1,12 @@
 import { Alert, App, Skeleton } from 'antd'
 import { useEffect, useState } from 'react'
 
-import { reqGetCurrentUser } from '../../api/auth'
 import {
   reqGetParkProfile,
   reqGetParkSpaces,
   reqUpdateParkProfile,
 } from '../../api/park-profile'
+import { useUserStore } from '../../stores/user'
 import type {
   ParkProfileDto,
   ParkSpaceDto,
@@ -30,7 +30,7 @@ function ParkProfilePage() {
   const [profile, setProfile] = useState<ParkProfileDto>()
   const [profileLoading, setProfileLoading] = useState(true)
   const [profileError, setProfileError] = useState(false)
-  const [canEdit, setCanEdit] = useState(false)
+  const canEdit = useUserStore((state) => state.hasPermission('park:update'))
   const [spaces, setSpaces] = useState<ParkSpaceDto[]>([])
   const [spaceTotal, setSpaceTotal] = useState(0)
   const [spaceLoading, setSpaceLoading] = useState(true)
@@ -49,13 +49,9 @@ function ParkProfilePage() {
 
     void (async () => {
       try {
-        const [profileData, currentUser] = await Promise.all([
-          reqGetParkProfile(),
-          reqGetCurrentUser(),
-        ])
+        const profileData = await reqGetParkProfile()
         if (active) {
           setProfile(profileData)
-          setCanEdit(currentUser.role.permissions.includes('park:update'))
           setProfileError(false)
         }
       } catch {

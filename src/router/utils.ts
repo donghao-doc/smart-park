@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import { redirect, type LoaderFunctionArgs } from 'react-router'
 
 import { useAuthStore } from '../stores/auth'
+import { useUserStore } from '../stores/user'
 
 const LOGIN_PATH = '/login'
 const DEFAULT_AUTHENTICATED_PATH = '/dashboard'
@@ -79,13 +80,17 @@ function getLastAuthenticatedPath() {
  * 校验受保护页面的登录状态，未登录时携带原目标地址前往登录页
  * @param request 当前路由请求
  */
-export function requireAuthentication({ request }: LoaderFunctionArgs) {
+export async function requireAuthentication({ request }: LoaderFunctionArgs) {
   const targetUrl = new URL(request.url)
   const targetPath = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
 
   if (useAuthStore.getState().accessToken) {
     rememberAuthenticatedPath(targetPath)
-    return null
+    await useUserStore.getState().reqLoadCurrentUser()
+
+    if (useAuthStore.getState().accessToken) {
+      return null
+    }
   }
 
   throw redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(targetPath)}`)
