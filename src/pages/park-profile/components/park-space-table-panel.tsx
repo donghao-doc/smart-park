@@ -1,6 +1,5 @@
 import type { TableColumnsType } from 'antd'
-import { Alert, Button, Descriptions, Input, Modal, Select, Table, Tag } from 'antd'
-import { useMemo, useState } from 'react'
+import { Alert, Input, Select, Table, Tag } from 'antd'
 
 import type {
   ParkBuildingDto,
@@ -72,7 +71,7 @@ const spaceColumns: TableColumnsType<ParkSpaceDto> = [
 ]
 
 /**
- * 展示空间筛选器、分页列表和空间详情
+ * 展示空间筛选器与分页列表
  */
 function ParkSpaceTablePanel({
   buildings,
@@ -91,24 +90,6 @@ function ParkSpaceTablePanel({
   onKeywordSearch,
   onPageChange,
 }: ParkSpaceTablePanelProps) {
-  const [selectedSpace, setSelectedSpace] = useState<ParkSpaceDto>()
-  const columns = useMemo<TableColumnsType<ParkSpaceDto>>(
-    () => [
-      ...spaceColumns,
-      {
-        title: '操作',
-        key: 'action',
-        width: 90,
-        render: (_value, record) => (
-          <Button type="link" className="park-space-view" onClick={() => setSelectedSpace(record)}>
-            查看
-          </Button>
-        ),
-      },
-    ],
-    [],
-  )
-
   return (
     <div className="park-space-table-panel">
       <div className="park-space-table-toolbar">
@@ -150,10 +131,10 @@ function ParkSpaceTablePanel({
         <Table<ParkSpaceDto>
           rowKey="id"
           size="small"
-          columns={columns}
+          columns={spaceColumns}
           dataSource={spaces}
           loading={loading}
-          scroll={{ x: 850 }}
+          scroll={{ x: 750 }}
           pagination={{
             current: page,
             pageSize,
@@ -164,28 +145,6 @@ function ParkSpaceTablePanel({
           }}
         />
       )}
-
-      <Modal
-        title="空间详情"
-        open={Boolean(selectedSpace)}
-        footer={null}
-        onCancel={() => setSelectedSpace(undefined)}
-        destroyOnHidden
-      >
-        {selectedSpace ? (
-          <Descriptions column={1} bordered size="small">
-            <Descriptions.Item label="空间名称">{selectedSpace.name}</Descriptions.Item>
-            <Descriptions.Item label="所属位置">
-              {selectedSpace.buildingName} · {selectedSpace.floorName}
-            </Descriptions.Item>
-            <Descriptions.Item label="空间类型">{selectedSpace.type}</Descriptions.Item>
-            <Descriptions.Item label="空间面积">{selectedSpace.area} ㎡</Descriptions.Item>
-            <Descriptions.Item label="当前状态">
-              {selectedSpace.status === 'used' ? '已使用' : '空闲'}
-            </Descriptions.Item>
-          </Descriptions>
-        ) : null}
-      </Modal>
     </div>
   )
 }
