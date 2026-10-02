@@ -137,7 +137,7 @@
 - 表格区域使用泛型组件 `DataTablePanel<RecordType>`，通过 `tableProps` 传入 `rowKey`、`columns`、`dataSource`、`loading` 等 Ant Design Table 业务属性
 - 页面工具栏通过 `toolbar` 插槽传入，错误或状态提示通过 `feedback` 插槽传入；公共组件负责统一它们与表格、分页器之间的位置和间距
 - 横向滚动宽度通过 `scrollX` 配置；表体纵向滚动高度由公共组件内部的 `ResizeObserver` 自动计算，业务页面不得自行设置 `scroll.y`
-- 分页状态通过 `pagination` 传入。公共组件使用独立的 Ant Design `Pagination` 固定在面板底部，并在切换每页条数时统一回到第一页
+- 分页状态通过 `pagination` 传入。公共组件使用独立的 Ant Design `Pagination` 固定在面板底部，并在切换每页条数时统一回到第一页；默认每页条数及可选项使用 `20`、`50`、`100`
 - 业务页面继续负责列定义、单元格渲染、权限判断、路由跳转和数据请求，不应把具体业务规则下沉到公共表格组件
 - 企业管理页面是该模式的参考实现；新增相似列表页面时应复用公共组件，而不是复制 `useTableScrollHeight` 或依赖 Ant Design 表格内部 DOM 结构
 

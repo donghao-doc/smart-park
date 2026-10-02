@@ -19,7 +19,7 @@ import type { EnterpriseFilterValues } from './components/enterprise-filter'
 import EnterpriseFormModal from './components/enterprise-form-modal'
 import EnterpriseTable from './components/enterprise-table'
 
-const DEFAULT_PAGE_SIZE = 10
+const DEFAULT_PAGE_SIZE = 20
 
 /**
  * 企业管理页面，提供筛选、分页、新增、查看和编辑入口

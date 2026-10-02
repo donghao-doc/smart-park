@@ -88,7 +88,7 @@ function DataTablePanel<RecordType extends object>({
         pageSize={pagination.pageSize}
         total={pagination.total}
         showSizeChanger={pagination.showSizeChanger ?? true}
-        pageSizeOptions={pagination.pageSizeOptions ?? [10, 20, 50]}
+        pageSizeOptions={pagination.pageSizeOptions ?? [20, 50, 100]}
         showTotal={pagination.showTotal ?? ((count) => `共 ${count} 条记录`)}
         onChange={handlePaginationChange}
       />
