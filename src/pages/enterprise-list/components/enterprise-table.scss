@@ -2,7 +2,12 @@ $enterprise-secondary: #667493;
 $enterprise-border: #dfe7f1;
 
 .enterprise-table-panel {
+  display: flex;
   min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
   padding: 16px;
   border: 1px solid $enterprise-border;
   border-radius: 8px;
@@ -32,7 +37,8 @@ $enterprise-border: #dfe7f1;
   }
 
   .ant-pagination {
-    margin: 26px 0 0;
+    flex: none;
+    margin: 16px 0 0;
   }
 
   .ant-pagination-total-text {
@@ -41,9 +47,16 @@ $enterprise-border: #dfe7f1;
   }
 }
 
+.enterprise-table-scroll-region {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
 .enterprise-table-toolbar {
   display: flex;
   min-height: 36px;
+  flex: none;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;

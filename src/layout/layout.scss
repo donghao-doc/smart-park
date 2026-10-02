@@ -114,6 +114,8 @@ $header-height: 62px;
 }
 
 .admin-content {
+  --admin-content-available-height: calc(100svh - #{$header-height} - 48px);
+
   min-height: calc(100svh - $header-height);
   padding: 24px;
   background:
@@ -154,6 +156,8 @@ $header-height: 62px;
   }
 
   .admin-content {
+    --admin-content-available-height: calc(100svh - #{$header-height} - 36px);
+
     padding: 18px 16px;
   }
 }

@@ -2,8 +2,11 @@ $enterprise-text: #0b1d4b;
 
 .enterprise-list-page {
   display: flex;
+  height: var(--admin-content-available-height);
+  min-height: 0;
   min-width: 0;
   flex-direction: column;
   gap: 16px;
+  overflow: hidden;
   color: $enterprise-text;
 }

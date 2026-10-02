@@ -2,16 +2,19 @@ import { PlusOutlined } from '@ant-design/icons'
 import {
   Alert,
   Button,
+  Pagination,
   Table,
   Tag,
   type TableColumnsType,
-  type TablePaginationConfig,
 } from 'antd'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import type { EnterpriseListItemDto, EnterpriseStatus } from '../../../types/enterprise'
 import './enterprise-table.scss'
+
+const DEFAULT_TABLE_SCROLL_HEIGHT = 240
+const DEFAULT_TABLE_HEADER_HEIGHT = 47
 
 interface EnterpriseTableProps {
   /** 当前页企业数据 */
@@ -58,6 +61,34 @@ function EnterpriseTable({
   onPageChange,
 }: EnterpriseTableProps) {
   const navigate = useNavigate()
+  const tableRegionRef = useRef<HTMLDivElement>(null)
+  const [tableScrollHeight, setTableScrollHeight] = useState(DEFAULT_TABLE_SCROLL_HEIGHT)
+
+  useEffect(() => {
+    const tableRegion = tableRegionRef.current
+    if (!tableRegion) {
+      return
+    }
+
+    // 表体只占用扣除表头后的剩余高度，确保底部分页器始终可见
+    function updateTableScrollHeight() {
+      const currentTableRegion = tableRegionRef.current
+      if (!currentTableRegion) {
+        return
+      }
+
+      const tableHeader = currentTableRegion.querySelector<HTMLElement>('.ant-table-header')
+      const headerHeight = tableHeader?.offsetHeight ?? DEFAULT_TABLE_HEADER_HEIGHT
+      const nextHeight = Math.max(120, currentTableRegion.clientHeight - headerHeight)
+      setTableScrollHeight(nextHeight)
+    }
+
+    updateTableScrollHeight()
+    const resizeObserver = new ResizeObserver(updateTableScrollHeight)
+    resizeObserver.observe(tableRegion)
+
+    return () => resizeObserver.disconnect()
+  }, [])
 
   const columns = useMemo<TableColumnsType<EnterpriseListItemDto>>(
     () => [
@@ -105,12 +136,11 @@ function EnterpriseTable({
   )
 
   /**
-   * 将 Ant Design 分页参数转换为页面所需状态
+   * 同步独立分页器状态，改变每页条数时回到第一页
    */
-  function handleTableChange(pagination: TablePaginationConfig) {
-    const nextPageSize = pagination.pageSize ?? pageSize
-    const nextPage = nextPageSize === pageSize ? (pagination.current ?? 1) : 1
-    onPageChange(nextPage, nextPageSize)
+  function handlePaginationChange(nextPage: number, nextPageSize: number) {
+    const targetPage = nextPageSize === pageSize ? nextPage : 1
+    onPageChange(targetPage, nextPageSize)
   }
 
   return (
@@ -132,21 +162,25 @@ function EnterpriseTable({
         />
       ) : null}
 
-      <Table<EnterpriseListItemDto>
-        rowKey="id"
-        columns={columns}
-        dataSource={enterprises}
-        loading={loading}
-        scroll={{ x: 1200 }}
-        onChange={handleTableChange}
-        pagination={{
-          current: page,
-          pageSize,
-          total,
-          showSizeChanger: true,
-          pageSizeOptions: [10, 20, 50],
-          showTotal: (count) => `共 ${count} 条记录`,
-        }}
+      <div ref={tableRegionRef} className="enterprise-table-scroll-region">
+        <Table<EnterpriseListItemDto>
+          rowKey="id"
+          columns={columns}
+          dataSource={enterprises}
+          loading={loading}
+          scroll={{ x: 1200, y: tableScrollHeight }}
+          pagination={false}
+        />
+      </div>
+
+      <Pagination
+        current={page}
+        pageSize={pageSize}
+        total={total}
+        showSizeChanger
+        pageSizeOptions={[10, 20, 50]}
+        showTotal={(count) => `共 ${count} 条记录`}
+        onChange={handlePaginationChange}
       />
     </section>
   )
