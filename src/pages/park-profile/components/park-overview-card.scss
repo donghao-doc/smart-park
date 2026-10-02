@@ -1,0 +1,166 @@
+$park-text: #0b1d4b;
+$park-border: #dfe7f1;
+
+.park-overview-card {
+  display: grid;
+  height: 196px;
+  min-height: 196px;
+  grid-template-columns: minmax(390px, 0.9fr) minmax(560px, 1.15fr);
+  padding: 20px 26px;
+  border: 1px solid $park-border;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 1px 3px rgb(24 58 104 / 4%);
+}
+
+.park-identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 22px;
+  padding-right: 30px;
+  border-right: 1px solid $park-border;
+}
+
+.park-identity-icon {
+  display: flex;
+  width: 122px;
+  height: 120px;
+  flex: 0 0 122px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #ecf4ff;
+  color: #5e9ff1;
+  font-size: 62px;
+}
+
+.park-identity-copy {
+  min-width: 0;
+
+  h2 {
+    margin: 0 0 12px;
+    color: #08184a;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 36px;
+  }
+
+  p {
+    max-width: 390px;
+    margin: 0;
+    color: #5f7195;
+    font-size: 14px;
+    line-height: 26px;
+  }
+}
+
+.park-basic-information {
+  min-width: 0;
+  padding-left: 28px;
+
+  h2 {
+    margin: 0 0 12px;
+    color: $park-text;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 28px;
+  }
+}
+
+.park-basic-grid {
+  display: grid;
+  margin: 0;
+  grid-template-columns: minmax(0, 1.5fr) minmax(210px, 0.8fr);
+  column-gap: 22px;
+  row-gap: 12px;
+}
+
+.park-basic-item {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 112px minmax(0, 1fr);
+  margin: 0;
+  color: #4f6186;
+  font-size: 14px;
+  line-height: 24px;
+
+  dt {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: #667697;
+    white-space: nowrap;
+  }
+
+  dd {
+    min-width: 0;
+    margin: 0;
+    color: #53658c;
+    font-weight: 500;
+  }
+
+  .anticon {
+    margin-top: 4px;
+    color: #526a9e;
+    font-size: 18px;
+  }
+}
+
+.park-basic-description {
+  grid-column: 1 / -1;
+
+  dd {
+    max-width: 760px;
+    font-weight: 400;
+    line-height: 25px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .park-overview-card {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .park-identity {
+    padding: 0 0 20px;
+    border-right: 0;
+    border-bottom: 1px solid $park-border;
+  }
+
+  .park-basic-information {
+    padding: 20px 0 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .park-overview-card {
+    padding: 18px;
+  }
+
+  .park-identity {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .park-identity-icon {
+    width: 84px;
+    height: 84px;
+    flex-basis: 84px;
+    font-size: 44px;
+  }
+
+  .park-basic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .park-basic-item {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .park-basic-description {
+    grid-column: auto;
+  }
+}

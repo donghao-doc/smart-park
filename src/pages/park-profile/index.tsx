@@ -3,15 +3,10 @@ import {
   BarChartOutlined,
   BankFilled,
   BlockOutlined,
-  BorderOutlined,
   DesktopOutlined,
   EditOutlined,
-  EnvironmentOutlined,
   HomeOutlined,
-  PhoneOutlined,
-  ProfileOutlined,
   SearchOutlined,
-  UserOutlined,
 } from '@ant-design/icons'
 import type { TableColumnsType, TreeDataNode } from 'antd'
 import {
@@ -43,6 +38,7 @@ import type {
   ParkSpaceStatus,
   UpdateParkInfoRequest,
 } from '../../types/park-profile'
+import ParkOverviewCard from './components/park-overview-card'
 import './park-profile.scss'
 
 const PAGE_SIZE = 8
@@ -310,43 +306,7 @@ function ParkProfilePage() {
         </div>
       ) : null}
 
-      <section className="park-overview-card" aria-label="园区基础信息">
-        <div className="park-identity">
-          <div className="park-identity-icon" aria-hidden="true">
-            <BankFilled />
-          </div>
-          <div className="park-identity-copy">
-            <h2>{profile.info.name}</h2>
-            <p>以科技创新为核心，打造集研发办公、产业孵化、商务配套于一体的现代化智慧园区。</p>
-          </div>
-        </div>
-
-        <div className="park-basic-information">
-          <h2>基本信息</h2>
-          <dl className="park-basic-grid">
-            <div className="park-basic-item">
-              <dt><EnvironmentOutlined />园区地址</dt>
-              <dd>{profile.info.address}</dd>
-            </div>
-            <div className="park-basic-item">
-              <dt><UserOutlined />联系人</dt>
-              <dd>{profile.info.contactName}</dd>
-            </div>
-            <div className="park-basic-item">
-              <dt><PhoneOutlined />联系电话</dt>
-              <dd>{profile.info.contactPhone}</dd>
-            </div>
-            <div className="park-basic-item">
-              <dt><BorderOutlined />园区面积</dt>
-              <dd>{profile.info.area.toLocaleString('zh-CN')} m²</dd>
-            </div>
-            <div className="park-basic-item park-basic-description">
-              <dt><ProfileOutlined />园区介绍</dt>
-              <dd>{profile.info.description}</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
+      <ParkOverviewCard info={profile.info} />
 
       <section className="park-summary-grid" aria-label="园区空间概况">
         {summaryCards.map((card) => (
