@@ -2,6 +2,7 @@ $park-text: #0b1d4b;
 $park-border: #dfe7f1;
 
 .park-space-table-panel {
+  container-type: inline-size;
   min-width: 0;
   padding: 12px 14px 8px;
   overflow: hidden;
@@ -88,7 +89,7 @@ $park-border: #dfe7f1;
   }
 }
 
-@media (max-width: 1280px) {
+@container (max-width: 720px) {
   .park-space-table-toolbar {
     align-items: stretch;
     flex-direction: column;
@@ -97,10 +98,15 @@ $park-border: #dfe7f1;
 
   .park-space-filters {
     width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    .ant-input-search {
+      grid-column: 1 / -1;
+    }
   }
 }
 
-@media (max-width: 640px) {
+@container (max-width: 480px) {
   .park-space-filters {
     grid-template-columns: 1fr;
   }
