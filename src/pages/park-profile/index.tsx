@@ -1,20 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
-import type { TableColumnsType } from 'antd'
-import {
-  Alert,
-  App,
-  Button,
-  Descriptions,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Select,
-  Skeleton,
-  Table,
-  Tag,
-} from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { Alert, App, Button, Form, Input, InputNumber, Modal, Skeleton } from 'antd'
+import { useEffect, useState } from 'react'
 
 import { reqGetCurrentUser } from '../../api/auth'
 import {
@@ -30,39 +16,11 @@ import type {
 } from '../../types/park-profile'
 import ParkOverviewCard from './components/park-overview-card'
 import ParkSpaceSummary from './components/park-space-summary'
+import ParkSpaceTablePanel from './components/park-space-table-panel'
 import ParkSpaceTreePanel from './components/park-space-tree-panel'
 import './park-profile.scss'
 
 const PAGE_SIZE = 8
-
-const spaceColumns: TableColumnsType<ParkSpaceDto> = [
-  {
-    title: '#',
-    key: 'index',
-    width: 56,
-    render: (_value, _record, index) => index + 1,
-  },
-  { title: '空间名称', dataIndex: 'name', width: 120 },
-  { title: '所属楼宇', dataIndex: 'buildingName', width: 110 },
-  { title: '楼层', dataIndex: 'floorName', width: 90 },
-  { title: '空间类型', dataIndex: 'type', width: 120 },
-  {
-    title: '面积（㎡）',
-    dataIndex: 'area',
-    width: 130,
-    render: (value: number) => value.toLocaleString('zh-CN'),
-  },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    width: 120,
-    render: (status: ParkSpaceStatus) => (
-      <Tag className={`park-space-status is-${status}`} variant="filled">
-        {status === 'used' ? '已使用' : '空闲'}
-      </Tag>
-    ),
-  },
-]
 
 /**
  * 园区档案页面，展示并维护园区基础信息与楼宇空间资源
@@ -86,7 +44,6 @@ function ParkProfilePage() {
   const [keyword, setKeyword] = useState('')
   const [editing, setEditing] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [selectedSpace, setSelectedSpace] = useState<ParkSpaceDto>()
 
   useEffect(() => {
     let active = true
@@ -150,23 +107,6 @@ function ParkProfilePage() {
       active = false
     }
   }, [buildingId, keyword, page, status, treeLocationId])
-
-  const columns = useMemo<TableColumnsType<ParkSpaceDto>>(
-    () => [
-      ...spaceColumns,
-      {
-        title: '操作',
-        key: 'action',
-        width: 90,
-        render: (_value, record) => (
-          <Button type="link" className="park-space-view" onClick={() => setSelectedSpace(record)}>
-            查看
-          </Button>
-        ),
-      },
-    ],
-    [],
-  )
 
   /**
    * 打开编辑弹窗并填充当前园区信息
@@ -253,77 +193,40 @@ function ParkProfilePage() {
           onLocationChange={handleTreeLocationChange}
         />
 
-        <div className="park-space-table-panel">
-          <div className="park-space-table-toolbar">
-            <h2>空间概况</h2>
-            <div className="park-space-filters">
-              <Select
-                value={buildingId}
-                allowClear
-                placeholder="全部楼宇"
-                options={profile.buildings.map((building) => ({
-                  label: building.name,
-                  value: building.id,
-                }))}
-                onChange={(value) => {
-                  setBuildingId(value)
-                  setTreeLocationId(undefined)
-                  setPage(1)
-                  setSpaceLoading(true)
-                }}
-              />
-              <Select
-                value={status}
-                allowClear
-                placeholder="全部状态"
-                options={[
-                  { label: '已使用', value: 'used' },
-                  { label: '空闲', value: 'vacant' },
-                ]}
-                onChange={(value) => {
-                  setStatus(value)
-                  setPage(1)
-                  setSpaceLoading(true)
-                }}
-              />
-              <Input.Search
-                allowClear
-                placeholder="搜索空间名称或编号"
-                value={keywordInput}
-                onChange={(event) => setKeywordInput(event.target.value)}
-                onSearch={(value) => {
-                  setKeyword(value.trim())
-                  setPage(1)
-                  setSpaceLoading(true)
-                }}
-              />
-            </div>
-          </div>
-
-          {spaceError ? (
-            <Alert type="error" showIcon message="空间数据加载失败，请稍后重试" />
-          ) : (
-            <Table<ParkSpaceDto>
-              rowKey="id"
-              size="small"
-              columns={columns}
-              dataSource={spaces}
-              loading={spaceLoading}
-              scroll={{ x: 850 }}
-              pagination={{
-                current: page,
-                pageSize: PAGE_SIZE,
-                total: spaceTotal,
-                showSizeChanger: false,
-                showTotal: (total) => `共 ${total} 条`,
-                onChange: (nextPage) => {
-                  setPage(nextPage)
-                  setSpaceLoading(true)
-                },
-              }}
-            />
-          )}
-        </div>
+        {/* 空间概况 */}
+        <ParkSpaceTablePanel
+          buildings={profile.buildings}
+          spaces={spaces}
+          total={spaceTotal}
+          page={page}
+          pageSize={PAGE_SIZE}
+          buildingId={buildingId}
+          status={status}
+          keywordInput={keywordInput}
+          loading={spaceLoading}
+          error={spaceError}
+          onBuildingChange={(value) => {
+            setBuildingId(value)
+            setTreeLocationId(undefined)
+            setPage(1)
+            setSpaceLoading(true)
+          }}
+          onStatusChange={(value) => {
+            setStatus(value)
+            setPage(1)
+            setSpaceLoading(true)
+          }}
+          onKeywordChange={setKeywordInput}
+          onKeywordSearch={(value) => {
+            setKeyword(value)
+            setPage(1)
+            setSpaceLoading(true)
+          }}
+          onPageChange={(nextPage) => {
+            setPage(nextPage)
+            setSpaceLoading(true)
+          }}
+        />
       </section>
 
       <Modal
@@ -363,28 +266,6 @@ function ParkProfilePage() {
             <Input.TextArea rows={4} maxLength={240} showCount />
           </Form.Item>
         </Form>
-      </Modal>
-
-      <Modal
-        title="空间详情"
-        open={Boolean(selectedSpace)}
-        footer={null}
-        onCancel={() => setSelectedSpace(undefined)}
-        destroyOnHidden
-      >
-        {selectedSpace ? (
-          <Descriptions column={1} bordered size="small">
-            <Descriptions.Item label="空间名称">{selectedSpace.name}</Descriptions.Item>
-            <Descriptions.Item label="所属位置">
-              {selectedSpace.buildingName} · {selectedSpace.floorName}
-            </Descriptions.Item>
-            <Descriptions.Item label="空间类型">{selectedSpace.type}</Descriptions.Item>
-            <Descriptions.Item label="空间面积">{selectedSpace.area} ㎡</Descriptions.Item>
-            <Descriptions.Item label="当前状态">
-              {selectedSpace.status === 'used' ? '已使用' : '空闲'}
-            </Descriptions.Item>
-          </Descriptions>
-        ) : null}
       </Modal>
     </div>
   )
