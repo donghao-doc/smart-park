@@ -1,11 +1,5 @@
-import {
-  ApartmentOutlined,
-  BankFilled,
-  EditOutlined,
-  HomeOutlined,
-  SearchOutlined,
-} from '@ant-design/icons'
-import type { TableColumnsType, TreeDataNode } from 'antd'
+import { EditOutlined } from '@ant-design/icons'
+import type { TableColumnsType } from 'antd'
 import {
   Alert,
   App,
@@ -19,7 +13,6 @@ import {
   Skeleton,
   Table,
   Tag,
-  Tree,
 } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -37,10 +30,10 @@ import type {
 } from '../../types/park-profile'
 import ParkOverviewCard from './components/park-overview-card'
 import ParkSpaceSummary from './components/park-space-summary'
+import ParkSpaceTreePanel from './components/park-space-tree-panel'
 import './park-profile.scss'
 
 const PAGE_SIZE = 8
-const PARK_TREE_ROOT_KEY = 'park-root'
 
 const spaceColumns: TableColumnsType<ParkSpaceDto> = [
   {
@@ -70,29 +63,6 @@ const spaceColumns: TableColumnsType<ParkSpaceDto> = [
     ),
   },
 ]
-
-/**
- * 将园区楼宇数据转换为页面空间树节点
- */
-function createTreeData(profile: ParkProfileDto): TreeDataNode[] {
-  return [
-    {
-      key: PARK_TREE_ROOT_KEY,
-      title: profile.info.name,
-      icon: <BankFilled />,
-      children: profile.buildings.map((building) => ({
-        key: building.id,
-        title: `${building.name}（${building.description}）`,
-        icon: <ApartmentOutlined />,
-        children: building.floors.map((floor) => ({
-          key: floor.id,
-          title: floor.name,
-          icon: <HomeOutlined />,
-        })),
-      })),
-    },
-  ]
-}
 
 /**
  * 园区档案页面，展示并维护园区基础信息与楼宇空间资源
@@ -181,8 +151,6 @@ function ParkProfilePage() {
     }
   }, [buildingId, keyword, page, status, treeLocationId])
 
-  const treeData = useMemo(() => (profile ? createTreeData(profile) : []), [profile])
-
   const columns = useMemo<TableColumnsType<ParkSpaceDto>>(
     () => [
       ...spaceColumns,
@@ -232,9 +200,8 @@ function ParkProfilePage() {
   /**
    * 选中空间树节点后联动右侧空间列表
    */
-  function handleTreeSelect(selectedKeys: React.Key[]) {
-    const selectedKey = selectedKeys[0]?.toString()
-    setTreeLocationId(!selectedKey || selectedKey === PARK_TREE_ROOT_KEY ? undefined : selectedKey)
+  function handleTreeLocationChange(locationId?: string) {
+    setTreeLocationId(locationId)
     setBuildingId(undefined)
     setPage(1)
     setSpaceLoading(true)
@@ -272,35 +239,19 @@ function ParkProfilePage() {
       <ParkSpaceSummary summary={profile.summary} />
 
       <section className="park-space-section">
-        <aside className="park-space-tree-panel">
-          <h2>楼宇空间</h2>
-          <Input
-            allowClear
-            prefix={<SearchOutlined />}
-            placeholder="搜索楼宇/楼层/空间"
-            value={keywordInput}
-            onChange={(event) => setKeywordInput(event.target.value)}
-            onPressEnter={() => {
-              setKeyword(keywordInput.trim())
-              setPage(1)
-              setSpaceLoading(true)
-            }}
-            onClear={() => {
-              setKeyword('')
-              setPage(1)
-              setSpaceLoading(true)
-            }}
-          />
-          <Tree
-            blockNode
-            showIcon
-            defaultExpandedKeys={[PARK_TREE_ROOT_KEY, 'building_a']}
-            selectedKeys={[treeLocationId ?? PARK_TREE_ROOT_KEY]}
-            treeData={treeData}
-            onSelect={handleTreeSelect}
-            className="park-space-tree"
-          />
-        </aside>
+        {/* 楼宇空间 */}
+        <ParkSpaceTreePanel
+          profile={profile}
+          selectedLocationId={treeLocationId}
+          keywordInput={keywordInput}
+          onKeywordChange={setKeywordInput}
+          onKeywordSearch={(value) => {
+            setKeyword(value)
+            setPage(1)
+            setSpaceLoading(true)
+          }}
+          onLocationChange={handleTreeLocationChange}
+        />
 
         <div className="park-space-table-panel">
           <div className="park-space-table-toolbar">
