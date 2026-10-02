@@ -71,7 +71,7 @@ function ParkSpaceSummary({ summary }: ParkSpaceSummaryProps) {
           <div>
             <p>{card.title}</p>
             <strong>{summary[card.key].toLocaleString('zh-CN')}</strong>
-            <span>{card.unit}</span>
+            <span className="park-summary-unit">{card.unit}</span>
           </div>
         </article>
       ))}
