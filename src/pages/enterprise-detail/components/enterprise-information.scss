@@ -24,6 +24,10 @@ $detail-primary: #1677ff;
   padding: 16px 20px 10px;
 }
 
+.enterprise-metrics-panel {
+  container-type: inline-size;
+}
+
 .enterprise-basic-panel,
 .enterprise-office-panel {
   flex: 1;
@@ -74,6 +78,12 @@ $detail-primary: #1677ff;
       color: #8994aa;
       font-size: 12px;
     }
+  }
+}
+
+@container (max-width: 380px) {
+  .enterprise-metric-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -159,7 +169,7 @@ $detail-primary: #1677ff;
 
   .enterprise-detail-side-column {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(430px, 100%), 1fr));
   }
 }
 
