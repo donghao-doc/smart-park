@@ -8,7 +8,7 @@ import {
   FileTextOutlined,
   TeamOutlined,
 } from '@ant-design/icons'
-import { Alert, App, Breadcrumb, Button, Descriptions, Skeleton, Table, Tabs, Tag, Timeline } from 'antd'
+import { Alert, App, Button, Descriptions, Skeleton, Table, Tabs, Tag, Timeline } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
@@ -285,13 +285,6 @@ function EnterpriseDetailPage() {
 
   return (
     <div className="enterprise-detail-page">
-      <Breadcrumb
-        items={[
-          { title: <Link to="/enterprises">企业管理</Link> },
-          { title: '企业详情' },
-        ]}
-      />
-
       <header className="enterprise-detail-header">
         <div>
           <div className="enterprise-detail-title-row">
