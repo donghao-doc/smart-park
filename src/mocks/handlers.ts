@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'msw'
 import { authHandlers } from './handlers/auth'
 import { dashboardHandlers } from './handlers/dashboard'
+import { parkProfileHandlers } from './handlers/park-profile'
 import { systemUserHandlers } from './handlers/system-users'
 
 /**
@@ -9,5 +10,6 @@ import { systemUserHandlers } from './handlers/system-users'
 export const handlers = [
   ...authHandlers,
   ...dashboardHandlers,
+  ...parkProfileHandlers,
   ...systemUserHandlers,
 ] satisfies RequestHandler[]
