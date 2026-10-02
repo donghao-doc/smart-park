@@ -1,5 +1,5 @@
 import { EditOutlined } from '@ant-design/icons'
-import { Alert, App, Button, Form, Input, InputNumber, Modal, Skeleton } from 'antd'
+import { Alert, App, Button, Skeleton } from 'antd'
 import { useEffect, useState } from 'react'
 
 import { reqGetCurrentUser } from '../../api/auth'
@@ -15,6 +15,7 @@ import type {
   UpdateParkInfoRequest,
 } from '../../types/park-profile'
 import ParkOverviewCard from './components/park-overview-card'
+import ParkProfileEditModal from './components/park-profile-edit-modal'
 import ParkSpaceSummary from './components/park-space-summary'
 import ParkSpaceTablePanel from './components/park-space-table-panel'
 import ParkSpaceTreePanel from './components/park-space-tree-panel'
@@ -27,7 +28,6 @@ const PAGE_SIZE = 8
  */
 function ParkProfilePage() {
   const { message } = App.useApp()
-  const [form] = Form.useForm<UpdateParkInfoRequest>()
   const [profile, setProfile] = useState<ParkProfileDto>()
   const [profileLoading, setProfileLoading] = useState(true)
   const [profileError, setProfileError] = useState(false)
@@ -109,18 +109,6 @@ function ParkProfilePage() {
   }, [buildingId, keyword, page, status, treeLocationId])
 
   /**
-   * 打开编辑弹窗并填充当前园区信息
-   */
-  function handleOpenEdit() {
-    if (!profile) {
-      return
-    }
-
-    form.setFieldsValue(profile.info)
-    setEditing(true)
-  }
-
-  /**
    * 提交园区基础信息修改并刷新页面数据
    */
   async function handleUpdateProfile(values: UpdateParkInfoRequest) {
@@ -166,7 +154,7 @@ function ParkProfilePage() {
     <div className="park-profile-page">
       {canEdit ? (
         <div className="park-profile-actions">
-          <Button type="primary" icon={<EditOutlined />} onClick={handleOpenEdit}>
+          <Button type="primary" icon={<EditOutlined />} onClick={() => setEditing(true)}>
             编辑园区信息
           </Button>
         </div>
@@ -229,44 +217,14 @@ function ParkProfilePage() {
         />
       </section>
 
-      <Modal
-        title="编辑园区信息"
+      {/* 编辑园区信息 */}
+      <ParkProfileEditModal
         open={editing}
-        okText="保存"
-        cancelText="取消"
-        confirmLoading={submitting}
-        onOk={() => form.submit()}
+        info={profile.info}
+        submitting={submitting}
+        onSubmit={handleUpdateProfile}
         onCancel={() => setEditing(false)}
-        forceRender
-      >
-        <Form<UpdateParkInfoRequest>
-          form={form}
-          layout="vertical"
-          className="park-profile-form"
-          onFinish={handleUpdateProfile}
-        >
-          <Form.Item label="园区名称" name="name" rules={[{ required: true, whitespace: true }]}>
-            <Input maxLength={40} />
-          </Form.Item>
-          <Form.Item label="园区地址" name="address" rules={[{ required: true, whitespace: true }]}>
-            <Input maxLength={80} />
-          </Form.Item>
-          <div className="park-profile-form-row">
-            <Form.Item label="联系人" name="contactName" rules={[{ required: true, whitespace: true }]}>
-              <Input maxLength={20} />
-            </Form.Item>
-            <Form.Item label="联系电话" name="contactPhone" rules={[{ required: true, whitespace: true }]}>
-              <Input maxLength={30} />
-            </Form.Item>
-          </div>
-          <Form.Item label="园区面积（㎡）" name="area" rules={[{ required: true }]}>
-            <InputNumber min={1} precision={0} className="park-profile-area-input" />
-          </Form.Item>
-          <Form.Item label="园区介绍" name="description" rules={[{ required: true, whitespace: true }]}>
-            <Input.TextArea rows={4} maxLength={240} showCount />
-          </Form.Item>
-        </Form>
-      </Modal>
+      />
     </div>
   )
 }

@@ -1,0 +1,15 @@
+.park-profile-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.park-profile-area-input {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .park-profile-form-row {
+    grid-template-columns: 1fr;
+  }
+}
