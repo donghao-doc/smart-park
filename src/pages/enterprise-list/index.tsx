@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Alert, App, Button, Form, Input, Select, Table, Tag } from 'antd'
+import { Alert, App, Button, Table, Tag } from 'antd'
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -17,17 +17,12 @@ import type {
   EnterpriseMutationRequest,
   EnterpriseStatus,
 } from '../../types/enterprise'
+import EnterpriseFilter from './components/enterprise-filter'
+import type { EnterpriseFilterValues } from './components/enterprise-filter'
 import EnterpriseFormModal from './components/enterprise-form-modal'
 import './enterprise-list.scss'
 
 const DEFAULT_PAGE_SIZE = 10
-
-interface EnterpriseFilterValues {
-  /** 企业名称搜索词 */
-  keyword?: string
-  /** 企业状态 */
-  status?: EnterpriseStatus
-}
 
 /**
  * 企业管理页面，提供筛选、分页、新增、查看和编辑入口
@@ -35,7 +30,6 @@ interface EnterpriseFilterValues {
 function EnterpriseListPage() {
   const navigate = useNavigate()
   const { message } = App.useApp()
-  const [form] = Form.useForm<EnterpriseFilterValues>()
   const [enterprises, setEnterprises] = useState<EnterpriseListItemDto[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -175,46 +169,19 @@ function EnterpriseListPage() {
     setPage(nextPageSize === pageSize ? (pagination.current ?? 1) : 1)
   }
 
+  /**
+   * 应用企业筛选条件并从第一页重新加载数据
+   */
+  function handleFilterSearch(values: EnterpriseFilterValues) {
+    setLoading(true)
+    setPage(1)
+    setFilters(values)
+  }
+
   return (
     <div className="enterprise-list-page">
-      <section className="enterprise-filter-panel" aria-label="企业筛选">
-        <Form
-          form={form}
-          layout="inline"
-          onFinish={(values) => {
-            setLoading(true)
-            setPage(1)
-            setFilters(values)
-          }}
-        >
-          <Form.Item name="keyword" label="企业名称">
-            <Input allowClear placeholder="请输入企业名称" />
-          </Form.Item>
-          <Form.Item name="status" label="状态">
-            <Select
-              allowClear
-              placeholder="请选择状态"
-              options={[
-                { label: '已入驻', value: 'active' },
-                { label: '已停用', value: 'disabled' },
-              ]}
-            />
-          </Form.Item>
-          <div className="enterprise-filter-actions">
-            <Button type="primary" htmlType="submit">查询</Button>
-            <Button
-              onClick={() => {
-                form.resetFields()
-                setLoading(true)
-                setPage(1)
-                setFilters({})
-              }}
-            >
-              重置
-            </Button>
-          </div>
-        </Form>
-      </section>
+      {/* 企业筛选 */}
+      <EnterpriseFilter onSearch={handleFilterSearch} />
 
       <section className="enterprise-table-panel">
         <div className="enterprise-table-toolbar">
