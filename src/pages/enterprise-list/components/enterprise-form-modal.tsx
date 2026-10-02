@@ -82,7 +82,7 @@ function EnterpriseFormModal({
       onCancel={onCancel}
       onOk={() => void form.validateFields().then(onSubmit)}
     >
-      <Form form={form} layout="vertical" requiredMark="optional">
+      <Form form={form} layout="vertical" requiredMark>
         <div className="enterprise-form-grid">
           <Form.Item
             name="name"
