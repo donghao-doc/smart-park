@@ -15,6 +15,7 @@ const pageLazyLoaders: Readonly<Record<string, NonNullable<RouteObject['lazy']>>
   dashboard: lazyPage(() => import('../pages/dashboard')),
   'park-profile': lazyPage(() => import('../pages/park-profile')),
   'enterprise-list': lazyPage(() => import('../pages/enterprise-list')),
+  'enterprise-detail': lazyPage(() => import('../pages/enterprise-detail')),
   'personnel-list': lazyPage(() => import('../pages/personnel-list')),
   'visitor-appointments': lazyPage(() => import('../pages/visitor-appointments')),
   'visitor-records': lazyPage(() => import('../pages/visitor-records')),
@@ -112,7 +113,7 @@ function createMenuRoutes(menus: MenuItemDto[]): RouteObject[] {
 
     const pageLazyLoader = pageLazyLoaders[menu.componentKey]
 
-    return [
+    const pageRoutes: RouteObject[] = [
       {
         id: `dynamic-menu-${menu.id}`,
         path: menu.path,
@@ -121,6 +122,17 @@ function createMenuRoutes(menus: MenuItemDto[]): RouteObject[] {
         lazy: pageLazyLoader,
       },
     ]
+
+    if (menu.componentKey === 'enterprise-list') {
+      pageRoutes.push({
+        id: `dynamic-menu-${menu.id}-detail`,
+        path: `${menu.path}/:id`,
+        loader: createMenuAccessLoader(menu.path, true),
+        lazy: pageLazyLoaders['enterprise-detail'],
+      })
+    }
+
+    return pageRoutes
   })
 }
 

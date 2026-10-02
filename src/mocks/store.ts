@@ -1,7 +1,8 @@
-import type { MockEnterpriseEntity, MockUserEntity } from './data/users'
-import { seedEnterprises, seedUsers } from './data/users'
+import { seedEnterprises, type MockEnterpriseEntity } from './data/enterprises'
+import type { MockUserEntity } from './data/users'
+import { seedUsers } from './data/users'
 
-const MOCK_STORE_KEY = 'smart-park.mock-state.v1'
+const MOCK_STORE_KEY = 'smart-park.mock-state.v4'
 const SESSION_DURATION_SECONDS = 2 * 60 * 60
 
 /**

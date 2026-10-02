@@ -26,18 +26,6 @@ export interface MockUserEntity {
   updatedAt: string
 }
 
-/**
- * Mock 层使用的企业摘要
- */
-export interface MockEnterpriseEntity {
-  /** 企业稳定唯一标识 */
-  id: string
-  /** 企业名称 */
-  name: string
-  /** 企业当前状态 */
-  status: 'active' | 'disabled'
-}
-
 const superAdminPermissions: PermissionCode[] = [
   'dashboard:view',
   'park:view',
@@ -152,17 +140,6 @@ export const mockRoles: Record<RoleCode, RoleDto> = {
     permissions: enterpriseUserPermissions,
   },
 }
-
-/**
- * 企业用户关联的初始企业数据
- */
-export const seedEnterprises: MockEnterpriseEntity[] = [
-  {
-    id: 'ent_1001',
-    name: '星海智造科技有限公司',
-    status: 'active',
-  },
-]
 
 /**
  * 覆盖三个固定角色的初始账号数据
