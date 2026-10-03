@@ -1,29 +1,9 @@
 $appointment-text: #0d1d4b;
-$appointment-secondary: #667493;
 $appointment-border: #dfe7f1;
 $appointment-primary: #1677ff;
 
 .visitor-appointments-page {
   gap: 14px;
-}
-
-.visitor-appointments-heading {
-  flex: none;
-
-  h1 {
-    margin: 0;
-    color: $appointment-text;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 34px;
-  }
-
-  p {
-    margin: 3px 0 0;
-    color: $appointment-secondary;
-    font-size: 14px;
-    line-height: 22px;
-  }
 }
 
 .appointment-metric-card.ant-card {
@@ -244,10 +224,6 @@ $appointment-primary: #1677ff;
 }
 
 @media (max-width: 640px) {
-  .visitor-appointments-heading h1 {
-    font-size: 22px;
-  }
-
   .appointment-filter-panel {
     padding: 14px;
   }

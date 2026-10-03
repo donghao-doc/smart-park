@@ -215,11 +215,6 @@ function VisitorAppointmentsPage() {
   return (
     <>
       <DataTablePageLayout className="visitor-appointments-page">
-        <header className="visitor-appointments-heading">
-          <h1>访客预约</h1>
-          <p>规范访客预约流程，保障园区安全有序</p>
-        </header>
-
         <AppointmentSummary summary={summary} loadError={summaryError} />
 
         <AppointmentFilter
