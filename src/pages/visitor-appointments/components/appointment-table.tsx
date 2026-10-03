@@ -18,6 +18,7 @@ import type {
   VisitorAppointmentDto,
   VisitorAppointmentStatus,
 } from '../../../types/visitor-appointment'
+import { maskPhoneNumber } from '../../../utils/privacy'
 
 interface AppointmentTablePermissions {
   /** 是否可以创建预约 */
@@ -68,13 +69,6 @@ const statusLabels: Record<VisitorAppointmentStatus, string> = {
 }
 
 /**
- * 隐藏访客手机号中间四位
- */
-function maskPhone(phone: string) {
-  return phone.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')
-}
-
-/**
  * 将 ISO 时间格式化为表格使用的年月日时分
  */
 function formatDateTime(value: string) {
@@ -112,7 +106,7 @@ function AppointmentTable({
         title: '手机号',
         dataIndex: 'visitorPhone',
         width: 130,
-        render: (phone: string) => maskPhone(phone),
+        render: (phone: string) => maskPhoneNumber(phone),
       },
       { title: '受访人', dataIndex: 'hostName', width: 90 },
       { title: '所属企业', dataIndex: 'enterpriseName', width: 210, ellipsis: true },

@@ -8,6 +8,7 @@ import type {
   PersonnelDto,
   PersonnelStatus,
 } from '../../../types/personnel'
+import { maskPhoneNumber } from '../../../utils/privacy'
 import './personnel-table.scss'
 
 interface PersonnelTableProps {
@@ -52,13 +53,6 @@ const statusLabels: Record<PersonnelStatus, string> = {
 }
 
 /**
- * 隐藏手机号码中间四位，避免列表直接展示完整敏感信息
- */
-function maskPhone(phone: string) {
-  return phone.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2')
-}
-
-/**
  * 隐藏证件号码中间区域，仅保留便于核对的首尾字符
  */
 function maskCertificateNumber(value: string) {
@@ -94,7 +88,7 @@ function PersonnelTable({
         title: '手机号',
         dataIndex: 'phone',
         width: 130,
-        render: (phone: string) => maskPhone(phone),
+        render: (phone: string) => maskPhoneNumber(phone),
       },
       {
         title: '证件类型',
