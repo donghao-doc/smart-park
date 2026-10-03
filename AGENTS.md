@@ -47,12 +47,22 @@
 ### 栅格与响应式布局
 
 - 表单的主要布局、列宽、间距和对齐统一由 `Row`、`Col` 负责，不使用 SCSS Grid、Flex 或固定宽度重复实现栅格布局
-- 外层使用 `<Row gutter={[24, 16]} align="middle">`，分别统一控制横向和纵向间距
-- 默认一行包含三个等宽区域：两个筛选项区域和一个操作按钮区域
+- 单行筛选表单外层使用 `<Row gutter={[24, 16]} align="middle">`，分别统一控制横向和纵向间距；适用于两个筛选项及一个操作按钮区域的简单场景
 - 筛选项使用 `<Col xs={24} md={12} lg={8}>`：手机端单列、平板端两列、桌面端三等分
 - 操作按钮区域使用 `<Col xs={24} lg={8}>`：小屏独占一行，桌面端占第三个等宽列
 - 操作按钮区域内部继续使用 `<Row gutter={12} justify="end" wrap={false}>`，每个按钮放在独立 `Col` 中；按钮整体在所在列中靠右排列且按钮之间不换行
 - 不应通过额外的 `margin`、固定宽度或绝对定位修正栅格位置；确需调整断点时，应优先修改 `Col` 的 `xs`、`md`、`lg`、`xl` 配置
+
+### 多个筛选项的多行布局
+
+- 当查询表单包含多个主要筛选项时，默认采用可扩展的多行结构，不将全部字段和操作按钮挤在同一行
+- 桌面端 `lg` 及以上每行最多放置三个筛选项，每项使用 `<Col xs={24} md={12} lg={8}>`；字段超过三个时按相同规则继续增加行
+- 查询、重置按钮始终放在全部筛选项之后，位于最后一行右侧，并通过 `<Row gutter={12} justify="end" wrap={false}>` 保持右对齐和不换行
+- 操作区域在桌面端应占据最后一行的剩余栅格：最后一行有一个筛选项时使用 `lg={16}`，有两个筛选项时使用 `lg={8}`；筛选项总数恰好为三的倍数时，操作区域使用 `lg={24}` 单独占据下一行
+- 平板端 `md` 每行最多放置两个筛选项，操作区域占据最后一行的剩余栅格；手机端 `xs` 为单列，操作按钮独占一行并保持右对齐
+- 筛选项数量固定时可直接设置操作区域的 `md`、`lg` 跨度；筛选项由配置动态生成时，可根据字段数量计算剩余栅格，但不得通过监听或计算窗口宽度决定布局
+- 新增、导出等列表级操作不放入查询表单，应通过 `DataTablePanel` 的 `toolbar` 插槽展示
+- 人员管理页面 `src/pages/personnel-list/components/personnel-filter.tsx` 是多筛选项布局的参考实现
 
 推荐结构：
 
@@ -66,23 +76,15 @@
   onFinish={onSearch}
 >
   <Row gutter={[24, 16]} align="middle">
-    <Col xs={24} md={12} lg={8}>
-      <Form.Item
-        name="keyword"
-        label={<span className="page-filter-label">企业名称</span>}
-      >
-        <Input allowClear placeholder="请输入企业名称" />
-      </Form.Item>
-    </Col>
-    <Col xs={24} md={12} lg={8}>
-      <Form.Item
-        name="status"
-        label={<span className="page-filter-label">状态</span>}
-      >
-        <Select allowClear placeholder="请选择状态" options={statusOptions} />
-      </Form.Item>
-    </Col>
-    <Col xs={24} lg={8}>
+    {filterFields.map((field) => (
+      <Col key={field.name} xs={24} md={12} lg={8}>
+        <Form.Item name={field.name} label={field.label}>
+          {field.control}
+        </Form.Item>
+      </Col>
+    ))}
+
+    <Col xs={24} md={tabletActionSpan} lg={desktopActionSpan}>
       <Row gutter={12} justify="end" wrap={false}>
         <Col>
           <Button type="primary" htmlType="submit">
@@ -96,6 +98,15 @@
     </Col>
   </Row>
 </Form>
+```
+
+动态筛选项可按以下方式计算操作区域跨度；固定字段页面可直接填写计算后的值，保持 JSX 更直观：
+
+```ts
+const desktopRemainder = filterFields.length % 3
+const tabletRemainder = filterFields.length % 2
+const desktopActionSpan = desktopRemainder === 0 ? 24 : (3 - desktopRemainder) * 8
+const tabletActionSpan = tabletRemainder === 0 ? 24 : 12
 ```
 
 ### 标签文案与样式职责
