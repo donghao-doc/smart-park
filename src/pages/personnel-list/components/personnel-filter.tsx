@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select, type SelectProps } from 'antd'
+import { Button, Col, Flex, Form, Input, Row, Select, type SelectProps } from 'antd'
 
 import type { PersonnelStatus } from '../../../types/personnel'
 import './personnel-filter.scss'
@@ -57,47 +57,52 @@ function PersonnelFilter({
         wrapperCol={{ flex: '1 1 0' }}
         onFinish={onSearch}
       >
-        <Row gutter={[20, 16]} align="middle">
-          <Col xs={24} md={12} xl={4}>
-            <Form.Item name="name" label={<span className="personnel-filter-label">姓名</span>}>
-              <Input allowClear placeholder="请输入姓名" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} xl={4}>
-            <Form.Item name="phone" label={<span className="personnel-filter-label">手机号</span>}>
-              <Input allowClear placeholder="请输入手机号" maxLength={11} />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} xl={5}>
-            <Form.Item
-              name="enterpriseId"
-              label={<span className="personnel-filter-label">所属企业</span>}
-            >
-              <Select
-                allowClear
-                showSearch
-                optionFilterProp="label"
-                placeholder="请选择企业"
-                options={enterpriseOptions}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} xl={4}>
-            <Form.Item name="status" label={<span className="personnel-filter-label">状态</span>}>
-              <Select allowClear placeholder="请选择状态" options={statusOptions} />
-            </Form.Item>
-          </Col>
-          <Col xs={24} xl={7}>
-            <Row gutter={12} justify="end" wrap={false}>
-              <Col>
-                <Button type="primary" htmlType="submit">查询</Button>
-              </Col>
-              <Col>
-                <Button onClick={handleReset}>重置</Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+        <Flex vertical gap={16}>
+          <Row gutter={[24, 16]} align="middle">
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item name="name" label={<span className="personnel-filter-label">姓名</span>}>
+                <Input allowClear placeholder="请输入姓名" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item name="phone" label={<span className="personnel-filter-label">手机号</span>}>
+                <Input allowClear placeholder="请输入手机号" maxLength={11} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="enterpriseId"
+                label={<span className="personnel-filter-label">所属企业</span>}
+              >
+                <Select
+                  allowClear
+                  showSearch
+                  optionFilterProp="label"
+                  placeholder="请选择企业"
+                  options={enterpriseOptions}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[24, 16]} align="middle">
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item name="status" label={<span className="personnel-filter-label">状态</span>}>
+                <Select allowClear placeholder="请选择状态" options={statusOptions} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={16}>
+              <Row gutter={12} justify="end" wrap={false}>
+                <Col>
+                  <Button type="primary" htmlType="submit">查询</Button>
+                </Col>
+                <Col>
+                  <Button onClick={handleReset}>重置</Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Flex>
       </Form>
     </section>
   )
