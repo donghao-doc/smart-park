@@ -1,4 +1,3 @@
-import { PlusOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, type SelectProps } from 'antd'
 
 import type { PersonnelStatus } from '../../../types/personnel'
@@ -21,12 +20,8 @@ export interface PersonnelFilterValues {
 interface PersonnelFilterProps {
   /** 可供筛选的企业选项 */
   enterpriseOptions: SelectProps['options']
-  /** 当前用户是否可以新增人员 */
-  canCreate: boolean
   /** 提交或重置筛选条件 */
   onSearch: (values: PersonnelFilterValues) => void
-  /** 打开新增人员表单 */
-  onCreate: () => void
 }
 
 const statusOptions = [
@@ -40,9 +35,7 @@ const statusOptions = [
  */
 function PersonnelFilter({
   enterpriseOptions,
-  canCreate,
   onSearch,
-  onCreate,
 }: PersonnelFilterProps) {
   const [form] = Form.useForm<PersonnelFilterValues>()
 
@@ -102,13 +95,6 @@ function PersonnelFilter({
               <Col>
                 <Button onClick={handleReset}>重置</Button>
               </Col>
-              {canCreate ? (
-                <Col>
-                  <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-                    新增人员
-                  </Button>
-                </Col>
-              ) : null}
             </Row>
           </Col>
         </Row>
