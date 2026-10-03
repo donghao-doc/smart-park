@@ -1,10 +1,10 @@
-import http from '../http'
+import http from '@/http'
 import type {
   EnterpriseDetailDto,
   EnterpriseListParams,
   EnterpriseMutationRequest,
   EnterprisePageResult,
-} from '../types/enterprise'
+} from '@/types/enterprise'
 
 /**
  * 分页查询企业列表

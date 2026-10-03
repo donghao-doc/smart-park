@@ -5,7 +5,7 @@ import type {
   EnterpriseStatus,
   EnterpriseVehicleDto,
   EnterpriseWorkOrderDto,
-} from '../../types/enterprise'
+} from '@/types/enterprise'
 
 /**
  * Mock 层内部使用的完整企业实体

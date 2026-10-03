@@ -3,8 +3,8 @@ import { Alert, Button, Flex, Tag, type TableColumnsType } from 'antd'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router'
 
-import DataTablePanel from '../../../components/data-table-panel'
-import type { EnterpriseListItemDto, EnterpriseStatus } from '../../../types/enterprise'
+import DataTablePanel from '@/components/data-table-panel'
+import type { EnterpriseListItemDto, EnterpriseStatus } from '@/types/enterprise'
 import './enterprise-table.scss'
 
 interface EnterpriseTableProps {

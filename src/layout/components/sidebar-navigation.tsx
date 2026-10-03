@@ -2,8 +2,8 @@ import { Drawer, Menu, Spin, Typography, type MenuProps } from 'antd'
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
-import { useMenuStore } from '../../stores/menu'
-import type { MenuItemDto } from '../../types/menu'
+import { useMenuStore } from '@/stores/menu'
+import type { MenuItemDto } from '@/types/menu'
 import { defaultMenuIcon, menuIconMap } from '../menu-icons'
 import './sidebar-navigation.scss'
 

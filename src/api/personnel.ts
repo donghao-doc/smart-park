@@ -1,11 +1,11 @@
-import http from '../http'
+import http from '@/http'
 import type {
   PersonnelDto,
   PersonnelListParams,
   PersonnelMutationRequest,
   PersonnelPageResult,
   UpdatePersonnelStatusRequest,
-} from '../types/personnel'
+} from '@/types/personnel'
 
 /**
  * 分页查询人员列表

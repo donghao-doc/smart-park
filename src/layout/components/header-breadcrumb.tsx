@@ -2,8 +2,8 @@ import { Breadcrumb, type BreadcrumbProps } from 'antd'
 import { useMemo } from 'react'
 import { Link, matchPath, useLocation } from 'react-router'
 
-import { useMenuStore } from '../../stores/menu'
-import type { MenuItemDto } from '../../types/menu'
+import { useMenuStore } from '@/stores/menu'
+import type { MenuItemDto } from '@/types/menu'
 import './header-breadcrumb.scss'
 
 const detailRoutes = [

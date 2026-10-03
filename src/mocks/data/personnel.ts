@@ -2,7 +2,7 @@ import type {
   PersonnelCertificateType,
   PersonnelDto,
   PersonnelStatus,
-} from '../../types/personnel'
+} from '@/types/personnel'
 import { seedEnterprises } from './enterprises'
 
 const familyNames = ['张', '李', '王', '赵', '孙', '周', '吴', '郑', '陈', '刘', '杨', '黄']

@@ -1,8 +1,8 @@
 import type { EChartsOption } from 'echarts'
 import { Alert, DatePicker, Empty, Segmented, Spin } from 'antd'
 
-import EChartsView from '../../../components/echarts-view'
-import type { DashboardTrendRange } from '../../../types/dashboard'
+import EChartsView from '@/components/echarts-view'
+import type { DashboardTrendRange } from '@/types/dashboard'
 import './trend-chart-card.scss'
 
 const { RangePicker } = DatePicker

@@ -1,4 +1,4 @@
-import StatusPage from '../../components/status-page'
+import StatusPage from '@/components/status-page'
 
 /**
  * 403 无权限页面

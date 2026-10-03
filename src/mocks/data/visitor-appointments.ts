@@ -1,7 +1,7 @@
 import type {
   VisitorAppointmentDto,
   VisitorAppointmentStatus,
-} from '../../types/visitor-appointment'
+} from '@/types/visitor-appointment'
 import { seedEnterprises } from './enterprises'
 import { seedPersonnel } from './personnel'
 

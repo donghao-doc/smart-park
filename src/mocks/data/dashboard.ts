@@ -4,7 +4,7 @@ import type {
   DeviceStatusDto,
   VisitorTrendPointDto,
   WorkOrderTrendPointDto,
-} from '../../types/dashboard'
+} from '@/types/dashboard'
 
 /**
  * Dashboard 顶部指标种子数据

@@ -5,7 +5,7 @@ import {
   DesktopOutlined,
 } from '@ant-design/icons'
 
-import type { ParkSpaceSummaryDto } from '../../../types/park-profile'
+import type { ParkSpaceSummaryDto } from '@/types/park-profile'
 import './park-space-summary.scss'
 
 interface ParkSpaceSummaryProps {

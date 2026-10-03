@@ -1,7 +1,7 @@
 import { Form, Input, Modal } from 'antd'
 import { useEffect } from 'react'
 
-import type { VisitorAppointmentDto } from '../../../types/visitor-appointment'
+import type { VisitorAppointmentDto } from '@/types/visitor-appointment'
 
 interface AppointmentReasonFormValues {
   /** 驳回或取消原因 */

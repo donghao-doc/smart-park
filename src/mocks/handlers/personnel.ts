@@ -4,7 +4,7 @@ import type {
   PersonnelMutationRequest,
   PersonnelStatus,
   UpdatePersonnelStatusRequest,
-} from '../../types/personnel'
+} from '@/types/personnel'
 import { saveMockState } from '../store'
 import {
   authorizeRequest,

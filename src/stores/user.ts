@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
-import { reqGetCurrentUser } from '../api/auth'
-import type { PermissionCode, UserDto } from '../types/auth'
+import { reqGetCurrentUser } from '@/api/auth'
+import type { PermissionCode, UserDto } from '@/types/auth'
 import { useAuthStore } from './auth'
 
 let pendingUserRequest: Promise<UserDto | null> | null = null

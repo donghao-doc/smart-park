@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import type {
   EnterpriseDetailDto,
   EnterpriseMutationRequest,
-} from '../../../types/enterprise'
+} from '@/types/enterprise'
 import './enterprise-form-modal.scss'
 
 interface EnterpriseFormModalProps {

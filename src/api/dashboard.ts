@@ -5,8 +5,8 @@ import type {
   DeviceStatusDto,
   VisitorTrendPointDto,
   WorkOrderTrendPointDto,
-} from '../types/dashboard'
-import http from '../http'
+} from '@/types/dashboard'
+import http from '@/http'
 
 /**
  * 查询 Dashboard 核心指标和最后更新时间

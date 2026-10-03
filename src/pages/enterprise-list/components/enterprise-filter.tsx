@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd'
 
-import type { EnterpriseStatus } from '../../../types/enterprise'
+import type { EnterpriseStatus } from '@/types/enterprise'
 import './enterprise-filter.scss'
 
 /**

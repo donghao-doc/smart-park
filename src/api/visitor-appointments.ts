@@ -1,4 +1,4 @@
-import http from '../http'
+import http from '@/http'
 import type {
   CreateVisitorAppointmentRequest,
   UpdateVisitorAppointmentStatusRequest,
@@ -6,7 +6,7 @@ import type {
   VisitorAppointmentListParams,
   VisitorAppointmentPageResult,
   VisitorAppointmentSummaryDto,
-} from '../types/visitor-appointment'
+} from '@/types/visitor-appointment'
 
 /**
  * 分页查询访客预约列表

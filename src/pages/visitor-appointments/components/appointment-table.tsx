@@ -12,14 +12,14 @@ import {
 } from 'antd'
 import { useMemo } from 'react'
 
-import DataTablePanel from '../../../components/data-table-panel'
+import DataTablePanel from '@/components/data-table-panel'
 import type {
   VisitorAppointmentAction,
   VisitorAppointmentDto,
   VisitorAppointmentStatus,
-} from '../../../types/visitor-appointment'
-import { formatDateTime } from '../../../utils/date-time'
-import { maskPhoneNumber } from '../../../utils/privacy'
+} from '@/types/visitor-appointment'
+import { formatDateTime } from '@/utils/date-time'
+import { maskPhoneNumber } from '@/utils/privacy'
 
 interface AppointmentTablePermissions {
   /** 是否可以创建预约 */

@@ -2,13 +2,13 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Alert, Button, Flex, Tag, type TableColumnsType } from 'antd'
 import { useMemo } from 'react'
 
-import DataTablePanel from '../../../components/data-table-panel'
+import DataTablePanel from '@/components/data-table-panel'
 import type {
   PersonnelCertificateType,
   PersonnelDto,
   PersonnelStatus,
-} from '../../../types/personnel'
-import { maskPhoneNumber } from '../../../utils/privacy'
+} from '@/types/personnel'
+import { maskPhoneNumber } from '@/utils/privacy'
 import './personnel-table.scss'
 
 interface PersonnelTableProps {

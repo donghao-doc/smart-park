@@ -1,8 +1,8 @@
 import { DatePicker, Form, Input, Modal, Select, type SelectProps } from 'antd'
 import { useEffect, useMemo } from 'react'
 
-import type { PersonnelDto } from '../../../types/personnel'
-import type { CreateVisitorAppointmentRequest } from '../../../types/visitor-appointment'
+import type { PersonnelDto } from '@/types/personnel'
+import type { CreateVisitorAppointmentRequest } from '@/types/visitor-appointment'
 
 const { RangePicker } = DatePicker
 const { TextArea } = Input

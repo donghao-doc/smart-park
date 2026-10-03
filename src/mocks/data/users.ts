@@ -1,4 +1,4 @@
-import type { PermissionCode, RoleCode, RoleDto, UserStatus } from '../../types/auth'
+import type { PermissionCode, RoleCode, RoleDto, UserStatus } from '@/types/auth'
 
 /**
  * Mock 层内部使用的用户实体，密码只保存在 Mock 存储中

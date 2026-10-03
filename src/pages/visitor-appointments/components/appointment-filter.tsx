@@ -1,6 +1,6 @@
 import { Button, Col, DatePicker, Form, Input, Row, Select, type SelectProps } from 'antd'
 
-import type { VisitorAppointmentStatus } from '../../../types/visitor-appointment'
+import type { VisitorAppointmentStatus } from '@/types/visitor-appointment'
 
 const { RangePicker } = DatePicker
 

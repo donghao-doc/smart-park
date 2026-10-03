@@ -4,7 +4,7 @@ import type {
   PersonnelCertificateType,
   PersonnelDto,
   PersonnelStatus,
-} from '../../../types/personnel'
+} from '@/types/personnel'
 import './personnel-detail-modal.scss'
 
 interface PersonnelDetailModalProps {

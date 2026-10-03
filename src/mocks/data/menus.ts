@@ -1,5 +1,5 @@
-import type { PermissionCode } from '../../types/auth'
-import type { MenuItemDto } from '../../types/menu'
+import type { PermissionCode } from '@/types/auth'
+import type { MenuItemDto } from '@/types/menu'
 
 /**
  * 系统完整菜单树，由认证接口按当前角色权限动态裁剪

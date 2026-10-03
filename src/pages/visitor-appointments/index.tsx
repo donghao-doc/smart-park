@@ -1,24 +1,24 @@
 import { App } from 'antd'
 import { useEffect, useState } from 'react'
 
-import { reqGetEnterprises } from '../../api/enterprises'
-import { reqGetPersonnelList } from '../../api/personnel'
+import { reqGetEnterprises } from '@/api/enterprises'
+import { reqGetPersonnelList } from '@/api/personnel'
 import {
   reqCreateVisitorAppointment,
   reqGetVisitorAppointments,
   reqGetVisitorAppointmentSummary,
   reqUpdateVisitorAppointmentStatus,
-} from '../../api/visitor-appointments'
-import { DataTablePageLayout } from '../../components/data-table-panel'
-import { useUserStore } from '../../stores/user'
-import type { EnterpriseListItemDto } from '../../types/enterprise'
-import type { PersonnelDto } from '../../types/personnel'
+} from '@/api/visitor-appointments'
+import { DataTablePageLayout } from '@/components/data-table-panel'
+import { useUserStore } from '@/stores/user'
+import type { EnterpriseListItemDto } from '@/types/enterprise'
+import type { PersonnelDto } from '@/types/personnel'
 import type {
   CreateVisitorAppointmentRequest,
   VisitorAppointmentAction,
   VisitorAppointmentDto,
   VisitorAppointmentSummaryDto,
-} from '../../types/visitor-appointment'
+} from '@/types/visitor-appointment'
 import AppointmentFilter from './components/appointment-filter'
 import type { AppointmentFilterValues } from './components/appointment-filter'
 import AppointmentFormModal from './components/appointment-form-modal'

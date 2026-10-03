@@ -1,9 +1,9 @@
 import { redirect, type LoaderFunction, type RouteObject } from 'react-router'
 
-import RouteLoadingFallback from '../components/route-loading'
-import { useAuthStore } from '../stores/auth'
-import { useMenuStore } from '../stores/menu'
-import type { MenuItemDto } from '../types/menu'
+import RouteLoadingFallback from '@/components/route-loading'
+import { useAuthStore } from '@/stores/auth'
+import { useMenuStore } from '@/stores/menu'
+import type { MenuItemDto } from '@/types/menu'
 import { lazyPage } from './utils'
 
 /** 动态业务路由挂载到后台布局时使用的父路由标识 */
@@ -12,20 +12,20 @@ export const DYNAMIC_ROUTE_PARENT_ID = 'admin-layout'
 const registeredRouteIds = new Set<string>()
 
 const pageLazyLoaders: Readonly<Record<string, NonNullable<RouteObject['lazy']>>> = {
-  dashboard: lazyPage(() => import('../pages/dashboard')),
-  'park-profile': lazyPage(() => import('../pages/park-profile')),
-  'enterprise-list': lazyPage(() => import('../pages/enterprise-list')),
-  'enterprise-detail': lazyPage(() => import('../pages/enterprise-detail')),
-  'personnel-list': lazyPage(() => import('../pages/personnel-list')),
-  'visitor-appointments': lazyPage(() => import('../pages/visitor-appointments')),
-  'visitor-records': lazyPage(() => import('../pages/visitor-records')),
-  'vehicle-list': lazyPage(() => import('../pages/vehicle-list')),
-  'parking-records': lazyPage(() => import('../pages/parking-records')),
-  'work-order-list': lazyPage(() => import('../pages/work-order-list')),
-  'device-list': lazyPage(() => import('../pages/device-list')),
-  'system-users': lazyPage(() => import('../pages/system-users')),
-  'operation-logs': lazyPage(() => import('../pages/operation-logs')),
-  'mock-data-management': lazyPage(() => import('../pages/mock-data-management')),
+  dashboard: lazyPage(() => import('@/pages/dashboard')),
+  'park-profile': lazyPage(() => import('@/pages/park-profile')),
+  'enterprise-list': lazyPage(() => import('@/pages/enterprise-list')),
+  'enterprise-detail': lazyPage(() => import('@/pages/enterprise-detail')),
+  'personnel-list': lazyPage(() => import('@/pages/personnel-list')),
+  'visitor-appointments': lazyPage(() => import('@/pages/visitor-appointments')),
+  'visitor-records': lazyPage(() => import('@/pages/visitor-records')),
+  'vehicle-list': lazyPage(() => import('@/pages/vehicle-list')),
+  'parking-records': lazyPage(() => import('@/pages/parking-records')),
+  'work-order-list': lazyPage(() => import('@/pages/work-order-list')),
+  'device-list': lazyPage(() => import('@/pages/device-list')),
+  'system-users': lazyPage(() => import('@/pages/system-users')),
+  'operation-logs': lazyPage(() => import('@/pages/operation-logs')),
+  'mock-data-management': lazyPage(() => import('@/pages/mock-data-management')),
 }
 
 /**

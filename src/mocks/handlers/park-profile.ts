@@ -3,7 +3,7 @@ import type {
   ParkInfoDto,
   ParkSpaceStatus,
   UpdateParkInfoRequest,
-} from '../../types/park-profile'
+} from '@/types/park-profile'
 import { parkBuildings, parkSpaces, seedParkInfo } from '../data/park-profile'
 import {
   authorizeRequest,

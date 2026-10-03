@@ -9,7 +9,7 @@ import { Input, Tree } from 'antd'
 import { useMemo } from 'react'
 import type { Key } from 'react'
 
-import type { ParkProfileDto } from '../../../types/park-profile'
+import type { ParkProfileDto } from '@/types/park-profile'
 import './park-space-tree-panel.scss'
 
 const PARK_TREE_ROOT_KEY = 'park-root'

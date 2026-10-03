@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons'
 import { Button, Descriptions, Timeline } from 'antd'
 
-import type { EnterpriseDetailDto } from '../../../types/enterprise'
+import type { EnterpriseDetailDto } from '@/types/enterprise'
 import './enterprise-information.scss'
 
 interface EnterpriseInformationProps {

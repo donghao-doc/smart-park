@@ -1,5 +1,5 @@
 import axios, { AxiosHeaders, type AxiosResponse } from 'axios'
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from '@/stores/auth'
 import { handleHttpError, rejectHttpError } from './error-handler'
 import { createHttpClient } from './request'
 import { isApiResponse } from './types'

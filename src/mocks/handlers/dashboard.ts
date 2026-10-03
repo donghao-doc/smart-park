@@ -1,5 +1,5 @@
 import { delay, http } from 'msw'
-import type { DashboardTrendRange } from '../../types/dashboard'
+import type { DashboardTrendRange } from '@/types/dashboard'
 import {
   dashboardMetrics,
   dashboardTasks,

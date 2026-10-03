@@ -1,8 +1,8 @@
 import type { ComponentType } from 'react'
 import { redirect, type LoaderFunctionArgs } from 'react-router'
 
-import { useAuthStore } from '../stores/auth'
-import { useUserStore } from '../stores/user'
+import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 
 const LOGIN_PATH = '/login'
 const DEFAULT_AUTHENTICATED_PATH = '/dashboard'

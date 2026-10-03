@@ -1,6 +1,6 @@
-import type { DemoAccountDto, LoginRequest, LoginResult, UserDto } from '../types/auth'
-import type { MenuItemDto } from '../types/menu'
-import http from '../http'
+import type { DemoAccountDto, LoginRequest, LoginResult, UserDto } from '@/types/auth'
+import type { MenuItemDto } from '@/types/menu'
+import http from '@/http'
 
 /**
  * 获取登录页展示的三套演示账号

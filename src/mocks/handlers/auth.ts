@@ -1,5 +1,5 @@
 import { delay, http } from 'msw'
-import type { LoginRequest } from '../../types/auth'
+import type { LoginRequest } from '@/types/auth'
 import { filterMenusByPermissions } from '../data/menus'
 import { mockRoles } from '../data/users'
 import { createMockSession, getMockState, mockSessionDurationSeconds, saveMockState } from '../store'

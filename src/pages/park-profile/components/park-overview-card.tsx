@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons'
 import { Button, Tooltip } from 'antd'
 
-import type { ParkInfoDto } from '../../../types/park-profile'
+import type { ParkInfoDto } from '@/types/park-profile'
 import './park-overview-card.scss'
 
 interface ParkOverviewCardProps {

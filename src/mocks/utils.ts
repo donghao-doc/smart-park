@@ -1,6 +1,6 @@
 import { HttpResponse } from 'msw'
-import type { ApiResponse } from '../types/api'
-import type { PermissionCode, RoleCode, UserDto, UserStatus } from '../types/auth'
+import type { ApiResponse } from '@/types/api'
+import type { PermissionCode, RoleCode, UserDto, UserStatus } from '@/types/auth'
 import { mockRoles, type MockUserEntity } from './data/users'
 import { getMockState, saveMockState, type MockState } from './store'
 

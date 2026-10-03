@@ -1,10 +1,10 @@
-import http from '../http'
+import http from '@/http'
 import type {
   ParkProfileDto,
   ParkSpaceListDto,
   ParkSpaceListParams,
   UpdateParkInfoRequest,
-} from '../types/park-profile'
+} from '@/types/park-profile'
 
 /**
  * 查询园区基础信息、空间指标和楼宇树

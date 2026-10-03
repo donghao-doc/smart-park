@@ -3,7 +3,7 @@ import type {
   CreateUserRequest,
   UpdateUserRequest,
   UpdateUserStatusRequest,
-} from '../../types/system-user'
+} from '@/types/system-user'
 import { mockRoles } from '../data/users'
 import { saveMockState, type MockState } from '../store'
 import {

@@ -1,4 +1,4 @@
-import StatusPage from '../../components/status-page'
+import StatusPage from '@/components/status-page'
 
 /**
  * 404 未找到页面

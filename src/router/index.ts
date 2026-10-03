@@ -1,8 +1,8 @@
 import { createBrowserRouter, redirect, type RouteObject } from 'react-router'
 
-import RouteLoadingFallback from '../components/route-loading'
-import AdminLayout from '../layout'
-import { useAuthStore } from '../stores/auth'
+import RouteLoadingFallback from '@/components/route-loading'
+import AdminLayout from '@/layout'
+import { useAuthStore } from '@/stores/auth'
 import {
   DYNAMIC_ROUTE_PARENT_ID,
   getFirstMenuPath,
@@ -31,7 +31,7 @@ const routes = [
     path: '/login',
     loader: preventRepeatedLogin,
     HydrateFallback: RouteLoadingFallback,
-    lazy: lazyPage(() => import('../pages/login')),
+    lazy: lazyPage(() => import('@/pages/login')),
   },
   {
     id: 'authenticated-root',
@@ -54,11 +54,11 @@ const routes = [
       },
       {
         path: '/403',
-        lazy: lazyPage(() => import('../pages/403')),
+        lazy: lazyPage(() => import('@/pages/403')),
       },
       {
         path: '*',
-        lazy: lazyPage(() => import('../pages/404')),
+        lazy: lazyPage(() => import('@/pages/404')),
       },
     ],
   },

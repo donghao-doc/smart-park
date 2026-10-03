@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
-import type { ApiResponse } from '../types/api'
+import type { ApiResponse } from '@/types/api'
 
 /**
  * HTTP 请求的项目级扩展配置

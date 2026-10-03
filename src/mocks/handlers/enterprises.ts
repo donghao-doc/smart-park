@@ -3,7 +3,7 @@ import type {
   EnterpriseDetailDto,
   EnterpriseMutationRequest,
   EnterpriseStatus,
-} from '../../types/enterprise'
+} from '@/types/enterprise'
 import { saveMockState } from '../store'
 import {
   authorizeRequest,

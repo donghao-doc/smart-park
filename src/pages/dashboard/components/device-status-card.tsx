@@ -7,8 +7,8 @@ import { CanvasRenderer } from 'echarts/renderers'
 import { Alert, Badge, Button, Empty, Spin } from 'antd'
 import { useMemo } from 'react'
 
-import EChartsView from '../../../components/echarts-view'
-import type { DeviceStatusDto } from '../../../types/dashboard'
+import EChartsView from '@/components/echarts-view'
+import type { DeviceStatusDto } from '@/types/dashboard'
 import './device-status-card.scss'
 
 registerEChartsModules([PieChart, TooltipComponent, CanvasRenderer])

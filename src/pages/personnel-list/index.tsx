@@ -1,16 +1,16 @@
 import { App, type SelectProps } from 'antd'
 import { useEffect, useState } from 'react'
 
-import { reqGetEnterprises } from '../../api/enterprises'
+import { reqGetEnterprises } from '@/api/enterprises'
 import {
   reqCreatePersonnel,
   reqGetPersonnel,
   reqGetPersonnelList,
   reqUpdatePersonnel,
-} from '../../api/personnel'
-import { DataTablePageLayout } from '../../components/data-table-panel'
-import { useUserStore } from '../../stores/user'
-import type { PersonnelDto, PersonnelMutationRequest } from '../../types/personnel'
+} from '@/api/personnel'
+import { DataTablePageLayout } from '@/components/data-table-panel'
+import { useUserStore } from '@/stores/user'
+import type { PersonnelDto, PersonnelMutationRequest } from '@/types/personnel'
 import PersonnelDetailModal from './components/personnel-detail-modal'
 import PersonnelFilter from './components/personnel-filter'
 import type { PersonnelFilterValues } from './components/personnel-filter'

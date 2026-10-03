@@ -1,6 +1,6 @@
 import { Button, Col, Flex, Form, Input, Row, Select, type SelectProps } from 'antd'
 
-import type { PersonnelStatus } from '../../../types/personnel'
+import type { PersonnelStatus } from '@/types/personnel'
 import './personnel-filter.scss'
 
 /**

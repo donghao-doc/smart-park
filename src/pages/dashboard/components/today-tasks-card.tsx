@@ -5,7 +5,7 @@ import type { TableColumnsType } from 'antd'
 import type {
   DashboardTaskDto,
   DashboardTaskPriority,
-} from '../../../types/dashboard'
+} from '@/types/dashboard'
 import './today-tasks-card.scss'
 
 const taskPriorityPresentation: Record<

@@ -1,7 +1,7 @@
 import { Form, Input, InputNumber, Modal } from 'antd'
 import { useEffect } from 'react'
 
-import type { ParkInfoDto, UpdateParkInfoRequest } from '../../../types/park-profile'
+import type { ParkInfoDto, UpdateParkInfoRequest } from '@/types/park-profile'
 import './park-profile-edit-modal.scss'
 
 interface ParkProfileEditModalProps {

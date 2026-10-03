@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons'
 import { Alert, Card, Col, Row, Skeleton } from 'antd'
 
-import type { VisitorAppointmentSummaryDto } from '../../../types/visitor-appointment'
+import type { VisitorAppointmentSummaryDto } from '@/types/visitor-appointment'
 
 interface AppointmentSummaryProps {
   /** 预约状态统计，加载完成前为空 */

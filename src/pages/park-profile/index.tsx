@@ -5,14 +5,14 @@ import {
   reqGetParkProfile,
   reqGetParkSpaces,
   reqUpdateParkProfile,
-} from '../../api/park-profile'
-import { useUserStore } from '../../stores/user'
+} from '@/api/park-profile'
+import { useUserStore } from '@/stores/user'
 import type {
   ParkProfileDto,
   ParkSpaceDto,
   ParkSpaceStatus,
   UpdateParkInfoRequest,
-} from '../../types/park-profile'
+} from '@/types/park-profile'
 import ParkOverviewCard from './components/park-overview-card'
 import ParkProfileEditModal from './components/park-profile-edit-modal'
 import ParkSpaceSummary from './components/park-space-summary'

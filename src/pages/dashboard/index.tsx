@@ -13,7 +13,7 @@ import {
   reqGetDeviceStatuses,
   reqGetVisitorTrend,
   reqGetWorkOrderTrend,
-} from '../../api/dashboard'
+} from '@/api/dashboard'
 import type {
   DashboardSummaryDto,
   DashboardTaskDto,
@@ -22,7 +22,7 @@ import type {
   DeviceStatusDto,
   VisitorTrendPointDto,
   WorkOrderTrendPointDto,
-} from '../../types/dashboard'
+} from '@/types/dashboard'
 import MetricCard from './components/metric-card'
 import DeviceStatusCard from './components/device-status-card'
 import TodayTasksCard from './components/today-tasks-card'

@@ -3,16 +3,16 @@ import { Alert, App, Button, Skeleton, Table, Tabs, Tag, type TableColumnsType }
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 
-import { reqGetEnterprise, reqUpdateEnterprise } from '../../api/enterprises'
-import { useUserStore } from '../../stores/user'
+import { reqGetEnterprise, reqUpdateEnterprise } from '@/api/enterprises'
+import { useUserStore } from '@/stores/user'
 import type {
   EnterpriseDetailDto,
   EnterpriseMemberDto,
   EnterpriseMutationRequest,
   EnterpriseVehicleDto,
   EnterpriseWorkOrderDto,
-} from '../../types/enterprise'
-import EnterpriseFormModal from '../enterprise-list/components/enterprise-form-modal'
+} from '@/types/enterprise'
+import EnterpriseFormModal from '@/pages/enterprise-list/components/enterprise-form-modal'
 import EnterpriseInformation from './components/enterprise-information'
 import './enterprise-detail.scss'
 

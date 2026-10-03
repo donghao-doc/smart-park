@@ -6,14 +6,14 @@ import {
   reqGetEnterprise,
   reqGetEnterprises,
   reqUpdateEnterprise,
-} from '../../api/enterprises'
-import { DataTablePageLayout } from '../../components/data-table-panel'
-import { useUserStore } from '../../stores/user'
+} from '@/api/enterprises'
+import { DataTablePageLayout } from '@/components/data-table-panel'
+import { useUserStore } from '@/stores/user'
 import type {
   EnterpriseDetailDto,
   EnterpriseListItemDto,
   EnterpriseMutationRequest,
-} from '../../types/enterprise'
+} from '@/types/enterprise'
 import EnterpriseFilter from './components/enterprise-filter'
 import type { EnterpriseFilterValues } from './components/enterprise-filter'
 import EnterpriseFormModal from './components/enterprise-form-modal'

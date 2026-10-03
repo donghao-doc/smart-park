@@ -1,7 +1,7 @@
 import { Col, Form, Input, Modal, Row, Select, type SelectProps } from 'antd'
 import { useEffect } from 'react'
 
-import type { PersonnelDto, PersonnelMutationRequest } from '../../../types/personnel'
+import type { PersonnelDto, PersonnelMutationRequest } from '@/types/personnel'
 import './personnel-form-modal.scss'
 
 interface PersonnelFormModalProps {

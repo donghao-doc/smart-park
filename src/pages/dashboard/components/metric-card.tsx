@@ -10,7 +10,7 @@ import { Button } from 'antd'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 
-import type { DashboardMetricDto, DashboardMetricKey } from '../../../types/dashboard'
+import type { DashboardMetricDto, DashboardMetricKey } from '@/types/dashboard'
 import './metric-card.scss'
 
 const metricPresentation: Record<

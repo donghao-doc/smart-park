@@ -1,11 +1,11 @@
 import { delay, http } from 'msw'
-import type { PermissionCode } from '../../types/auth'
+import type { PermissionCode } from '@/types/auth'
 import type {
   CreateVisitorAppointmentRequest,
   UpdateVisitorAppointmentStatusRequest,
   VisitorAppointmentAction,
   VisitorAppointmentStatus,
-} from '../../types/visitor-appointment'
+} from '@/types/visitor-appointment'
 import { saveMockState } from '../store'
 import {
   authorizeRequest,

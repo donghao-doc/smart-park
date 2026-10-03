@@ -1,4 +1,4 @@
-import type { RoleDto, UserDto } from '../types/auth'
+import type { RoleDto, UserDto } from '@/types/auth'
 import type {
   CreateUserRequest,
   ResetPasswordResult,
@@ -6,8 +6,8 @@ import type {
   UpdateUserStatusRequest,
   UserListParams,
   UserPageResult,
-} from '../types/system-user'
-import http from '../http'
+} from '@/types/system-user'
+import http from '@/http'
 
 /**
  * 查询固定角色及权限，用于用户表单和权限展示
