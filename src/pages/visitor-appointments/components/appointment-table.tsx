@@ -18,6 +18,7 @@ import type {
   VisitorAppointmentDto,
   VisitorAppointmentStatus,
 } from '../../../types/visitor-appointment'
+import { formatDateTime } from '../../../utils/date-time'
 import { maskPhoneNumber } from '../../../utils/privacy'
 
 interface AppointmentTablePermissions {
@@ -66,15 +67,6 @@ const statusLabels: Record<VisitorAppointmentStatus, string> = {
   rejected: '已驳回',
   cancelled: '已取消',
   expired: '已过期',
-}
-
-/**
- * 将 ISO 时间格式化为表格使用的年月日时分
- */
-function formatDateTime(value: string) {
-  const date = new Date(value)
-  const pad = (numberValue: number) => String(numberValue).padStart(2, '0')
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
 }
 
 /**
