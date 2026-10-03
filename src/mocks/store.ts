@@ -2,8 +2,9 @@ import { seedEnterprises, type MockEnterpriseEntity } from './data/enterprises'
 import { seedPersonnel } from './data/personnel'
 import type { MockUserEntity } from './data/users'
 import { seedUsers } from './data/users'
+import { seedVisitorAppointments } from './data/visitor-appointments'
 
-const MOCK_STORE_KEY = 'smart-park.mock-state.v8'
+const MOCK_STORE_KEY = 'smart-park.mock-state.v13'
 const SESSION_DURATION_SECONDS = 2 * 60 * 60
 
 /**
@@ -28,6 +29,8 @@ export interface MockState {
   enterprises: MockEnterpriseEntity[]
   /** 园区人员数据 */
   personnel: typeof seedPersonnel
+  /** 访客预约数据 */
+  visitorAppointments: typeof seedVisitorAppointments
   /** 当前有效或待清理的登录会话 */
   sessions: MockSession[]
 }
@@ -40,6 +43,7 @@ function createInitialState(): MockState {
     users: structuredClone(seedUsers),
     enterprises: structuredClone(seedEnterprises),
     personnel: structuredClone(seedPersonnel),
+    visitorAppointments: structuredClone(seedVisitorAppointments),
     sessions: [],
   }
 }
@@ -57,6 +61,7 @@ function isMockState(value: unknown): value is MockState {
     Array.isArray(state.users) &&
     Array.isArray(state.enterprises) &&
     Array.isArray(state.personnel) &&
+    Array.isArray(state.visitorAppointments) &&
     Array.isArray(state.sessions)
   )
 }
