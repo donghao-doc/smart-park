@@ -133,7 +133,7 @@ function AppointmentFilter({
               <Select allowClear placeholder="请选择状态" options={statusOptions} />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={16}>
+          <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
               <Col>
                 <Button type="primary" htmlType="submit">查询</Button>
