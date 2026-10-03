@@ -3,6 +3,7 @@ import { authHandlers } from './handlers/auth'
 import { dashboardHandlers } from './handlers/dashboard'
 import { enterpriseHandlers } from './handlers/enterprises'
 import { parkProfileHandlers } from './handlers/park-profile'
+import { personnelHandlers } from './handlers/personnel'
 import { systemUserHandlers } from './handlers/system-users'
 
 /**
@@ -12,6 +13,7 @@ export const handlers = [
   ...authHandlers,
   ...dashboardHandlers,
   ...enterpriseHandlers,
+  ...personnelHandlers,
   ...parkProfileHandlers,
   ...systemUserHandlers,
 ] satisfies RequestHandler[]
