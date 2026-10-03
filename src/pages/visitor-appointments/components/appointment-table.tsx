@@ -18,8 +18,7 @@ import type {
   VisitorAppointmentDto,
   VisitorAppointmentStatus,
 } from '@/types/visitor-appointment'
-import { formatDateTime } from '@/utils/date-time'
-import { maskPhoneNumber } from '@/utils/privacy'
+import { formatDateTime, maskPhoneNumber } from '@/utils'
 
 interface AppointmentTablePermissions {
   /** 是否可以创建预约 */

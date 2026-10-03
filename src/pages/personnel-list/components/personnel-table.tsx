@@ -8,7 +8,7 @@ import type {
   PersonnelDto,
   PersonnelStatus,
 } from '@/types/personnel'
-import { maskPhoneNumber } from '@/utils/privacy'
+import { maskPhoneNumber } from '@/utils'
 import './personnel-table.scss'
 
 interface PersonnelTableProps {
