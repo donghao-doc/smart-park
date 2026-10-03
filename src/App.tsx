@@ -2,8 +2,8 @@ import { App as AntdApp, ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router/dom'
-import { setErrorMessageHandler, setHttpNavigator } from './http/runtime'
-import router from './router'
+import { setErrorMessageHandler, setHttpNavigator } from '@/http/runtime'
+import router from '@/router'
 
 /**
  * 将依赖 React 上下文的 antd 消息和路由能力注入 HTTP 运行时
