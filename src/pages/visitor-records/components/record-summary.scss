@@ -1,0 +1,96 @@
+.record-summary {
+  flex: none;
+}
+
+.record-metric-card.ant-card {
+  border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-card-body {
+    padding: 20px 22px;
+  }
+
+  &.is-arrival .record-metric-icon {
+    background: #e8f2ff;
+    color: #1677ff;
+  }
+
+  &.is-departure .record-metric-icon {
+    background: #e2f8f2;
+    color: #00ac8b;
+  }
+}
+
+.record-metric-icon {
+  width: 66px;
+  height: 66px;
+  flex: none;
+  border-radius: 16px;
+  font-size: 32px;
+}
+
+.record-metric-statistic {
+  flex: 1;
+
+  .ant-statistic-title {
+    margin-bottom: 4px;
+    color: #273755;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ant-statistic-content {
+    color: #07184d;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .ant-statistic-content-suffix {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.record-metric-comparison {
+  min-width: 100px;
+  padding-left: 24px;
+  border-left: 1px solid #e7edf4;
+}
+
+.record-metric-compare-label {
+  margin-bottom: 6px;
+  color: #7c8ba7;
+  font-size: 12px;
+}
+
+.record-metric-change {
+  color: #667493;
+  font-size: 14px;
+
+  &.is-increase {
+    color: #f04455;
+  }
+
+  &.is-decrease {
+    color: #00ac8b;
+  }
+}
+
+@media (max-width: 1199px) {
+  .record-metric-card.ant-card .ant-card-body {
+    padding: 16px;
+  }
+
+  .record-metric-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .record-metric-comparison {
+    min-width: 78px;
+    padding-left: 14px;
+  }
+}

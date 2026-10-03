@@ -1,0 +1,29 @@
+.visitor-records-heading {
+  flex: none;
+
+  h1 {
+    margin: 0 0 4px;
+    color: #07184d;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 0;
+    color: #667493;
+    font-size: 14px;
+  }
+}
+
+// 小屏与低矮视口允许页面滚动，给筛选表单和表格保留可操作空间
+@media (max-width: 767px), (max-height: 680px) {
+  .visitor-records-page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .record-table-panel {
+    min-height: 440px;
+  }
+}
