@@ -149,7 +149,7 @@ function AppointmentTable({
                     title="确认通过该预约？"
                     description="通过后访客可按预约时间到访"
                     okText="通过"
-                    cancelText="返回"
+                    cancelText="取消"
                     onConfirm={() => onAction('approve', record)}
                   >
                     <Button type="link" disabled={updating}>通过</Button>
@@ -163,7 +163,7 @@ function AppointmentTable({
                 <Popconfirm
                   title="确认为访客办理签到？"
                   okText="确认签到"
-                  cancelText="返回"
+                  cancelText="取消"
                   onConfirm={() => onAction('check_in', record)}
                 >
                   <Button type="link" disabled={updating}>签到</Button>
@@ -173,7 +173,7 @@ function AppointmentTable({
                 <Popconfirm
                   title="确认为访客办理签出？"
                   okText="确认签出"
-                  cancelText="返回"
+                  cancelText="取消"
                   onConfirm={() => onAction('check_out', record)}
                 >
                   <Button type="link" disabled={updating}>签出</Button>
