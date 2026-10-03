@@ -6,7 +6,7 @@ import {
   reqGetEnterprise,
   reqGetEnterprises,
   reqUpdateEnterprise,
-} from '@/api/enterprises'
+} from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
 import { useUserStore } from '@/stores/user'
 import type {

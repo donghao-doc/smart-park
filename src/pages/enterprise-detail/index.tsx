@@ -3,7 +3,7 @@ import { Alert, App, Button, Skeleton, Table, Tabs, Tag, type TableColumnsType }
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 
-import { reqGetEnterprise, reqUpdateEnterprise } from '@/api/enterprises'
+import { reqGetEnterprise, reqUpdateEnterprise } from '@/api'
 import { useUserStore } from '@/stores/user'
 import type {
   EnterpriseDetailDto,

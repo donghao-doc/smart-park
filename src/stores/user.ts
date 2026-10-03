@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { reqGetCurrentUser } from '@/api/auth'
+import { reqGetCurrentUser } from '@/api'
 import type { PermissionCode, UserDto } from '@/types/auth'
 import { useAuthStore } from './auth'
 

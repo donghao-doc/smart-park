@@ -1,13 +1,13 @@
 import { App, type SelectProps } from 'antd'
 import { useEffect, useState } from 'react'
 
-import { reqGetEnterprises } from '@/api/enterprises'
 import {
   reqCreatePersonnel,
+  reqGetEnterprises,
   reqGetPersonnel,
   reqGetPersonnelList,
   reqUpdatePersonnel,
-} from '@/api/personnel'
+} from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
 import { useUserStore } from '@/stores/user'
 import type { PersonnelDto, PersonnelMutationRequest } from '@/types/personnel'

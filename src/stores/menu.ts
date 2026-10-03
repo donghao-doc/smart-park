@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { reqGetCurrentUserMenus } from '@/api/auth'
+import { reqGetCurrentUserMenus } from '@/api'
 import type { MenuItemDto } from '@/types/menu'
 
 let pendingMenuRequest: Promise<MenuItemDto[]> | null = null

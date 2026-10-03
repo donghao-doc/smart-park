@@ -5,7 +5,7 @@ import {
   reqGetParkProfile,
   reqGetParkSpaces,
   reqUpdateParkProfile,
-} from '@/api/park-profile'
+} from '@/api'
 import { useUserStore } from '@/stores/user'
 import type {
   ParkProfileDto,

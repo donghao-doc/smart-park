@@ -1,14 +1,14 @@
 import { App } from 'antd'
 import { useEffect, useState } from 'react'
 
-import { reqGetEnterprises } from '@/api/enterprises'
-import { reqGetPersonnelList } from '@/api/personnel'
 import {
   reqCreateVisitorAppointment,
+  reqGetEnterprises,
+  reqGetPersonnelList,
   reqGetVisitorAppointments,
   reqGetVisitorAppointmentSummary,
   reqUpdateVisitorAppointmentStatus,
-} from '@/api/visitor-appointments'
+} from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
 import { useUserStore } from '@/stores/user'
 import type { EnterpriseListItemDto } from '@/types/enterprise'

@@ -13,7 +13,7 @@ import {
   reqGetDeviceStatuses,
   reqGetVisitorTrend,
   reqGetWorkOrderTrend,
-} from '@/api/dashboard'
+} from '@/api'
 import type {
   DashboardSummaryDto,
   DashboardTaskDto,

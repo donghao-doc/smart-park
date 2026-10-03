@@ -3,7 +3,7 @@ import { Button, Checkbox, Divider, Form, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
-import { reqGetDemoAccounts, reqLogin } from '@/api/auth'
+import { reqGetDemoAccounts, reqLogin } from '@/api'
 import { initializeDynamicRoutes } from '@/router'
 import { getPostLoginPath } from '@/router/utils'
 import { useAuthStore } from '@/stores/auth'
