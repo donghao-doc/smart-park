@@ -208,16 +208,11 @@ function AppointmentTable({
     <DataTablePanel<VisitorAppointmentDto>
       ariaLabel="预约列表"
       className="appointment-table-panel"
-      toolbar={
-        <>
-          <h2>预约列表</h2>
-          {canCreate ? (
-            <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-              创建预约
-            </Button>
-          ) : null}
-        </>
-      }
+      toolbar={canCreate ? (
+        <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+          创建预约
+        </Button>
+      ) : undefined}
       feedback={
         loadError ? (
           <Alert
