@@ -1,4 +1,4 @@
-import { PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons'
+import { PlusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { Alert, Button, Flex, type TableColumnsType } from 'antd'
 import type { Key } from 'react'
 
@@ -128,7 +128,7 @@ function DeviceTable({
         <>
           <Flex align="center" gap={12}>
             {canCreate ? (
-              <Button type="primary" icon={<PlusCircleOutlined />} onClick={onCreate}>新增设备</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>新增设备</Button>
             ) : null}
           </Flex>
           <Button
