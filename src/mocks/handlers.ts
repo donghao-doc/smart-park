@@ -7,6 +7,7 @@ import { personnelHandlers } from './handlers/personnel'
 import { systemUserHandlers } from './handlers/system-users'
 import { visitorAppointmentHandlers } from './handlers/visitor-appointments'
 import { visitorRecordHandlers } from './handlers/visitor-records'
+import { vehicleHandlers } from './handlers/vehicles'
 
 /**
  * 项目接口模拟处理器集合
@@ -20,4 +21,5 @@ export const handlers = [
   ...systemUserHandlers,
   ...visitorAppointmentHandlers,
   ...visitorRecordHandlers,
+  ...vehicleHandlers,
 ] satisfies RequestHandler[]

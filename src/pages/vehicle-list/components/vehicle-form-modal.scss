@@ -1,0 +1,19 @@
+.vehicle-form-modal {
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+
+  .ant-form-item-label label {
+    color: #273755;
+    font-weight: 600;
+  }
+}
+
+.vehicle-form-loading {
+  padding: 48px;
+  text-align: center;
+}
+
+.vehicle-form-feedback {
+  margin-bottom: 20px;
+}

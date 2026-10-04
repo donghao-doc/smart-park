@@ -3,6 +3,7 @@ import { seedPersonnel } from './data/personnel'
 import type { MockUserEntity } from './data/users'
 import { seedUsers } from './data/users'
 import { seedVisitorAppointments } from './data/visitor-appointments'
+import { seedVehicles } from './data/vehicles'
 
 const MOCK_STORE_KEY = 'smart-park.mock-state.v13'
 const SESSION_DURATION_SECONDS = 2 * 60 * 60
@@ -31,6 +32,8 @@ export interface MockState {
   personnel: typeof seedPersonnel
   /** 访客预约数据 */
   visitorAppointments: typeof seedVisitorAppointments
+  /** 园区备案车辆档案 */
+  vehicles: typeof seedVehicles
   /** 当前有效或待清理的登录会话 */
   sessions: MockSession[]
 }
@@ -44,6 +47,7 @@ function createInitialState(): MockState {
     enterprises: structuredClone(seedEnterprises),
     personnel: structuredClone(seedPersonnel),
     visitorAppointments: structuredClone(seedVisitorAppointments),
+    vehicles: structuredClone(seedVehicles),
     sessions: [],
   }
 }
@@ -62,6 +66,7 @@ function isMockState(value: unknown): value is MockState {
     Array.isArray(state.enterprises) &&
     Array.isArray(state.personnel) &&
     Array.isArray(state.visitorAppointments) &&
+    Array.isArray(state.vehicles) &&
     Array.isArray(state.sessions)
   )
 }
@@ -80,8 +85,13 @@ export function getMockState(): MockState {
 
   try {
     const parsedState: unknown = JSON.parse(rawState)
-    if (isMockState(parsedState)) {
-      return parsedState
+    // 兼容已有演示数据，仅补充车辆模块，保留企业、人员和登录会话
+    const compatibleState = parsedState && typeof parsedState === 'object' && !('vehicles' in parsedState)
+      ? { ...parsedState, vehicles: structuredClone(seedVehicles) }
+      : parsedState
+    if (isMockState(compatibleState)) {
+      if (compatibleState !== parsedState) saveMockState(compatibleState)
+      return compatibleState
     }
   } catch {
     // 持久化数据无法解析时使用标准种子数据恢复演示环境
