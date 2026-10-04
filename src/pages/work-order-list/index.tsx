@@ -1,4 +1,4 @@
-import { Alert, App, Button, Flex } from 'antd'
+import { Alert, App, Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
@@ -230,10 +230,6 @@ function WorkOrderListPage() {
   return (
     <>
       <DataTablePageLayout className="work-order-list-page">
-        <Flex className="work-order-page-header" vertical gap={6}>
-          <h1>工单中心</h1>
-          <p>统一管理园区各类工单，提升问题处理效率</p>
-        </Flex>
         <WorkOrderSummary
           summary={summary}
           loading={summaryLoading}
