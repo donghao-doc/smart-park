@@ -23,7 +23,9 @@ function VisitorRecordsPage() {
   const currentUser = useUserStore((state) => state.currentUser)
   const enterpriseLocked = currentUser?.role.code === 'enterprise_user'
   const defaultEnterpriseId = currentUser?.enterprise?.id
-  const [enterpriseOptions, setEnterpriseOptions] = useState<NonNullable<SelectProps['options']>>([])
+  const [enterpriseOptions, setEnterpriseOptions] = useState<NonNullable<SelectProps['options']>>(
+    [],
+  )
   const [records, setRecords] = useState<VisitorRecordDto[]>([])
   const [summary, setSummary] = useState<VisitorRecordSummaryDto>()
   const [summaryError, setSummaryError] = useState(false)
@@ -46,9 +48,7 @@ function VisitorRecordsPage() {
       try {
         const result = await reqGetEnterprises({ page: 1, pageSize: 100 })
         if (active) {
-          setEnterpriseOptions(
-            result.list.map((item) => ({ label: item.name, value: item.id })),
-          )
+          setEnterpriseOptions(result.list.map((item) => ({ label: item.name, value: item.id })))
         }
       } catch {
         // 企业用户仍可展示所属企业，其余接口错误由统一 HTTP 层反馈
@@ -151,9 +151,15 @@ function VisitorRecordsPage() {
     setSelectedId(recordId)
   }
 
-  const visibleEnterpriseOptions = enterpriseLocked && currentUser?.enterprise
-    ? [{ label: currentUser.enterprise.name, value: currentUser.enterprise.id }]
-    : enterpriseOptions
+  const visibleEnterpriseOptions =
+    enterpriseLocked && currentUser?.enterprise
+      ? [
+          {
+            label: currentUser.enterprise.name,
+            value: currentUser.enterprise.id,
+          },
+        ]
+      : enterpriseOptions
 
   return (
     <>

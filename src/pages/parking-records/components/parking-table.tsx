@@ -2,7 +2,11 @@ import { ReloadOutlined } from '@ant-design/icons'
 import { Alert, Button, Flex, type TableColumnsType } from 'antd'
 
 import DataTablePanel from '@/components/data-table-panel'
-import type { ParkingRecordDto, ParkingRecordStatus, ParkingVehicleType } from '@/types/parking-record'
+import type {
+  ParkingRecordDto,
+  ParkingRecordStatus,
+  ParkingVehicleType,
+} from '@/types/parking-record'
 import { formatDateTime } from '@/utils'
 import { formatParkingDuration } from '@/utils/parking-record'
 import { parkingVehicleTypeLabels } from '../parking-options'
@@ -73,7 +77,7 @@ function ParkingTable({
       title: '出场时间',
       dataIndex: 'exitedAt',
       width: 168,
-      render: (time: string | null) => time ? formatDateTime(time) : '-',
+      render: (time: string | null) => (time ? formatDateTime(time) : '-'),
     },
     {
       title: '停留时长',
@@ -110,17 +114,25 @@ function ParkingTable({
       className="parking-table-panel"
       toolbar={
         <Flex flex={1} justify="end">
-          <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>刷新</Button>
+          <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>
+            刷新
+          </Button>
         </Flex>
       }
-      feedback={loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          title="停车记录加载失败"
-          action={<Button size="small" onClick={onReload}>重试</Button>}
-        />
-      ) : undefined}
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            title="停车记录加载失败"
+            action={
+              <Button size="small" onClick={onReload}>
+                重试
+              </Button>
+            }
+          />
+        ) : undefined
+      }
       tableProps={{
         rowKey: 'id',
         columns,

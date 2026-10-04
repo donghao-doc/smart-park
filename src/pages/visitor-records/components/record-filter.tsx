@@ -63,7 +63,9 @@ function RecordFilter({
         labelAlign="left"
         labelCol={{ flex: 'none' }}
         wrapperCol={{ flex: '1 1 0' }}
-        initialValues={{ enterpriseId: enterpriseLocked ? defaultEnterpriseId : undefined }}
+        initialValues={{
+          enterpriseId: enterpriseLocked ? defaultEnterpriseId : undefined,
+        }}
         onFinish={handleFinish}
       >
         <Row gutter={[24, 16]} align="middle">
@@ -103,10 +105,7 @@ function RecordFilter({
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="status"
-              label={<span className="record-filter-label">到访状态</span>}
-            >
+            <Form.Item name="status" label={<span className="record-filter-label">到访状态</span>}>
               <Select
                 allowClear
                 placeholder="请选择状态"

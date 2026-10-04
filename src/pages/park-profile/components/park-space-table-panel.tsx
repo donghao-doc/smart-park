@@ -1,11 +1,7 @@
 import type { TableColumnsType } from 'antd'
 import { Alert, Input, Select, Table, Tag } from 'antd'
 
-import type {
-  ParkBuildingDto,
-  ParkSpaceDto,
-  ParkSpaceStatus,
-} from '@/types/park-profile'
+import type { ParkBuildingDto, ParkSpaceDto, ParkSpaceStatus } from '@/types/park-profile'
 import './park-space-table-panel.scss'
 
 interface ParkSpaceTablePanelProps {

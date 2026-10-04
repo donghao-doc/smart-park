@@ -1,10 +1,6 @@
 import { Descriptions, Modal, Tag } from 'antd'
 
-import type {
-  PersonnelCertificateType,
-  PersonnelDto,
-  PersonnelStatus,
-} from '@/types/personnel'
+import type { PersonnelCertificateType, PersonnelDto, PersonnelStatus } from '@/types/personnel'
 import './personnel-detail-modal.scss'
 
 interface PersonnelDetailModalProps {
@@ -59,8 +55,16 @@ function PersonnelDetailModal({ open, personnel, onClose }: PersonnelDetailModal
               label: '证件号码',
               children: personnel.certificateNumber,
             },
-            { key: 'employeeNumber', label: '工号', children: personnel.employeeNumber },
-            { key: 'department', label: '部门', children: personnel.department },
+            {
+              key: 'employeeNumber',
+              label: '工号',
+              children: personnel.employeeNumber,
+            },
+            {
+              key: 'department',
+              label: '部门',
+              children: personnel.department,
+            },
             {
               key: 'enterpriseName',
               label: '所属企业',

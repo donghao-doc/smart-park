@@ -76,13 +76,19 @@ function DeviceFormModal({
       onOk={() => form.submit()}
     >
       {loading ? (
-        <Spin description="正在加载设备档案"><div className="device-form-loading" /></Spin>
+        <Spin description="正在加载设备档案">
+          <div className="device-form-loading" />
+        </Spin>
       ) : loadError ? (
         <Alert
           type="error"
           showIcon
           title="设备档案加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
+          action={
+            <Button size="small" onClick={onRetry}>
+              重试
+            </Button>
+          }
         />
       ) : (
         <Form
@@ -100,7 +106,10 @@ function DeviceFormModal({
                 normalize={normalizeDeviceCode}
                 rules={[
                   { required: true, message: '请输入设备编码' },
-                  { pattern: deviceCodePattern, message: '使用 3～30 位字母、数字、连字符或下划线' },
+                  {
+                    pattern: deviceCodePattern,
+                    message: '使用 3～30 位字母、数字、连字符或下划线',
+                  },
                 ]}
               >
                 <Input placeholder="如 DEV001，编码不可重复" maxLength={30} />
@@ -111,7 +120,11 @@ function DeviceFormModal({
                 name="name"
                 label="设备名称"
                 rules={[
-                  { required: true, whitespace: true, message: '请输入设备名称' },
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: '请输入设备名称',
+                  },
                   { max: 60, message: '设备名称不能超过 60 个字符' },
                 ]}
               >
@@ -119,7 +132,11 @@ function DeviceFormModal({
               </Form.Item>
             </Col>
             <Col xs={24} md={12}>
-              <Form.Item name="type" label="设备类型" rules={[{ required: true, message: '请选择设备类型' }]}>
+              <Form.Item
+                name="type"
+                label="设备类型"
+                rules={[{ required: true, message: '请选择设备类型' }]}
+              >
                 <Select options={deviceTypeOptions} />
               </Form.Item>
             </Col>
@@ -128,7 +145,11 @@ function DeviceFormModal({
                 name="location"
                 label="位置"
                 rules={[
-                  { required: true, whitespace: true, message: '请输入设备位置' },
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: '请输入设备位置',
+                  },
                   { max: 60, message: '位置不能超过 60 个字符' },
                 ]}
               >
@@ -145,7 +166,11 @@ function DeviceFormModal({
                 name="ownerName"
                 label="责任人"
                 rules={[
-                  { required: true, whitespace: true, message: '请输入责任人姓名' },
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: '请输入责任人姓名',
+                  },
                   { max: 30, message: '责任人姓名不能超过 30 个字符' },
                 ]}
               >
@@ -153,7 +178,11 @@ function DeviceFormModal({
               </Form.Item>
             </Col>
             <Col xs={24} md={12}>
-              <Form.Item name="status" label="状态" rules={[{ required: true, message: '请选择设备状态' }]}>
+              <Form.Item
+                name="status"
+                label="状态"
+                rules={[{ required: true, message: '请选择设备状态' }]}
+              >
                 <Select
                   options={deviceStatusOptions}
                   disabled={submitting || (editing && !canChangeStatus)}

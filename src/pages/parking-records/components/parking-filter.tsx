@@ -74,11 +74,7 @@ function ParkingFilter({ onSearch }: ParkingFilterProps) {
               name="vehicleType"
               label={<span className="parking-filter-label">车辆类型</span>}
             >
-              <Select
-                allowClear
-                placeholder="请选择车辆类型"
-                options={parkingVehicleTypeOptions}
-              />
+              <Select allowClear placeholder="请选择车辆类型" options={parkingVehicleTypeOptions} />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -96,17 +92,16 @@ function ParkingFilter({ onSearch }: ParkingFilterProps) {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="status"
-              label={<span className="parking-filter-label">停车状态</span>}
-            >
+            <Form.Item name="status" label={<span className="parking-filter-label">停车状态</span>}>
               <Select allowClear placeholder="请选择停车状态" options={parkingStatusOptions} />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
               <Col>
-                <Button type="primary" htmlType="submit">查询</Button>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
               </Col>
               <Col>
                 <Button onClick={handleReset}>重置</Button>

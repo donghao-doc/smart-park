@@ -21,6 +21,7 @@ export const parkingVehicleTypeOptions = Object.entries(parkingVehicleTypeLabels
 )
 
 /** 筛选表单可选停车状态 */
-export const parkingStatusOptions = Object.entries(parkingStatusLabels).map(
-  ([value, label]) => ({ value, label }),
-)
+export const parkingStatusOptions = Object.entries(parkingStatusLabels).map(([value, label]) => ({
+  value,
+  label,
+}))

@@ -4,7 +4,9 @@ import { reqGetOperationLog, reqGetOperationLogs } from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
 import type { OperationLogDetailDto, OperationLogDto } from '@/types/operation-log'
 import OperationLogDetailDrawer from './components/operation-log-detail-drawer'
-import OperationLogFilter, { type OperationLogFilterValues } from './components/operation-log-filter'
+import OperationLogFilter, {
+  type OperationLogFilterValues,
+} from './components/operation-log-filter'
 import OperationLogTable from './components/operation-log-table'
 import './operation-logs.scss'
 
@@ -45,7 +47,9 @@ function OperationLogsPage() {
       }
     })()
     // 快速切换筛选或分页时，旧响应不得覆盖新的查询结果
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [filters, page, pageSize, reloadVersion])
 
   useEffect(() => {
@@ -65,7 +69,9 @@ function OperationLogsPage() {
       }
     })()
     // 关闭抽屉或切换记录后，忽略仍在途中的旧详情响应
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [selectedId, detailVersion])
 
   /** 应用筛选并从第一页重新查询 */
@@ -83,13 +89,16 @@ function OperationLogsPage() {
   }
 
   /** 打开指定日志，先清除上一条详情以避免内容闪回 */
-  const handleView = useCallback((id: string) => {
-    if (id === selectedId) return
-    setDetail(undefined)
-    setDetailError(false)
-    setDetailLoading(true)
-    setSelectedId(id)
-  }, [selectedId])
+  const handleView = useCallback(
+    (id: string) => {
+      if (id === selectedId) return
+      setDetail(undefined)
+      setDetailError(false)
+      setDetailLoading(true)
+      setSelectedId(id)
+    },
+    [selectedId],
+  )
 
   /** 详情失败时保留抽屉并重新读取 */
   function handleRetryDetail() {

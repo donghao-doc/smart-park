@@ -183,15 +183,20 @@ function VisitorAppointmentsPage() {
   ) {
     setActionLoadingId(appointment.id)
     try {
-      await reqUpdateVisitorAppointmentStatus(appointment.id, { action, reason })
+      await reqUpdateVisitorAppointmentStatus(appointment.id, {
+        action,
+        reason,
+      })
       setReasonAppointment(undefined)
-      void message.success({
-        approve: '预约已通过',
-        reject: '预约已驳回',
-        check_in: '访客签到成功',
-        check_out: '访客签出成功',
-        cancel: '预约已取消',
-      }[action])
+      void message.success(
+        {
+          approve: '预约已通过',
+          reject: '预约已驳回',
+          check_in: '访客签到成功',
+          check_out: '访客签出成功',
+          cancel: '预约已取消',
+        }[action],
+      )
       reloadAppointments()
     } catch {
       // 接口错误由统一 HTTP 层展示

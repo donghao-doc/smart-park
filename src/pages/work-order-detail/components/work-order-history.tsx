@@ -16,7 +16,8 @@ function WorkOrderHistory({ order }: WorkOrderHistoryProps) {
       className="work-order-detail-history"
       items={order.history.map((entry) => ({
         key: entry.id,
-        color: entry.status === 'cancelled' ? 'orange' : entry.status === 'completed' ? 'green' : 'blue',
+        color:
+          entry.status === 'cancelled' ? 'orange' : entry.status === 'completed' ? 'green' : 'blue',
         content: (
           <Row gutter={[16, 8]}>
             <Col xs={24} md={8} xl={6}>

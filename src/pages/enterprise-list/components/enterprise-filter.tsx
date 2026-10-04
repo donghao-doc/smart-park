@@ -57,10 +57,7 @@ function EnterpriseFilter({ onSearch }: EnterpriseFilterProps) {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="status"
-              label={<span className="enterprise-filter-label">状态</span>}
-            >
+            <Form.Item name="status" label={<span className="enterprise-filter-label">状态</span>}>
               <Select allowClear placeholder="请选择状态" options={statusOptions} />
             </Form.Item>
           </Col>

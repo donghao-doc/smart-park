@@ -18,16 +18,28 @@ import {
  * 判断访客预约状态查询值是否合法
  */
 function isVisitorAppointmentStatus(value: unknown): value is VisitorAppointmentStatus {
-  return value === 'pending' || value === 'approved' || value === 'checked_in' ||
-    value === 'checked_out' || value === 'rejected' || value === 'cancelled' || value === 'expired'
+  return (
+    value === 'pending' ||
+    value === 'approved' ||
+    value === 'checked_in' ||
+    value === 'checked_out' ||
+    value === 'rejected' ||
+    value === 'cancelled' ||
+    value === 'expired'
+  )
 }
 
 /**
  * 判断访客预约流程动作是否合法
  */
 function isVisitorAppointmentAction(value: unknown): value is VisitorAppointmentAction {
-  return value === 'approve' || value === 'reject' || value === 'check_in' ||
-    value === 'check_out' || value === 'cancel'
+  return (
+    value === 'approve' ||
+    value === 'reject' ||
+    value === 'check_in' ||
+    value === 'check_out' ||
+    value === 'cancel'
+  )
 }
 
 /**
@@ -52,7 +64,13 @@ function isDateValue(value: string | null) {
 /**
  * 将已超过预约结束时间且未签到的记录更新为已过期
  */
-function refreshExpiredAppointments(appointments: Array<{ status: VisitorAppointmentStatus; scheduledEndAt: string; updatedAt: string }>) {
+function refreshExpiredAppointments(
+  appointments: Array<{
+    status: VisitorAppointmentStatus
+    scheduledEndAt: string
+    updatedAt: string
+  }>,
+) {
   const now = Date.now()
   let changed = false
 
@@ -101,11 +119,14 @@ function getActionRule(action: VisitorAppointmentAction): {
       allowedStatuses: ['pending', 'approved'],
       targetStatus: 'cancelled',
     },
-  } satisfies Record<VisitorAppointmentAction, {
-    permission: PermissionCode
-    allowedStatuses: VisitorAppointmentStatus[]
-    targetStatus: VisitorAppointmentStatus
-  }>
+  } satisfies Record<
+    VisitorAppointmentAction,
+    {
+      permission: PermissionCode
+      allowedStatuses: VisitorAppointmentStatus[]
+      targetStatus: VisitorAppointmentStatus
+    }
+  >
 
   return rules[action]
 }
@@ -140,7 +161,10 @@ function validateCreatePayload(body: Partial<CreateVisitorAppointmentRequest>) {
     return '预约开始时间必须晚于当前时间'
   }
 
-  if (body.plateNumber && !/^[\u4e00-\u9fa5][A-Z][A-Z0-9]{5,6}$/.test(body.plateNumber.trim().toUpperCase())) {
+  if (
+    body.plateNumber &&
+    !/^[\u4e00-\u9fa5][A-Z][A-Z0-9]{5,6}$/.test(body.plateNumber.trim().toUpperCase())
+  ) {
     return '请输入有效的车牌号'
   }
 
@@ -160,9 +184,12 @@ export const visitorAppointmentHandlers = [
       saveMockState(auth.state)
     }
 
-    const scopedAppointments = auth.user.roleCode === 'enterprise_user'
-      ? auth.state.visitorAppointments.filter((item) => item.enterpriseId === auth.user.enterpriseId)
-      : auth.state.visitorAppointments
+    const scopedAppointments =
+      auth.user.roleCode === 'enterprise_user'
+        ? auth.state.visitorAppointments.filter(
+            (item) => item.enterpriseId === auth.user.enterpriseId,
+          )
+        : auth.state.visitorAppointments
     const count = (status: VisitorAppointmentStatus) =>
       scopedAppointments.filter((item) => item.status === status).length
     const includeHistoricalBase = auth.user.roleCode !== 'enterprise_user'
@@ -211,9 +238,12 @@ export const visitorAppointmentHandlers = [
       return createErrorResponse(400, 40062, '预约日期筛选条件不正确')
     }
 
-    const scopedAppointments = auth.user.roleCode === 'enterprise_user'
-      ? auth.state.visitorAppointments.filter((item) => item.enterpriseId === auth.user.enterpriseId)
-      : auth.state.visitorAppointments
+    const scopedAppointments =
+      auth.user.roleCode === 'enterprise_user'
+        ? auth.state.visitorAppointments.filter(
+            (item) => item.enterpriseId === auth.user.enterpriseId,
+          )
+        : auth.state.visitorAppointments
     const filteredAppointments = scopedAppointments.filter((item) => {
       const scheduledDate = item.scheduledStartAt.slice(0, 10)
       const matchesVisitor = !visitorName || item.visitorName.toLowerCase().includes(visitorName)
@@ -221,7 +251,9 @@ export const visitorAppointmentHandlers = [
       const matchesStartDate = !startDate || scheduledDate >= startDate
       const matchesEndDate = !endDate || scheduledDate <= endDate
       const matchesStatus = !status || item.status === status
-      return matchesVisitor && matchesEnterprise && matchesStartDate && matchesEndDate && matchesStatus
+      return (
+        matchesVisitor && matchesEnterprise && matchesStartDate && matchesEndDate && matchesStatus
+      )
     })
     const start = (page - 1) * pageSize
 

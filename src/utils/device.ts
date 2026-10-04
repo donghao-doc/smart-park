@@ -20,10 +20,16 @@ export const deviceStatusLabels: Record<DeviceStatus, string> = {
 }
 
 /** 设备分类筛选和表单共用选项 */
-export const deviceTypeOptions = Object.entries(deviceTypeLabels).map(([value, label]) => ({ value, label }))
+export const deviceTypeOptions = Object.entries(deviceTypeLabels).map(([value, label]) => ({
+  value,
+  label,
+}))
 
 /** 设备状态筛选和表单共用选项 */
-export const deviceStatusOptions = Object.entries(deviceStatusLabels).map(([value, label]) => ({ value, label }))
+export const deviceStatusOptions = Object.entries(deviceStatusLabels).map(([value, label]) => ({
+  value,
+  label,
+}))
 
 /** 设备编码仅允许字母、数字、连字符和下划线，长度为 3～30 */
 export const deviceCodePattern = /^[A-Z0-9][A-Z0-9_-]{2,29}$/

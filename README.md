@@ -10,17 +10,17 @@
 
 ## 代码风格与编辑器
 
-项目代码每行最多 80 列，超出时必须按语法层次换行。
+项目代码每行最多 100 列，超出时必须按语法层次换行。
 行长包含缩进，Tab 按 2 列计算，Unicode 字符各计 1 列。
 注释、字符串、模板字符串、正则和 URL 均不豁免。
 
 - JS、TS、JSX、TSX：由 Oxlint 的 `@stylistic/max-len` 检查
 - CSS、SCSS、HTML、JSON、JSONC：由 ESLint 复用同一行长规则检查
-- Prettier 的 `printWidth: 80` 负责格式化；无法自动拆开的长行仍会报错
+- Prettier 的 `printWidth: 100` 负责格式化；无法自动拆开的长行仍会报错
 - 构建产物、依赖、设计文档和自动生成的 MSW Worker 不参与行长检查
 
 VS Code / Cursor：安装 `.vscode/extensions.json` 推荐的 Oxc、ESLint
-和 Prettier 扩展。工作区已配置输入时检查、错误标记、80 列参考线及保存格式化。
+和 Prettier 扩展。工作区已配置输入时检查、错误标记、100 列参考线及保存格式化。
 参考线和编辑器软换行不会消除行长错误，必须实际修改源代码。
 
 WebStorm / IntelliJ IDEA：安装 Oxc 插件，启用项目的 ESLint 配置。

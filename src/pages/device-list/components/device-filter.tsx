@@ -45,7 +45,11 @@ function DeviceFilter({
             type="warning"
             showIcon
             title="位置选项加载失败"
-            action={<Button size="small" onClick={onRetryLocations}>重试</Button>}
+            action={
+              <Button size="small" onClick={onRetryLocations}>
+                重试
+              </Button>
+            }
           />
         ) : null}
         <Form
@@ -59,7 +63,10 @@ function DeviceFilter({
         >
           <Row gutter={[24, 16]} align="middle">
             <Col xs={24} md={12} lg={8}>
-              <Form.Item name="keyword" label={<span className="device-filter-label">设备名称</span>}>
+              <Form.Item
+                name="keyword"
+                label={<span className="device-filter-label">设备名称</span>}
+              >
                 <Input
                   allowClear
                   prefix={<SearchOutlined />}
@@ -92,8 +99,14 @@ function DeviceFilter({
             </Col>
             <Col xs={24} md={24} lg={16}>
               <Row gutter={12} justify="end" wrap={false}>
-                <Col><Button type="primary" htmlType="submit">查询</Button></Col>
-                <Col><Button onClick={handleReset}>重置</Button></Col>
+                <Col>
+                  <Button type="primary" htmlType="submit">
+                    查询
+                  </Button>
+                </Col>
+                <Col>
+                  <Button onClick={handleReset}>重置</Button>
+                </Col>
               </Row>
             </Col>
           </Row>

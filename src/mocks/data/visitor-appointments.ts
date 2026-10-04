@@ -1,13 +1,43 @@
-import type {
-  VisitorAppointmentDto,
-  VisitorAppointmentStatus,
-} from '@/types/visitor-appointment'
+import type { VisitorAppointmentDto, VisitorAppointmentStatus } from '@/types/visitor-appointment'
 import { seedEnterprises } from './enterprises'
 import { seedPersonnel } from './personnel'
 
-const visitorNames = ['李明', '张华', '王强', '刘敏', '陈磊', '赵丽', '周伟', '杨洋', '何雪', '高飞', '林晓', '孙宁']
-const plateNumbers = ['京A12345', '沪B67890', '粤C33333', '京D88888', '沪A55555', '京A99999', '苏E11111', '浙F22222', '粤B76543', '杭A24680']
-const visitReasons = ['商务洽谈', '项目交流', '合同签署', '产品演示', '设备维护', '面试沟通', '客户拜访', '技术交流']
+const visitorNames = [
+  '李明',
+  '张华',
+  '王强',
+  '刘敏',
+  '陈磊',
+  '赵丽',
+  '周伟',
+  '杨洋',
+  '何雪',
+  '高飞',
+  '林晓',
+  '孙宁',
+]
+const plateNumbers = [
+  '京A12345',
+  '沪B67890',
+  '粤C33333',
+  '京D88888',
+  '沪A55555',
+  '京A99999',
+  '苏E11111',
+  '浙F22222',
+  '粤B76543',
+  '杭A24680',
+]
+const visitReasons = [
+  '商务洽谈',
+  '项目交流',
+  '合同签署',
+  '产品演示',
+  '设备维护',
+  '面试沟通',
+  '客户拜访',
+  '技术交流',
+]
 
 const remainingStatuses: VisitorAppointmentStatus[] = [
   ...Array<VisitorAppointmentStatus>(16).fill('pending'),
@@ -54,18 +84,16 @@ function createVisitorAppointment(index: number): VisitorAppointmentDto {
     (person) => person.enterpriseId === enterprise.id && person.status === 'active',
   )
   const host = hostCandidates[index % hostCandidates.length]
-  const dayOffset = status === 'approved' || status === 'pending'
-    ? 1 + (index % 5)
-    : -(index % 12)
+  const dayOffset = status === 'approved' || status === 'pending' ? 1 + (index % 5) : -(index % 12)
   const startHour = 9 + (index % 8)
   const scheduledStartAt = createRelativeIso(dayOffset, startHour, index % 2 === 0 ? 0 : 30)
   const scheduledEndAt = createRelativeIso(dayOffset, startHour + 1, index % 2 === 0 ? 0 : 30)
-  const checkedInAt = status === 'checked_in' || status === 'checked_out'
-    ? createRelativeIso(dayOffset, startHour, 5 + (index % 10))
-    : null
-  const checkedOutAt = status === 'checked_out'
-    ? createRelativeIso(dayOffset, startHour + 1, 10 + (index % 12))
-    : null
+  const checkedInAt =
+    status === 'checked_in' || status === 'checked_out'
+      ? createRelativeIso(dayOffset, startHour, 5 + (index % 10))
+      : null
+  const checkedOutAt =
+    status === 'checked_out' ? createRelativeIso(dayOffset, startHour + 1, 10 + (index % 12)) : null
   const createdAt = createRelativeIso(dayOffset - 2, 10, index % 60)
 
   return {
@@ -82,11 +110,8 @@ function createVisitorAppointment(index: number): VisitorAppointmentDto {
     visitReason: visitReasons[index % visitReasons.length],
     plateNumber: index % 4 === 2 ? null : plateNumbers[index % plateNumbers.length],
     status,
-    terminationReason: status === 'rejected'
-      ? '来访信息不完整'
-      : status === 'cancelled'
-        ? '访客行程有变'
-        : null,
+    terminationReason:
+      status === 'rejected' ? '来访信息不完整' : status === 'cancelled' ? '访客行程有变' : null,
     checkedInAt,
     checkedOutAt,
     createdBy: index % 3 === 0 ? 'usr_1002' : 'usr_1003',

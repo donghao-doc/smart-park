@@ -1,13 +1,18 @@
-import type {
-  PersonnelCertificateType,
-  PersonnelDto,
-  PersonnelStatus,
-} from '@/types/personnel'
+import type { PersonnelCertificateType, PersonnelDto, PersonnelStatus } from '@/types/personnel'
 import { seedEnterprises } from './enterprises'
 
 const familyNames = ['张', '李', '王', '赵', '孙', '周', '吴', '郑', '陈', '刘', '杨', '黄']
 const givenNames = ['三', '四', '五', '六', '七', '八', '九', '十', '一', '二', '明', '芳']
-const departments = ['综合管理部', '技术研发部', '产品部', '市场部', '运营部', '财务部', '人力资源部', '行政部']
+const departments = [
+  '综合管理部',
+  '技术研发部',
+  '产品部',
+  '市场部',
+  '运营部',
+  '财务部',
+  '人力资源部',
+  '行政部',
+]
 
 /**
  * 创建指定序号的人员种子数据
@@ -15,22 +20,17 @@ const departments = ['综合管理部', '技术研发部', '产品部', '市场�
 function createPersonnel(index: number): PersonnelDto {
   const sequence = index + 1
   const enterprise = seedEnterprises[index % 6]
-  const status: PersonnelStatus = index % 11 === 2
-    ? 'resigned'
-    : index % 11 === 5
-      ? 'suspended'
-      : 'active'
-  const certificateType: PersonnelCertificateType = index % 13 === 7
-    ? 'hk_macao_permit'
-    : index % 13 === 3
-      ? 'passport'
-      : 'identity_card'
+  const status: PersonnelStatus =
+    index % 11 === 2 ? 'resigned' : index % 11 === 5 ? 'suspended' : 'active'
+  const certificateType: PersonnelCertificateType =
+    index % 13 === 7 ? 'hk_macao_permit' : index % 13 === 3 ? 'passport' : 'identity_card'
   const birthDate = `${1990 + (index % 10)}${String((index % 12) + 1).padStart(2, '0')}${String((index % 28) + 1).padStart(2, '0')}`
-  const certificateNumber = certificateType === 'identity_card'
-    ? `330106${birthDate}${String(100 + (sequence % 899)).padStart(3, '0')}${index % 2 === 0 ? '8' : 'X'}`
-    : certificateType === 'passport'
-      ? `E${String(12_345_678 + index * 97).slice(-8)}`
-      : `H${String(12_345_678 + index * 113).slice(-8)}`
+  const certificateNumber =
+    certificateType === 'identity_card'
+      ? `330106${birthDate}${String(100 + (sequence % 899)).padStart(3, '0')}${index % 2 === 0 ? '8' : 'X'}`
+      : certificateType === 'passport'
+        ? `E${String(12_345_678 + index * 97).slice(-8)}`
+        : `H${String(12_345_678 + index * 113).slice(-8)}`
 
   return {
     id: `per_${String(1001 + index)}`,

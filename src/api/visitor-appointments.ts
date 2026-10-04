@@ -12,7 +12,9 @@ import type {
  * 分页查询访客预约列表
  */
 export async function reqGetVisitorAppointments(params: VisitorAppointmentListParams = {}) {
-  return http.get<VisitorAppointmentPageResult>('/visitor-appointments', { params })
+  return http.get<VisitorAppointmentPageResult>('/visitor-appointments', {
+    params,
+  })
 }
 
 /**

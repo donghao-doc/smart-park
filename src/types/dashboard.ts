@@ -7,12 +7,7 @@ export type DashboardTrendRange = '7d' | '30d' | 'custom'
  * Dashboard 指标业务类型
  */
 export type DashboardMetricKey =
-  | 'enterprise'
-  | 'personnel'
-  | 'visitor'
-  | 'vehicle'
-  | 'workOrder'
-  | 'device'
+  'enterprise' | 'personnel' | 'visitor' | 'vehicle' | 'workOrder' | 'device'
 
 /**
  * 指标变化方向，用于选择趋势颜色和箭头

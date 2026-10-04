@@ -24,12 +24,18 @@ function WorkOrderProgress({ order }: WorkOrderProgressProps) {
   const completed = order.status === 'completed'
   const cancelled = order.status === 'cancelled'
   const previousStatus = history.filter((entry) => entry.status !== 'cancelled').at(-1)?.status
-  const current = stageIndexes[cancelled ? previousStatus ?? 'pending_acceptance' : order.status]
+  const current = stageIndexes[cancelled ? (previousStatus ?? 'pending_acceptance') : order.status]
   const stages = [
-    { title: history[0]?.action === 'reopen' ? '重新打开' : '工单创建', action: history[0]?.action },
+    {
+      title: history[0]?.action === 'reopen' ? '重新打开' : '工单创建',
+      action: history[0]?.action,
+    },
     { title: '工单受理', action: 'accept' },
     { title: '处理中', action: 'start' },
-    { title: completed ? '已完成' : '待确认', action: completed ? 'confirm' : 'submit' },
+    {
+      title: completed ? '已完成' : '待确认',
+      action: completed ? 'confirm' : 'submit',
+    },
   ]
 
   return (
@@ -48,7 +54,13 @@ function WorkOrderProgress({ order }: WorkOrderProgressProps) {
           }
         })}
       />
-      {cancelled ? <Alert className="work-order-detail-notice" type="warning" title="工单已取消，可由管理员重新打开" /> : null}
+      {cancelled ? (
+        <Alert
+          className="work-order-detail-notice"
+          type="warning"
+          title="工单已取消，可由管理员重新打开"
+        />
+      ) : null}
     </>
   )
 }

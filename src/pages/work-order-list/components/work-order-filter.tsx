@@ -45,21 +45,33 @@ function WorkOrderFilter({ enterpriseOptions, optionsLoading, onSearch }: WorkOr
       >
         <Row gutter={[24, 16]} align="middle">
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="code" label={<span className="work-order-filter-label">工单编号</span>}>
+            <Form.Item
+              name="code"
+              label={<span className="work-order-filter-label">工单编号</span>}
+            >
               <Input allowClear placeholder="请输入工单编号" suffix={<SearchOutlined />} />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="type" label={<span className="work-order-filter-label">工单类型</span>}>
+            <Form.Item
+              name="type"
+              label={<span className="work-order-filter-label">工单类型</span>}
+            >
               <Select
                 allowClear
                 placeholder="请选择工单类型"
-                options={Object.entries(workOrderTypeLabels).map(([value, label]) => ({ value, label }))}
+                options={Object.entries(workOrderTypeLabels).map(([value, label]) => ({
+                  value,
+                  label,
+                }))}
               />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="enterpriseId" label={<span className="work-order-filter-label">所属企业</span>}>
+            <Form.Item
+              name="enterpriseId"
+              label={<span className="work-order-filter-label">所属企业</span>}
+            >
               <Select
                 allowClear
                 showSearch
@@ -71,18 +83,30 @@ function WorkOrderFilter({ enterpriseOptions, optionsLoading, onSearch }: WorkOr
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="status" label={<span className="work-order-filter-label">工单状态</span>}>
+            <Form.Item
+              name="status"
+              label={<span className="work-order-filter-label">工单状态</span>}
+            >
               <Select
                 allowClear
                 placeholder="请选择状态"
-                options={Object.entries(workOrderStatusLabels).map(([value, label]) => ({ value, label }))}
+                options={Object.entries(workOrderStatusLabels).map(([value, label]) => ({
+                  value,
+                  label,
+                }))}
               />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
-              <Col><Button type="primary" htmlType="submit">查询</Button></Col>
-              <Col><Button onClick={handleReset}>重置</Button></Col>
+              <Col>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={handleReset}>重置</Button>
+              </Col>
             </Row>
           </Col>
         </Row>

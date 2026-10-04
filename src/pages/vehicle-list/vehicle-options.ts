@@ -13,11 +13,13 @@ export const vehicleStatusLabels: Record<VehicleStatus, string> = {
 }
 
 /** 车辆筛选和登记表单使用的类型选项 */
-export const vehicleTypeOptions = Object.entries(vehicleTypeLabels).map(([value, label]) =>
-  ({ value, label }),
-)
+export const vehicleTypeOptions = Object.entries(vehicleTypeLabels).map(([value, label]) => ({
+  value,
+  label,
+}))
 
 /** 车辆筛选和登记表单使用的状态选项 */
-export const vehicleStatusOptions = Object.entries(vehicleStatusLabels).map(([value, label]) =>
-  ({ value, label }),
-)
+export const vehicleStatusOptions = Object.entries(vehicleStatusLabels).map(([value, label]) => ({
+  value,
+  label,
+}))

@@ -16,10 +16,30 @@ interface AppointmentSummaryProps {
 }
 
 const summaryItems = [
-  { key: 'pending', label: '待审批', deltaKey: 'pendingDelta', icon: <HourglassOutlined /> },
-  { key: 'approved', label: '待到访', deltaKey: 'approvedDelta', icon: <ClockCircleOutlined /> },
-  { key: 'checkedIn', label: '已到访', deltaKey: 'checkedInDelta', icon: <UserOutlined /> },
-  { key: 'checkedOut', label: '已离园', deltaKey: 'checkedOutDelta', icon: <ExportOutlined /> },
+  {
+    key: 'pending',
+    label: '待审批',
+    deltaKey: 'pendingDelta',
+    icon: <HourglassOutlined />,
+  },
+  {
+    key: 'approved',
+    label: '待到访',
+    deltaKey: 'approvedDelta',
+    icon: <ClockCircleOutlined />,
+  },
+  {
+    key: 'checkedIn',
+    label: '已到访',
+    deltaKey: 'checkedInDelta',
+    icon: <UserOutlined />,
+  },
+  {
+    key: 'checkedOut',
+    label: '已离园',
+    deltaKey: 'checkedOutDelta',
+    icon: <ExportOutlined />,
+  },
 ] as const
 
 /**
@@ -42,7 +62,9 @@ function AppointmentSummary({ summary, loadError }: AppointmentSummaryProps) {
               <Card className={`appointment-metric-card is-${item.key}`}>
                 {summary ? (
                   <div className="appointment-metric-content">
-                    <div className="appointment-metric-icon" aria-hidden="true">{item.icon}</div>
+                    <div className="appointment-metric-icon" aria-hidden="true">
+                      {item.icon}
+                    </div>
                     <div>
                       <div className="appointment-metric-label">{item.label}</div>
                       <div className="appointment-metric-value">
@@ -51,7 +73,8 @@ function AppointmentSummary({ summary, loadError }: AppointmentSummaryProps) {
                       </div>
                       <div className={`appointment-metric-delta ${deltaClassName}`}>
                         <span>
-                          {delta !== undefined && delta > 0 ? '↑ +' : '↓ -'}{Math.abs(delta ?? 0)}
+                          {delta !== undefined && delta > 0 ? '↑ +' : '↓ -'}
+                          {Math.abs(delta ?? 0)}
                         </span>
                         <span className="appointment-metric-compare">较上周</span>
                       </div>

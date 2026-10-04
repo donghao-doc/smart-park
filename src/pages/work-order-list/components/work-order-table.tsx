@@ -3,7 +3,12 @@ import { Alert, Button, Dropdown, Flex, type TableColumnsType } from 'antd'
 
 import DataTablePanel from '@/components/data-table-panel'
 import type { UserDto } from '@/types/auth'
-import type { WorkOrderAction, WorkOrderDto, WorkOrderPriority, WorkOrderType } from '@/types/work-order'
+import type {
+  WorkOrderAction,
+  WorkOrderDto,
+  WorkOrderPriority,
+  WorkOrderType,
+} from '@/types/work-order'
 import { formatDateTime } from '@/utils'
 import { getWorkOrderActions, workOrderActionLabels, workOrderTypeLabels } from '@/utils/work-order'
 import { WorkOrderPriorityTag, WorkOrderStatusTag } from './work-order-tag'
@@ -120,7 +125,9 @@ function WorkOrderTable({
         }
         return (
           <Flex align="center" gap={14}>
-            <Button type="link" onClick={() => onView(order.id)}>查看</Button>
+            <Button type="link" onClick={() => onView(order.id)}>
+              查看
+            </Button>
             {primaryAction ? (
               <Button type="link" onClick={() => onAction(order, primaryAction)}>
                 {actionLabels[primaryAction] ?? workOrderActionLabels[primaryAction]}
@@ -138,7 +145,11 @@ function WorkOrderTable({
                   onClick: ({ key }) => onAction(order, key as WorkOrderAction),
                 }}
               >
-                <Button type="text" icon={<MoreOutlined />} aria-label={`工单${order.code}的更多操作`} />
+                <Button
+                  type="text"
+                  icon={<MoreOutlined />}
+                  aria-label={`工单${order.code}的更多操作`}
+                />
               </Dropdown>
             ) : null}
           </Flex>
@@ -151,25 +162,31 @@ function WorkOrderTable({
       ariaLabel="工单列表"
       className="work-order-table-panel"
       toolbar={
-        <Flex
-          flex={1}
-          justify={canCreate ? 'space-between' : 'end'}
-          align="center"
-        >
+        <Flex flex={1} justify={canCreate ? 'space-between' : 'end'} align="center">
           {canCreate ? (
-            <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>创建工单</Button>
+            <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+              创建工单
+            </Button>
           ) : null}
-          <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>刷新</Button>
+          <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>
+            刷新
+          </Button>
         </Flex>
       }
-      feedback={loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          title="工单列表加载失败"
-          action={<Button size="small" onClick={onReload}>重试</Button>}
-        />
-      ) : undefined}
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            title="工单列表加载失败"
+            action={
+              <Button size="small" onClick={onReload}>
+                重试
+              </Button>
+            }
+          />
+        ) : undefined
+      }
       tableProps={{
         rowKey: 'id',
         columns,

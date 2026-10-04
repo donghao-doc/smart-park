@@ -3,11 +3,7 @@ import { createBrowserRouter, redirect, type RouteObject } from 'react-router'
 import RouteLoadingFallback from '@/components/route-loading'
 import AdminLayout from '@/layout'
 import { useAuthStore } from '@/stores/auth'
-import {
-  DYNAMIC_ROUTE_PARENT_ID,
-  getFirstMenuPath,
-  initializeMenuRoutes,
-} from './dynamic-routes'
+import { DYNAMIC_ROUTE_PARENT_ID, getFirstMenuPath, initializeMenuRoutes } from './dynamic-routes'
 import { lazyPage, preventRepeatedLogin, requireAuthentication } from './utils'
 
 /**

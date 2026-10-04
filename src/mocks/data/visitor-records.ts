@@ -4,7 +4,18 @@ import type { VisitorRecordDto, VisitorRecordStatus } from '@/types/visitor-reco
 import { seedEnterprises } from './enterprises'
 import { seedPersonnel } from './personnel'
 
-const visitorNames = ['李明', '张强', '王芳', '赵磊', '陈静', '刘伟', '杨洋', '黄磊', '周敏', '吴磊']
+const visitorNames = [
+  '李明',
+  '张强',
+  '王芳',
+  '赵磊',
+  '陈静',
+  '刘伟',
+  '杨洋',
+  '黄磊',
+  '周敏',
+  '吴磊',
+]
 const statuses: VisitorRecordStatus[] = [
   'checked_out',
   'checked_in',
@@ -20,17 +31,19 @@ function createVisitorRecord(index: number): VisitorRecordDto {
   const hosts = seedPersonnel.filter((person) => person.enterpriseId === enterprise.id)
   const host = hosts[index % hosts.length]
   // 前两组用于演示今日、昨日统计，其余记录覆盖更早日期
-  const dayOffset = index < 80 ? Math.floor(index / 40) : 2 + index % 8
+  const dayOffset = index < 80 ? Math.floor(index / 40) : 2 + (index % 8)
   const now = dayjs()
   const elapsedToday = now.diff(now.startOf('day'))
   // 凌晨也保留今日演示记录，所有进出时间都落在当前时刻之前
   const duration = dayOffset === 0 ? Math.min(3_600_000, elapsedToday * 0.08) : 3_600_000
-  const scheduled = dayOffset === 0
-    ? now.startOf('day').add(elapsedToday * (0.6 - (index % 40) * 0.01), 'millisecond')
-    : now.startOf('day')
-      .subtract(dayOffset, 'day')
-      .add(9, 'hour')
-      .add((index % 40) * 15, 'minute')
+  const scheduled =
+    dayOffset === 0
+      ? now.startOf('day').add(elapsedToday * (0.6 - (index % 40) * 0.01), 'millisecond')
+      : now
+          .startOf('day')
+          .subtract(dayOffset, 'day')
+          .add(9, 'hour')
+          .add((index % 40) * 15, 'minute')
   const status = statuses[(index + Math.floor(index / 10)) % statuses.length]
   const checkedIn = status === 'expired' ? null : scheduled.add(duration / 12, 'millisecond')
 
@@ -48,14 +61,14 @@ function createVisitorRecord(index: number): VisitorRecordDto {
     plateNumber: index % 3 === 0 ? `京A${String(12_345 + index)}` : null,
     status,
     checkedInAt: checkedIn?.toISOString() ?? null,
-    checkedOutAt: status === 'checked_out'
-      ? checkedIn!.add(duration * 0.75, 'millisecond').toISOString()
-      : null,
+    checkedOutAt:
+      status === 'checked_out'
+        ? checkedIn!.add(duration * 0.75, 'millisecond').toISOString()
+        : null,
   }
 }
 
 /** 128 条只读历史记录，接口同时合并预约模块实时产生的到访记录 */
-export const seedVisitorRecords: VisitorRecordDto[] = Array.from(
-  { length: 128 },
-  (_, index) => createVisitorRecord(index),
+export const seedVisitorRecords: VisitorRecordDto[] = Array.from({ length: 128 }, (_, index) =>
+  createVisitorRecord(index),
 )

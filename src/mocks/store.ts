@@ -99,16 +99,23 @@ export function getMockState(): MockState {
   try {
     const parsedState: unknown = JSON.parse(rawState)
     // 增量补充新增业务模块，保留已有企业、人员和登录会话
-    const compatibleState = parsedState && typeof parsedState === 'object' && (
-      !('vehicles' in parsedState) || !('workOrders' in parsedState) || !('devices' in parsedState)
-    )
-      ? {
-          ...parsedState,
-          vehicles: 'vehicles' in parsedState ? parsedState.vehicles : structuredClone(seedVehicles),
-          workOrders: 'workOrders' in parsedState ? parsedState.workOrders : structuredClone(seedWorkOrders),
-          devices: 'devices' in parsedState ? parsedState.devices : structuredClone(seedDevices),
-        }
-      : parsedState
+    const compatibleState =
+      parsedState &&
+      typeof parsedState === 'object' &&
+      (!('vehicles' in parsedState) ||
+        !('workOrders' in parsedState) ||
+        !('devices' in parsedState))
+        ? {
+            ...parsedState,
+            vehicles:
+              'vehicles' in parsedState ? parsedState.vehicles : structuredClone(seedVehicles),
+            workOrders:
+              'workOrders' in parsedState
+                ? parsedState.workOrders
+                : structuredClone(seedWorkOrders),
+            devices: 'devices' in parsedState ? parsedState.devices : structuredClone(seedDevices),
+          }
+        : parsedState
     if (isMockState(compatibleState)) {
       // 旧存储只补充缺失的账号，保留已编辑资料、密码、启停状态和会话
       const usersMigrated = compatibleState.userSeedVersion !== 1
@@ -118,8 +125,8 @@ export function getMockState(): MockState {
           compatibleState.users.map((user) => user.username.toLowerCase()),
         )
         const missingUsers = seedUsers.filter(
-          (user) => !existingIds.has(user.id) &&
-            !existingUsernames.has(user.username.toLowerCase()),
+          (user) =>
+            !existingIds.has(user.id) && !existingUsernames.has(user.username.toLowerCase()),
         )
         compatibleState.users.push(...structuredClone(missingUsers))
         compatibleState.userSeedVersion = 1
@@ -131,7 +138,7 @@ export function getMockState(): MockState {
           const legacy = order as typeof order & { imageNames?: string[] }
           order.images = structuredClone(
             seedWorkOrders.find((item) => item.id === order.id)?.images ??
-            (legacy.imageNames?.length ? [workOrderSampleImages[0]] : []),
+              (legacy.imageNames?.length ? [workOrderSampleImages[0]] : []),
           )
           delete legacy.imageNames
           imagesMigrated = true

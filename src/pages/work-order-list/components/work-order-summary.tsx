@@ -40,7 +40,11 @@ function WorkOrderSummary({ summary, loading, loadError, onRetry }: WorkOrderSum
         type="error"
         showIcon
         title="工单统计加载失败"
-        action={<Button size="small" onClick={onRetry}>重试</Button>}
+        action={
+          <Button size="small" onClick={onRetry}>
+            重试
+          </Button>
+        }
       />
     )
   }
@@ -50,13 +54,7 @@ function WorkOrderSummary({ summary, loading, loadError, onRetry }: WorkOrderSum
         {metrics.map((metric) => {
           const value = summary?.find((item) => item.status === metric.status)
           return (
-            <Col
-              key={metric.status}
-              xs={24}
-              sm={12}
-              lg={8}
-              xl={{ flex: '1 1 20%' }}
-            >
+            <Col key={metric.status} xs={24} sm={12} lg={8} xl={{ flex: '1 1 20%' }}>
               <Card className={`work-order-metric-card is-${metric.status}`}>
                 {value ? (
                   <Flex align="start" gap={16}>
@@ -84,13 +82,18 @@ function WorkOrderSummary({ summary, loading, loadError, onRetry }: WorkOrderSum
                         >
                           {value.change > 0 ? <ArrowUpOutlined /> : null}
                           {value.change < 0 ? <ArrowDownOutlined /> : null}
-                          <span>{value.change > 0 ? '+' : ''}{value.change}</span>
+                          <span>
+                            {value.change > 0 ? '+' : ''}
+                            {value.change}
+                          </span>
                         </Flex>
                         <span>较上周</span>
                       </Flex>
                     </div>
                   </Flex>
-                ) : <Skeleton active title={false} paragraph={{ rows: 3 }} />}
+                ) : (
+                  <Skeleton active title={false} paragraph={{ rows: 3 }} />
+                )}
               </Card>
             </Col>
           )

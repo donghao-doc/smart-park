@@ -100,7 +100,12 @@ function AppointmentTable({
         render: (phone: string) => maskPhoneNumber(phone),
       },
       { title: '受访人', dataIndex: 'hostName', width: 90 },
-      { title: '所属企业', dataIndex: 'enterpriseName', width: 210, ellipsis: true },
+      {
+        title: '所属企业',
+        dataIndex: 'enterpriseName',
+        width: 210,
+        ellipsis: true,
+      },
       {
         title: '预约时间',
         dataIndex: 'scheduledStartAt',
@@ -125,7 +130,9 @@ function AppointmentTable({
           )
           return record.terminationReason ? (
             <Tooltip title={record.terminationReason}>{tag}</Tooltip>
-          ) : tag
+          ) : (
+            tag
+          )
         },
       },
       {
@@ -135,10 +142,10 @@ function AppointmentTable({
         fixed: 'right',
         render: (_value, record) => {
           const updating = actionLoadingId === record.id
-          const cancelItem: MenuProps['items'] = canCancel &&
-            (record.status === 'pending' || record.status === 'approved')
-            ? [{ key: 'cancel', label: '取消预约', danger: true }]
-            : []
+          const cancelItem: MenuProps['items'] =
+            canCancel && (record.status === 'pending' || record.status === 'approved')
+              ? [{ key: 'cancel', label: '取消预约', danger: true }]
+              : []
 
           return (
             <Flex className="appointment-table-actions" gap={2} align="center">
@@ -151,9 +158,16 @@ function AppointmentTable({
                     cancelText="取消"
                     onConfirm={() => onAction('approve', record)}
                   >
-                    <Button type="link" disabled={updating}>通过</Button>
+                    <Button type="link" disabled={updating}>
+                      通过
+                    </Button>
                   </Popconfirm>
-                  <Button type="link" danger disabled={updating} onClick={() => onAction('reject', record)}>
+                  <Button
+                    type="link"
+                    danger
+                    disabled={updating}
+                    onClick={() => onAction('reject', record)}
+                  >
                     驳回
                   </Button>
                 </>
@@ -165,7 +179,9 @@ function AppointmentTable({
                   cancelText="取消"
                   onConfirm={() => onAction('check_in', record)}
                 >
-                  <Button type="link" disabled={updating}>签到</Button>
+                  <Button type="link" disabled={updating}>
+                    签到
+                  </Button>
                 </Popconfirm>
               ) : null}
               {record.status === 'checked_in' && canCheckOut ? (
@@ -175,26 +191,43 @@ function AppointmentTable({
                   cancelText="取消"
                   onConfirm={() => onAction('check_out', record)}
                 >
-                  <Button type="link" disabled={updating}>签出</Button>
+                  <Button type="link" disabled={updating}>
+                    签出
+                  </Button>
                 </Popconfirm>
               ) : null}
               {cancelItem.length > 0 ? (
                 canApprove || canCheckIn ? (
                   <Dropdown
-                    menu={{ items: cancelItem, onClick: () => onAction('cancel', record) }}
+                    menu={{
+                      items: cancelItem,
+                      onClick: () => onAction('cancel', record),
+                    }}
                     trigger={['click']}
                   >
-                    <Button type="text" icon={<MoreOutlined />} aria-label="更多预约操作" disabled={updating} />
+                    <Button
+                      type="text"
+                      icon={<MoreOutlined />}
+                      aria-label="更多预约操作"
+                      disabled={updating}
+                    />
                   </Dropdown>
                 ) : (
-                  <Button type="link" danger disabled={updating} onClick={() => onAction('cancel', record)}>
+                  <Button
+                    type="link"
+                    danger
+                    disabled={updating}
+                    onClick={() => onAction('cancel', record)}
+                  >
                     取消
                   </Button>
                 )
               ) : null}
-              {record.status !== 'pending' && record.status !== 'approved' && record.status !== 'checked_in'
-                ? <span className="appointment-table-empty-action">-</span>
-                : null}
+              {record.status !== 'pending' &&
+              record.status !== 'approved' &&
+              record.status !== 'checked_in' ? (
+                <span className="appointment-table-empty-action">-</span>
+              ) : null}
             </Flex>
           )
         },
@@ -207,18 +240,24 @@ function AppointmentTable({
     <DataTablePanel<VisitorAppointmentDto>
       ariaLabel="预约列表"
       className="appointment-table-panel"
-      toolbar={canCreate ? (
-        <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-          创建预约
-        </Button>
-      ) : undefined}
+      toolbar={
+        canCreate ? (
+          <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+            创建预约
+          </Button>
+        ) : undefined
+      }
       feedback={
         loadError ? (
           <Alert
             type="error"
             showIcon
             message="预约列表加载失败"
-            action={<Button size="small" onClick={onRetry}>重试</Button>}
+            action={
+              <Button size="small" onClick={onRetry}>
+                重试
+              </Button>
+            }
           />
         ) : undefined
       }

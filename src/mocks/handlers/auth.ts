@@ -2,7 +2,12 @@ import { delay, http } from 'msw'
 import type { LoginRequest } from '@/types/auth'
 import { filterMenusByPermissions } from '../data/menus'
 import { mockRoles } from '../data/users'
-import { createMockSession, getMockState, mockSessionDurationSeconds, saveMockState } from '../store'
+import {
+  createMockSession,
+  getMockState,
+  mockSessionDurationSeconds,
+  saveMockState,
+} from '../store'
 import {
   authorizeRequest,
   createErrorResponse,
@@ -101,7 +106,9 @@ export const authHandlers = [
       return auth.response
     }
 
-    auth.state.sessions = auth.state.sessions.filter((item) => item.accessToken !== auth.accessToken)
+    auth.state.sessions = auth.state.sessions.filter(
+      (item) => item.accessToken !== auth.accessToken,
+    )
     saveMockState(auth.state)
     return createSuccessResponse(null, '退出成功')
   }),

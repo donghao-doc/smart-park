@@ -31,14 +31,8 @@ export async function reqCreatePersonnel(payload: PersonnelMutationRequest) {
 /**
  * 更新指定人员资料
  */
-export async function reqUpdatePersonnel(
-  personnelId: string,
-  payload: PersonnelMutationRequest,
-) {
-  return http.put<PersonnelDto, PersonnelMutationRequest>(
-    `/personnel/${personnelId}`,
-    payload,
-  )
+export async function reqUpdatePersonnel(personnelId: string, payload: PersonnelMutationRequest) {
+  return http.put<PersonnelDto, PersonnelMutationRequest>(`/personnel/${personnelId}`, payload)
 }
 
 /**

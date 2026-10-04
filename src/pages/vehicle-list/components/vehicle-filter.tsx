@@ -44,7 +44,11 @@ function VehicleFilter({
             type="warning"
             showIcon
             title="所属企业选项加载失败"
-            action={<Button size="small" onClick={onRetryOptions}>重试</Button>}
+            action={
+              <Button size="small" onClick={onRetryOptions}>
+                重试
+              </Button>
+            }
           />
         ) : null}
         <Form
@@ -66,10 +70,7 @@ function VehicleFilter({
               </Form.Item>
             </Col>
             <Col xs={24} md={12} lg={8}>
-              <Form.Item
-                name="type"
-                label={<span className="vehicle-filter-label">车辆类型</span>}
-              >
+              <Form.Item name="type" label={<span className="vehicle-filter-label">车辆类型</span>}>
                 <Select allowClear placeholder="请选择车辆类型" options={vehicleTypeOptions} />
               </Form.Item>
             </Col>
@@ -89,17 +90,16 @@ function VehicleFilter({
               </Form.Item>
             </Col>
             <Col xs={24} md={12} lg={8}>
-              <Form.Item
-                name="status"
-                label={<span className="vehicle-filter-label">状态</span>}
-              >
+              <Form.Item name="status" label={<span className="vehicle-filter-label">状态</span>}>
                 <Select allowClear placeholder="请选择状态" options={vehicleStatusOptions} />
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={16}>
               <Row gutter={12} justify="end" wrap={false}>
                 <Col>
-                  <Button type="primary" htmlType="submit">查询</Button>
+                  <Button type="primary" htmlType="submit">
+                    查询
+                  </Button>
                 </Col>
                 <Col>
                   <Button onClick={handleReset}>重置</Button>

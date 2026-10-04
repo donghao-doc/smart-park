@@ -58,11 +58,19 @@ function RecordDetailModal({
           column={{ xs: 1, sm: 2 }}
           items={[
             { key: 'code', label: '预约编号', children: record.code },
-            { key: 'status', label: '到访状态', children: <RecordStatus status={record.status} /> },
+            {
+              key: 'status',
+              label: '到访状态',
+              children: <RecordStatus status={record.status} />,
+            },
             { key: 'visitor', label: '访客姓名', children: record.visitorName },
             { key: 'phone', label: '手机号', children: record.visitorPhone },
             { key: 'host', label: '受访人', children: record.hostName },
-            { key: 'plate', label: '车牌号', children: record.plateNumber ?? '未驾车' },
+            {
+              key: 'plate',
+              label: '车牌号',
+              children: record.plateNumber ?? '未驾车',
+            },
             {
               key: 'enterprise',
               label: '所属企业',

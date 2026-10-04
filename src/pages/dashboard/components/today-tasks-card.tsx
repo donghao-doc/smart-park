@@ -2,10 +2,7 @@ import { RightOutlined } from '@ant-design/icons'
 import { Alert, Button, Table, Tag } from 'antd'
 import type { TableColumnsType } from 'antd'
 
-import type {
-  DashboardTaskDto,
-  DashboardTaskPriority,
-} from '@/types/dashboard'
+import type { DashboardTaskDto, DashboardTaskPriority } from '@/types/dashboard'
 import './today-tasks-card.scss'
 
 const taskPriorityPresentation: Record<
@@ -44,13 +41,7 @@ function formatTaskTime(value: string) {
 /**
  * 展示今日待办任务及对应处理入口
  */
-function TodayTasksCard({
-  tasks,
-  loading,
-  error,
-  onViewMore,
-  onProcessTask,
-}: TodayTasksCardProps) {
+function TodayTasksCard({ tasks, loading, error, onViewMore, onProcessTask }: TodayTasksCardProps) {
   const columns: TableColumnsType<DashboardTaskDto> = [
     {
       title: '#',
@@ -84,11 +75,7 @@ function TodayTasksCard({
       key: 'action',
       width: 82,
       render: (_value, task) => (
-        <Button
-          type="link"
-          className="today-tasks-card-action"
-          onClick={() => onProcessTask(task)}
-        >
+        <Button type="link" className="today-tasks-card-action" onClick={() => onProcessTask(task)}>
           去处理
         </Button>
       ),

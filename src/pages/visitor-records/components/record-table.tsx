@@ -71,13 +71,13 @@ function RecordTable({
       title: '签到时间',
       dataIndex: 'checkedInAt',
       width: 164,
-      render: (time: string | null) => time ? formatDateTime(time) : '-',
+      render: (time: string | null) => (time ? formatDateTime(time) : '-'),
     },
     {
       title: '签出时间',
       dataIndex: 'checkedOutAt',
       width: 164,
-      render: (time: string | null) => time ? formatDateTime(time) : '-',
+      render: (time: string | null) => (time ? formatDateTime(time) : '-'),
     },
     {
       title: '状态',
@@ -113,18 +113,20 @@ function RecordTable({
           </Button>
         </Flex>
       }
-      feedback={loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          title="到访记录加载失败"
-          action={
-            <Button size="small" onClick={onReload}>
-              重试
-            </Button>
-          }
-        />
-      ) : undefined}
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            title="到访记录加载失败"
+            action={
+              <Button size="small" onClick={onReload}>
+                重试
+              </Button>
+            }
+          />
+        ) : undefined
+      }
       tableProps={{
         rowKey: 'id',
         columns,

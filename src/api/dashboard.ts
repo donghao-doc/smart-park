@@ -19,14 +19,18 @@ export async function reqGetDashboardSummary() {
  * 查询指定时间范围内的访客趋势
  */
 export async function reqGetVisitorTrend(params: DashboardTrendParams) {
-  return http.get<VisitorTrendPointDto[]>('/dashboard/visitor-trend', { params })
+  return http.get<VisitorTrendPointDto[]>('/dashboard/visitor-trend', {
+    params,
+  })
 }
 
 /**
  * 查询指定时间范围内的工单趋势
  */
 export async function reqGetWorkOrderTrend(params: DashboardTrendParams) {
-  return http.get<WorkOrderTrendPointDto[]>('/dashboard/work-order-trend', { params })
+  return http.get<WorkOrderTrendPointDto[]>('/dashboard/work-order-trend', {
+    params,
+  })
 }
 
 /**

@@ -18,7 +18,9 @@ export async function compressWorkOrderImage(file: File): Promise<File> {
       context.fillStyle = '#ffffff'
       context.fillRect(0, 0, canvas.width, canvas.height)
       context.drawImage(image, 0, 0, canvas.width, canvas.height)
-      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.82))
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/jpeg', 0.82),
+      )
       if (blob && blob.size <= 256 * 1024) {
         const name = `${file.name.replace(/\.[^.]+$/, '').slice(0, 76)}.jpg`
         return new File([blob], name, { type: 'image/jpeg' })

@@ -26,7 +26,9 @@ const DEFAULT_PAGE_SIZE = 20
 function PersonnelListPage() {
   const { message } = App.useApp()
   const [personnel, setPersonnel] = useState<PersonnelDto[]>([])
-  const [enterpriseOptions, setEnterpriseOptions] = useState<NonNullable<SelectProps['options']>>([])
+  const [enterpriseOptions, setEnterpriseOptions] = useState<NonNullable<SelectProps['options']>>(
+    [],
+  )
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
@@ -50,7 +52,10 @@ function PersonnelListPage() {
         const result = await reqGetEnterprises({ page: 1, pageSize: 100 })
         if (active) {
           setEnterpriseOptions(
-            result.list.map((enterprise) => ({ label: enterprise.name, value: enterprise.id })),
+            result.list.map((enterprise) => ({
+              label: enterprise.name,
+              value: enterprise.id,
+            })),
           )
         }
       } catch {
@@ -171,10 +176,7 @@ function PersonnelListPage() {
   return (
     <>
       <DataTablePageLayout className="personnel-page">
-        <PersonnelFilter
-          enterpriseOptions={enterpriseOptions}
-          onSearch={handleFilterSearch}
-        />
+        <PersonnelFilter enterpriseOptions={enterpriseOptions} onSearch={handleFilterSearch} />
 
         <PersonnelTable
           personnel={personnel}

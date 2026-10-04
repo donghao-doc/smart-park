@@ -73,7 +73,9 @@ function VehicleFormModal({
       width={680}
       destroyOnHidden
       confirmLoading={submitting}
-      okButtonProps={{ disabled: loading || loadError || optionsLoading || optionsError }}
+      okButtonProps={{
+        disabled: loading || loadError || optionsLoading || optionsError,
+      }}
       cancelButtonProps={{ disabled: submitting }}
       closable={!submitting}
       mask={{ closable: !submitting }}
@@ -82,13 +84,19 @@ function VehicleFormModal({
       onOk={() => form.submit()}
     >
       {loading ? (
-        <Spin description="正在加载车辆档案"><div className="vehicle-form-loading" /></Spin>
+        <Spin description="正在加载车辆档案">
+          <div className="vehicle-form-loading" />
+        </Spin>
       ) : loadError ? (
         <Alert
           type="error"
           showIcon
           title="车辆档案加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
+          action={
+            <Button size="small" onClick={onRetry}>
+              重试
+            </Button>
+          }
         />
       ) : (
         <Form
@@ -105,7 +113,11 @@ function VehicleFormModal({
               type="warning"
               showIcon
               title="所属企业选项加载失败，请重试后保存"
-              action={<Button size="small" onClick={onRetryOptions}>重试</Button>}
+              action={
+                <Button size="small" onClick={onRetryOptions}>
+                  重试
+                </Button>
+              }
             />
           ) : null}
           <Row gutter={20}>
@@ -116,7 +128,10 @@ function VehicleFormModal({
                 normalize={(value: string) => normalizeVehiclePlate(value)}
                 rules={[
                   { required: true, message: '请输入车牌号' },
-                  { pattern: vehiclePlatePattern, message: '请输入有效的普通或新能源车牌号' },
+                  {
+                    pattern: vehiclePlatePattern,
+                    message: '请输入有效的普通或新能源车牌号',
+                  },
                 ]}
               >
                 <Input placeholder="如浙A12345、浙AD12345" maxLength={12} />
@@ -136,7 +151,11 @@ function VehicleFormModal({
                 name="ownerName"
                 label="车主"
                 rules={[
-                  { required: true, whitespace: true, message: '请输入车主姓名' },
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: '请输入车主姓名',
+                  },
                   { max: 30, message: '车主姓名不能超过 30 个字符' },
                 ]}
               >

@@ -1,11 +1,7 @@
 import { Alert, App, Skeleton } from 'antd'
 import { useEffect, useState } from 'react'
 
-import {
-  reqGetParkProfile,
-  reqGetParkSpaces,
-  reqUpdateParkProfile,
-} from '@/api'
+import { reqGetParkProfile, reqGetParkSpaces, reqUpdateParkProfile } from '@/api'
 import { useUserStore } from '@/stores/user'
 import type {
   ParkProfileDto,
@@ -136,23 +132,14 @@ function ParkProfilePage() {
 
   if (profileError || !profile) {
     return (
-      <Alert
-        type="error"
-        showIcon
-        message="园区档案加载失败"
-        description="请稍后刷新页面重试"
-      />
+      <Alert type="error" showIcon message="园区档案加载失败" description="请稍后刷新页面重试" />
     )
   }
 
   return (
     <div className="park-profile-page">
       {/* 园区基础信息 */}
-      <ParkOverviewCard
-        info={profile.info}
-        canEdit={canEdit}
-        onEdit={() => setEditing(true)}
-      />
+      <ParkOverviewCard info={profile.info} canEdit={canEdit} onEdit={() => setEditing(true)} />
 
       {/* 园区空间概况 */}
       <ParkSpaceSummary summary={profile.summary} />

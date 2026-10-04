@@ -1,7 +1,8 @@
 import type { PageResult } from './api'
 
 /** 园区设备所属的业务分类 */
-export type DeviceType = 'camera' | 'access' | 'parking' | 'environment' | 'broadcast' | 'fire' | 'energy'
+export type DeviceType =
+  'camera' | 'access' | 'parking' | 'environment' | 'broadcast' | 'fire' | 'energy'
 
 /** 设备当前运行状态，停用表示主动停止使用 */
 export type DeviceStatus = 'normal' | 'fault' | 'offline' | 'disabled'

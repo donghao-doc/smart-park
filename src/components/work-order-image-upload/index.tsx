@@ -19,7 +19,12 @@ interface WorkOrderImageUploadProps {
 }
 
 /** 工单图片上传与预览，串行保存附件，支持本地文件及示例图片 */
-function WorkOrderImageUpload({ value = [], onChange, disabled, onBusyChange }: WorkOrderImageUploadProps) {
+function WorkOrderImageUpload({
+  value = [],
+  onChange,
+  disabled,
+  onBusyChange,
+}: WorkOrderImageUploadProps) {
   const { message } = App.useApp()
   const [busy, setBusy] = useState(false)
   const [pendingFile, setPendingFile] = useState<UploadFile>()
@@ -35,7 +40,10 @@ function WorkOrderImageUpload({ value = [], onChange, disabled, onBusyChange }: 
       void message.warning('最多上传 5 张图片，请等待当前上传完成')
       return Upload.LIST_IGNORE
     }
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 2 * 1024 * 1024) {
+    if (
+      !['image/jpeg', 'image/png', 'image/webp'].includes(file.type) ||
+      file.size > 2 * 1024 * 1024
+    ) {
       void message.warning('请选择不超过 2 MB 的 JPG、PNG 或 WebP 图片')
       return Upload.LIST_IGNORE
     }
@@ -116,7 +124,10 @@ function WorkOrderImageUpload({ value = [], onChange, disabled, onBusyChange }: 
         customRequest={handleUpload}
         onRemove={handleRemove}
         onPreview={(file) => setPreviewIndex(value.findIndex((image) => image.id === file.uid))}
-        showUploadList={{ showRemoveIcon: !disabled && !busy, showPreviewIcon: true }}
+        showUploadList={{
+          showRemoveIcon: !disabled && !busy,
+          showPreviewIcon: true,
+        }}
       >
         {!disabled && value.length < 5 ? (
           <Flex vertical align="center" gap={8}>
@@ -127,7 +138,9 @@ function WorkOrderImageUpload({ value = [], onChange, disabled, onBusyChange }: 
       </Upload>
       {!disabled ? (
         <Flex align="center" gap={12} wrap>
-          <span className="work-order-image-upload-hint">最多 5 张，JPG / PNG / WebP，每张不超过 2 MB</span>
+          <span className="work-order-image-upload-hint">
+            最多 5 张，JPG / PNG / WebP，每张不超过 2 MB
+          </span>
           <Button
             size="small"
             disabled={busy || value.length >= 5}
@@ -137,13 +150,17 @@ function WorkOrderImageUpload({ value = [], onChange, disabled, onBusyChange }: 
             添加示例图片
           </Button>
         </Flex>
-      ) : value.length === 0 ? <span className="work-order-image-upload-hint">暂无现场图片</span> : null}
+      ) : value.length === 0 ? (
+        <span className="work-order-image-upload-hint">暂无现场图片</span>
+      ) : null}
       <Image.PreviewGroup
         items={value.map((image) => ({ src: image.url, alt: image.name }))}
         preview={{
           open: previewIndex !== undefined && previewIndex >= 0,
           current: previewIndex ?? 0,
-          onOpenChange: (open) => { if (!open) setPreviewIndex(undefined) },
+          onOpenChange: (open) => {
+            if (!open) setPreviewIndex(undefined)
+          },
           onChange: (index) => setPreviewIndex(index),
         }}
       />

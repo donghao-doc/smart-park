@@ -37,12 +37,7 @@ export interface DeviceStatusCardProps {
 /**
  * 展示设备状态分布、在线设备数量及状态图例
  */
-function DeviceStatusCard({
-  statuses,
-  loading,
-  error,
-  onViewMore,
-}: DeviceStatusCardProps) {
+function DeviceStatusCard({ statuses, loading, error, onViewMore }: DeviceStatusCardProps) {
   const option = useMemo<EChartsOption>(
     () => ({
       animationDuration: 600,

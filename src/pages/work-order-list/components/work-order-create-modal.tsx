@@ -59,15 +59,20 @@ function WorkOrderCreateModal({
     const enterprise = options?.enterprises.find((item) => item.id === lockedEnterpriseId)
     if (enterprise) {
       // 选项晚于弹窗加载时仅补充联系人，保留用户已输入的工单内容
-      if (!form.getFieldValue('contactName')) form.setFieldValue('contactName', enterprise.contactName)
-      if (!form.getFieldValue('contactPhone')) form.setFieldValue('contactPhone', enterprise.contactPhone)
+      if (!form.getFieldValue('contactName'))
+        form.setFieldValue('contactName', enterprise.contactName)
+      if (!form.getFieldValue('contactPhone'))
+        form.setFieldValue('contactPhone', enterprise.contactPhone)
     }
   }, [form, lockedEnterpriseId, open, options])
 
   /** 切换企业后回填该企业的默认联系人，仍允许按实际负责人修改 */
   function handleEnterpriseChange(id: string) {
     const enterprise = options?.enterprises.find((item) => item.id === id)
-    form.setFieldsValue({ contactName: enterprise?.contactName, contactPhone: enterprise?.contactPhone })
+    form.setFieldsValue({
+      contactName: enterprise?.contactName,
+      contactPhone: enterprise?.contactPhone,
+    })
   }
 
   return (
@@ -101,7 +106,11 @@ function WorkOrderCreateModal({
             type="error"
             showIcon
             title="企业选项加载失败，请重试后创建工单"
-            action={<Button size="small" onClick={onRetryOptions}>重试</Button>}
+            action={
+              <Button size="small" onClick={onRetryOptions}>
+                重试
+              </Button>
+            }
           />
         ) : null}
         <Form.Item
@@ -115,26 +124,39 @@ function WorkOrderCreateModal({
           <Col xs={24} md={12}>
             <Form.Item name="type" label="工单类型" rules={[{ required: true }]}>
               <Select
-                options={Object.entries(workOrderTypeLabels).map(([value, label]) => ({ value, label }))}
+                options={Object.entries(workOrderTypeLabels).map(([value, label]) => ({
+                  value,
+                  label,
+                }))}
               />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
             <Form.Item name="priority" label="紧急程度" rules={[{ required: true }]}>
               <Select
-                options={Object.entries(workOrderPriorityLabels).map(([value, label]) => ({ value, label }))}
+                options={Object.entries(workOrderPriorityLabels).map(([value, label]) => ({
+                  value,
+                  label,
+                }))}
               />
             </Form.Item>
           </Col>
           <Col xs={24}>
-            <Form.Item name="enterpriseId" label="所属企业" rules={[{ required: true, message: '请选择所属企业' }]}>
+            <Form.Item
+              name="enterpriseId"
+              label="所属企业"
+              rules={[{ required: true, message: '请选择所属企业' }]}
+            >
               <Select
                 showSearch
                 optionFilterProp="label"
                 placeholder="请选择所属企业"
                 disabled={submitting || Boolean(lockedEnterpriseId)}
                 loading={optionsLoading}
-                options={options?.enterprises.map((item) => ({ value: item.id, label: item.name }))}
+                options={options?.enterprises.map((item) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
                 onChange={handleEnterpriseChange}
               />
             </Form.Item>
@@ -144,7 +166,14 @@ function WorkOrderCreateModal({
               name="contactName"
               label="企业联系人"
               tooltip="由该企业联系人负责确认处理结果"
-              rules={[{ required: true, whitespace: true, message: '请输入企业联系人' }, { max: 30 }]}
+              rules={[
+                {
+                  required: true,
+                  whitespace: true,
+                  message: '请输入企业联系人',
+                },
+                { max: 30 },
+              ]}
             >
               <Input maxLength={30} placeholder="请输入结果确认联系人" />
             </Form.Item>
@@ -153,7 +182,10 @@ function WorkOrderCreateModal({
             <Form.Item
               name="contactPhone"
               label="联系电话"
-              rules={[{ required: true }, { pattern: /^1\d{10}$/, message: '请输入有效的 11 位手机号' }]}
+              rules={[
+                { required: true },
+                { pattern: /^1\d{10}$/, message: '请输入有效的 11 位手机号' },
+              ]}
             >
               <Input maxLength={11} placeholder="请输入联系人手机号" />
             </Form.Item>
@@ -171,12 +203,14 @@ function WorkOrderCreateModal({
           label="问题描述"
           rules={[{ required: true, whitespace: true, message: '请输入问题描述' }, { max: 1000 }]}
         >
-          <Input.TextArea rows={3} maxLength={1000} showCount placeholder="请描述问题现象和需要的协助" />
+          <Input.TextArea
+            rows={3}
+            maxLength={1000}
+            showCount
+            placeholder="请描述问题现象和需要的协助"
+          />
         </Form.Item>
-        <Form.Item
-          name="images"
-          label="现场图片"
-        >
+        <Form.Item name="images" label="现场图片">
           <WorkOrderImageUpload disabled={submitting} onBusyChange={setImageBusy} />
         </Form.Item>
       </Form>

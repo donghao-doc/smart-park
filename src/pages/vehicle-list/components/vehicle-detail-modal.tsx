@@ -40,21 +40,35 @@ function VehicleDetailModal({
       onCancel={onClose}
     >
       {loading ? (
-        <Spin description="正在加载车辆档案"><div className="vehicle-detail-loading" /></Spin>
+        <Spin description="正在加载车辆档案">
+          <div className="vehicle-detail-loading" />
+        </Spin>
       ) : loadError ? (
         <Alert
           type="error"
           showIcon
           title="车辆档案加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
+          action={
+            <Button size="small" onClick={onRetry}>
+              重试
+            </Button>
+          }
         />
       ) : vehicle ? (
         <Descriptions
           bordered
           column={{ xs: 1, sm: 2 }}
           items={[
-            { key: 'plateNumber', label: '车牌号', children: vehicle.plateNumber },
-            { key: 'type', label: '车辆类型', children: <VehicleTag value={vehicle.type} /> },
+            {
+              key: 'plateNumber',
+              label: '车牌号',
+              children: vehicle.plateNumber,
+            },
+            {
+              key: 'type',
+              label: '车辆类型',
+              children: <VehicleTag value={vehicle.type} />,
+            },
             { key: 'ownerName', label: '车主', children: vehicle.ownerName },
             { key: 'phone', label: '联系电话', children: vehicle.phone },
             {
@@ -63,8 +77,16 @@ function VehicleDetailModal({
               children: vehicle.enterpriseName,
               span: 'filled',
             },
-            { key: 'status', label: '状态', children: <VehicleTag value={vehicle.status} /> },
-            { key: 'createdAt', label: '创建时间', children: formatDateTime(vehicle.createdAt) },
+            {
+              key: 'status',
+              label: '状态',
+              children: <VehicleTag value={vehicle.status} />,
+            },
+            {
+              key: 'createdAt',
+              label: '创建时间',
+              children: formatDateTime(vehicle.createdAt),
+            },
             {
               key: 'updatedAt',
               label: '更新时间',

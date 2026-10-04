@@ -2,14 +2,7 @@ import type { PageResult } from '@/types/api'
 
 /** 操作发生的业务模块，用于审计分类和列表筛选 */
 export type OperationLogModule =
-  | 'park'
-  | 'enterprise'
-  | 'personnel'
-  | 'visitor'
-  | 'parking'
-  | 'work_order'
-  | 'device'
-  | 'system'
+  'park' | 'enterprise' | 'personnel' | 'visitor' | 'parking' | 'work_order' | 'device' | 'system'
 
 /** 操作执行结果，失败记录在详情中提供原因 */
 export type OperationLogResult = 'success' | 'failure'

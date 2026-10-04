@@ -16,7 +16,8 @@ export type WorkOrderStatus =
   | 'cancelled'
 
 /** 可执行的工单流程动作 */
-export type WorkOrderAction = 'accept' | 'assign' | 'start' | 'submit' | 'confirm' | 'cancel' | 'reopen'
+export type WorkOrderAction =
+  'accept' | 'assign' | 'start' | 'submit' | 'confirm' | 'cancel' | 'reopen'
 
 /** 工单创建资料，编号、状态和提交人由服务端生成 */
 export interface WorkOrderCreateRequest {

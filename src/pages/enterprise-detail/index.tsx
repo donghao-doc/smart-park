@@ -50,13 +50,25 @@ const vehicleColumns: TableColumnsType<EnterpriseVehicleDto> = [
 const workOrderColumns: TableColumnsType<EnterpriseWorkOrderDto> = [
   { title: '工单编号', dataIndex: 'code' },
   { title: '工单标题', dataIndex: 'title' },
-  { title: '创建时间', dataIndex: 'createdAt', render: (value: string) => value.slice(0, 10) },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    render: (value: string) => value.slice(0, 10),
+  },
   {
     title: '状态',
     dataIndex: 'status',
     render: (status: EnterpriseWorkOrderDto['status']) => {
-      const labels = { processing: '处理中', pending: '待处理', completed: '已完成' }
-      const colors = { processing: 'processing', pending: 'warning', completed: 'success' }
+      const labels = {
+        processing: '处理中',
+        pending: '待处理',
+        completed: '已完成',
+      }
+      const colors = {
+        processing: 'processing',
+        pending: 'warning',
+        completed: 'success',
+      }
       return <Tag color={colors[status]}>{labels[status]}</Tag>
     },
   },
@@ -135,7 +147,11 @@ function EnterpriseDetailPage() {
         showIcon
         message="企业详情加载失败"
         description="企业可能不存在，或当前账号无权访问该企业"
-        action={<Button><Link to="/enterprises">返回企业列表</Link></Button>}
+        action={
+          <Button>
+            <Link to="/enterprises">返回企业列表</Link>
+          </Button>
+        }
       />
     )
   }
@@ -151,7 +167,11 @@ function EnterpriseDetailPage() {
         showIcon
         message="企业详情加载失败"
         description="企业可能不存在，或当前账号无权访问该企业"
-        action={<Button><Link to="/enterprises">返回企业列表</Link></Button>}
+        action={
+          <Button>
+            <Link to="/enterprises">返回企业列表</Link>
+          </Button>
+        }
       />
     )
   }
@@ -198,7 +218,12 @@ function EnterpriseDetailPage() {
             label: `成员 ${enterprise.members.length}`,
             children: (
               <section className="enterprise-detail-panel enterprise-related-panel">
-                <Table rowKey="id" columns={memberColumns} dataSource={enterprise.members} pagination={false} />
+                <Table
+                  rowKey="id"
+                  columns={memberColumns}
+                  dataSource={enterprise.members}
+                  pagination={false}
+                />
               </section>
             ),
           },
@@ -207,7 +232,12 @@ function EnterpriseDetailPage() {
             label: `车辆 ${enterprise.vehicles.length}`,
             children: (
               <section className="enterprise-detail-panel enterprise-related-panel">
-                <Table rowKey="id" columns={vehicleColumns} dataSource={enterprise.vehicles} pagination={false} />
+                <Table
+                  rowKey="id"
+                  columns={vehicleColumns}
+                  dataSource={enterprise.vehicles}
+                  pagination={false}
+                />
               </section>
             ),
           },
@@ -216,7 +246,12 @@ function EnterpriseDetailPage() {
             label: `关联工单 ${enterprise.workOrders.length}`,
             children: (
               <section className="enterprise-detail-panel enterprise-related-panel">
-                <Table rowKey="id" columns={workOrderColumns} dataSource={enterprise.workOrders} pagination={false} />
+                <Table
+                  rowKey="id"
+                  columns={workOrderColumns}
+                  dataSource={enterprise.workOrders}
+                  pagination={false}
+                />
               </section>
             ),
           },

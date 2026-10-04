@@ -57,7 +57,9 @@ function UserFilter({ onSearch }: UserFilterProps) {
           <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
               <Col>
-                <Button type="primary" htmlType="submit">查询</Button>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
               </Col>
               <Col>
                 <Button onClick={handleReset}>重置</Button>

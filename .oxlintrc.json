@@ -4,7 +4,7 @@
   "jsPlugins": ["@stylistic/eslint-plugin"],
   "ignorePatterns": ["docs/**", "public/mockServiceWorker.js"],
   "rules": {
-    "@stylistic/max-len": ["error", { "code": 80, "tabWidth": 2 }],
+    "@stylistic/max-len": ["error", { "code": 100, "tabWidth": 2 }],
     "react/rules-of-hooks": "error",
     "react/only-export-components": ["warn", { "allowConstantExport": true }]
   }

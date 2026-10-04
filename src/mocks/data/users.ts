@@ -194,21 +194,22 @@ function createSampleUser(index: number): MockUserEntity {
   const sampleIndex = index % sampleNames.length
   const roleCode: RoleCode = index % 4 === 1 ? 'park_operator' : 'enterprise_user'
   const createdAt = new Date(Date.UTC(2026, 7, 31, 16) - index * 3_600_000).toISOString()
-  const lastLoginAt = index % 9 === 0
-    ? null
-    : new Date(Date.UTC(2026, 9, 3, 8, 45) - index * 3_600_000).toISOString()
+  const lastLoginAt =
+    index % 9 === 0 ? null : new Date(Date.UTC(2026, 9, 3, 8, 45) - index * 3_600_000).toISOString()
 
   return {
     id: `usr_${1000 + sequence}`,
-    username: index < sampleNames.length
-      ? sampleUsernames[sampleIndex]
-      : `${sampleUsernames[sampleIndex]}${sequence}`,
+    username:
+      index < sampleNames.length
+        ? sampleUsernames[sampleIndex]
+        : `${sampleUsernames[sampleIndex]}${sequence}`,
     name: sampleNames[sampleIndex],
     password: 'User@12345',
     roleCode,
-    enterpriseId: roleCode === 'enterprise_user'
-      ? activeEnterpriseIds[index % activeEnterpriseIds.length]
-      : null,
+    enterpriseId:
+      roleCode === 'enterprise_user'
+        ? activeEnterpriseIds[index % activeEnterpriseIds.length]
+        : null,
     status: index % 5 === 0 ? 'disabled' : 'active',
     lastLoginAt,
     createdAt,

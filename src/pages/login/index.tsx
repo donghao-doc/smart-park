@@ -24,8 +24,8 @@ function LoginPage() {
   const resetMenus = useMenuStore((state) => state.resetMenus)
   const resetUser = useUserStore((state) => state.resetUser)
   const [form] = Form.useForm<LoginRequest>()
-  const [rememberAccount, setRememberAccount] = useState(
-    () => Boolean(localStorage.getItem(REMEMBERED_ACCOUNT_KEY)),
+  const [rememberAccount, setRememberAccount] = useState(() =>
+    Boolean(localStorage.getItem(REMEMBERED_ACCOUNT_KEY)),
   )
   const [submitting, setSubmitting] = useState(false)
   const [demoAccounts, setDemoAccounts] = useState<DemoAccountDto[]>([])
@@ -89,7 +89,10 @@ function LoginPage() {
    * 将所选演示账号填入表单，用户仍需主动点击登录
    */
   function handleSelectDemoAccount(account: DemoAccountDto) {
-    form.setFieldsValue({ username: account.username, password: account.password })
+    form.setFieldsValue({
+      username: account.username,
+      password: account.password,
+    })
     form.setFields([
       { name: 'username', errors: [] },
       { name: 'password', errors: [] },
@@ -112,7 +115,9 @@ function LoginPage() {
         <Form<LoginRequest>
           form={form}
           layout="vertical"
-          initialValues={{ username: localStorage.getItem(REMEMBERED_ACCOUNT_KEY) ?? '' }}
+          initialValues={{
+            username: localStorage.getItem(REMEMBERED_ACCOUNT_KEY) ?? '',
+          }}
           onFinish={handleSubmit}
           requiredMark={false}
           className="login-form"
@@ -130,7 +135,11 @@ function LoginPage() {
             />
           </Form.Item>
 
-          <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码' }]}>
+          <Form.Item
+            label="密码"
+            name="password"
+            rules={[{ required: true, message: '请输入密码' }]}
+          >
             <Input.Password
               prefix={<LockOutlined />}
               placeholder="请输入密码"
@@ -139,11 +148,20 @@ function LoginPage() {
             />
           </Form.Item>
 
-          <Checkbox checked={rememberAccount} onChange={(event) => setRememberAccount(event.target.checked)}>
+          <Checkbox
+            checked={rememberAccount}
+            onChange={(event) => setRememberAccount(event.target.checked)}
+          >
             记住账号
           </Checkbox>
 
-          <Button type="primary" htmlType="submit" loading={submitting} block className="login-submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={submitting}
+            block
+            className="login-submit"
+          >
             登录
           </Button>
         </Form>

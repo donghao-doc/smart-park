@@ -31,10 +31,7 @@ function findMenuTrail(menus: MenuItemDto[], pathname: string): MenuItemDto[] {
       return [menu, ...childTrail]
     }
 
-    if (
-      menu.type === 'menu' &&
-      (pathname === menu.path || pathname.startsWith(`${menu.path}/`))
-    ) {
+    if (menu.type === 'menu' && (pathname === menu.path || pathname.startsWith(`${menu.path}/`))) {
       return [menu]
     }
   }

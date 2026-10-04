@@ -36,7 +36,7 @@ export default [
     languageOptions: { parser: textParser },
     plugins: { '@stylistic': stylistic },
     rules: {
-      '@stylistic/max-len': ['error', { code: 80, tabWidth: 2 }],
+      '@stylistic/max-len': ['error', { code: 100, tabWidth: 2 }],
     },
   },
 ]

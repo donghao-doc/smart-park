@@ -64,9 +64,15 @@ function AppointmentFormModal({
   const [form] = Form.useForm<AppointmentFormValues>()
   const selectedEnterpriseId = Form.useWatch('enterpriseId', form)
   const hostOptions = useMemo(
-    () => personnel
-      .filter((person) => person.enterpriseId === selectedEnterpriseId && person.status === 'active')
-      .map((person) => ({ label: `${person.name} · ${person.department}`, value: person.id })),
+    () =>
+      personnel
+        .filter(
+          (person) => person.enterpriseId === selectedEnterpriseId && person.status === 'active',
+        )
+        .map((person) => ({
+          label: `${person.name} · ${person.department}`,
+          value: person.id,
+        })),
     [personnel, selectedEnterpriseId],
   )
 
@@ -130,7 +136,11 @@ function AppointmentFormModal({
           >
             <Input placeholder="请输入访客手机号" maxLength={11} />
           </Form.Item>
-          <Form.Item name="enterpriseId" label="所属企业" rules={[{ required: true, message: '请选择所属企业' }]}>
+          <Form.Item
+            name="enterpriseId"
+            label="所属企业"
+            rules={[{ required: true, message: '请选择所属企业' }]}
+          >
             <Select
               showSearch
               disabled={enterpriseLocked}
@@ -140,7 +150,11 @@ function AppointmentFormModal({
               onChange={() => form.setFieldValue('hostId', undefined)}
             />
           </Form.Item>
-          <Form.Item name="hostId" label="受访人" rules={[{ required: true, message: '请选择受访人' }]}>
+          <Form.Item
+            name="hostId"
+            label="受访人"
+            rules={[{ required: true, message: '请选择受访人' }]}
+          >
             <Select
               showSearch
               optionFilterProp="label"
@@ -173,7 +187,12 @@ function AppointmentFormModal({
           <Form.Item
             name="plateNumber"
             label="车牌号"
-            rules={[{ pattern: /^[\u4e00-\u9fa5][A-Za-z][A-Za-z0-9]{5,6}$/, message: '请输入有效的车牌号' }]}
+            rules={[
+              {
+                pattern: /^[\u4e00-\u9fa5][A-Za-z][A-Za-z0-9]{5,6}$/,
+                message: '请输入有效的车牌号',
+              },
+            ]}
           >
             <Input placeholder="选填，例如 浙A12345" maxLength={8} />
           </Form.Item>

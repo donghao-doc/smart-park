@@ -73,9 +73,7 @@ function TrendChartCard({
           size="small"
           format="YYYY-MM-DD"
           allowClear={false}
-          onChange={(_, dateStrings) =>
-            onCustomRangeChange(dateStrings as [string, string])
-          }
+          onChange={(_, dateStrings) => onCustomRangeChange(dateStrings as [string, string])}
         />
       )}
 

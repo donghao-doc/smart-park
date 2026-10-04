@@ -54,12 +54,16 @@ function UserFormModal({
   useEffect(() => {
     if (!open) return
     form.resetFields()
-    form.setFieldsValue(user ? {
-      username: user.username,
-      name: user.name,
-      roleCode: user.role.code,
-      enterpriseId: user.enterprise?.id,
-    } : { roleCode: 'park_operator' })
+    form.setFieldsValue(
+      user
+        ? {
+            username: user.username,
+            name: user.name,
+            roleCode: user.role.code,
+            enterpriseId: user.enterprise?.id,
+          }
+        : { roleCode: 'park_operator' },
+    )
   }, [form, open, user])
 
   return (
@@ -85,7 +89,11 @@ function UserFormModal({
           type="error"
           showIcon
           title="角色或企业选项加载失败，请重试后保存"
-          action={<Button size="small" onClick={onRetryOptions}>重试</Button>}
+          action={
+            <Button size="small" onClick={onRetryOptions}>
+              重试
+            </Button>
+          }
         />
       ) : null}
       <Form
@@ -127,14 +135,18 @@ function UserFormModal({
             <Form.Item
               name="roleCode"
               label="角色"
-              extra={user?.role.code === 'super_admin' ? '超级管理员账号不能变更为其他角色' : undefined}
+              extra={
+                user?.role.code === 'super_admin' ? '超级管理员账号不能变更为其他角色' : undefined
+              }
               rules={[{ required: true, message: '请选择角色' }]}
             >
               <Select
                 placeholder="请选择角色"
                 options={roleOptions}
                 loading={optionsLoading}
-                disabled={submitting || optionsLoading || optionsError || user?.role.code === 'super_admin'}
+                disabled={
+                  submitting || optionsLoading || optionsError || user?.role.code === 'super_admin'
+                }
                 onChange={() => form.setFieldValue('enterpriseId', undefined)}
               />
             </Form.Item>
@@ -164,7 +176,11 @@ function UserFormModal({
                 label="初始密码"
                 extra="新用户默认启用，请妥善保管并告知用户登录密码"
                 rules={[
-                  { required: true, whitespace: true, message: '请输入初始密码' },
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: '请输入初始密码',
+                  },
                   { min: 8, message: '初始密码至少需要 8 位' },
                 ]}
               >

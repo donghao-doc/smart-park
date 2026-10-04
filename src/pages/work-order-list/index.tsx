@@ -119,7 +119,8 @@ function WorkOrderListPage() {
     }
   }, [optionsVersion])
 
-  const requestedCreate = searchParams.get('action') === 'create' &&
+  const requestedCreate =
+    searchParams.get('action') === 'create' &&
     Boolean(currentUser?.role.permissions.includes('work-order:create'))
 
   /** 关闭创建表单时清理快捷入口参数，避免刷新后重复打开 */
@@ -208,7 +209,10 @@ function WorkOrderListPage() {
         />
         <WorkOrderFilter
           key={filterResetVersion}
-          enterpriseOptions={options?.enterprises.map((item) => ({ value: item.id, label: item.name }))}
+          enterpriseOptions={options?.enterprises.map((item) => ({
+            value: item.id,
+            label: item.name,
+          }))}
           optionsLoading={optionsLoading}
           onSearch={handleSearch}
         />
@@ -217,7 +221,11 @@ function WorkOrderListPage() {
             type="warning"
             showIcon
             title="企业和处理人选项加载失败"
-            action={<Button size="small" onClick={handleRetryOptions}>重试</Button>}
+            action={
+              <Button size="small" onClick={handleRetryOptions}>
+                重试
+              </Button>
+            }
           />
         ) : null}
         <WorkOrderTable

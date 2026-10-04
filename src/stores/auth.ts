@@ -23,7 +23,11 @@ function getStoredAccessToken() {
     }
 
     const persistedState = parsedAuth.state
-    if (!persistedState || typeof persistedState !== 'object' || !('accessToken' in persistedState)) {
+    if (
+      !persistedState ||
+      typeof persistedState !== 'object' ||
+      !('accessToken' in persistedState)
+    ) {
       return null
     }
 
@@ -66,7 +70,9 @@ export const useAuthStore = create<AuthStoreState>()(
       version: 1,
       migrate: (persistedState) => {
         const state = persistedState as Partial<AuthStoreState>
-        return { accessToken: typeof state.accessToken === 'string' ? state.accessToken : null }
+        return {
+          accessToken: typeof state.accessToken === 'string' ? state.accessToken : null,
+        }
       },
     },
   ),

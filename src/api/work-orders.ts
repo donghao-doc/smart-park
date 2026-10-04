@@ -49,7 +49,9 @@ export async function reqUploadWorkOrderImage(file: File) {
 
 /** 使用本地示例图片完成模拟上传，便于无需文件即可演示附件流程 */
 export async function reqUploadWorkOrderSampleImage(sampleIndex: number) {
-  return http.post<WorkOrderImageDto>('/work-orders/images/sample', { sampleIndex })
+  return http.post<WorkOrderImageDto>('/work-orders/images/sample', {
+    sampleIndex,
+  })
 }
 
 /** 保存工单现场图片，服务端限制最多 5 张并校验可修改状态 */

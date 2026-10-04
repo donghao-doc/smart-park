@@ -3,11 +3,7 @@ import { Alert, Button, Flex, Tag, type TableColumnsType } from 'antd'
 import { useMemo } from 'react'
 
 import DataTablePanel from '@/components/data-table-panel'
-import type {
-  PersonnelCertificateType,
-  PersonnelDto,
-  PersonnelStatus,
-} from '@/types/personnel'
+import type { PersonnelCertificateType, PersonnelDto, PersonnelStatus } from '@/types/personnel'
 import { maskPhoneNumber } from '@/utils'
 import './personnel-table.scss'
 
@@ -103,7 +99,12 @@ function PersonnelTable({
         render: (value: string) => maskCertificateNumber(value),
       },
       { title: '工号', dataIndex: 'employeeNumber', width: 100 },
-      { title: '所属企业', dataIndex: 'enterpriseName', width: 210, ellipsis: true },
+      {
+        title: '所属企业',
+        dataIndex: 'enterpriseName',
+        width: 210,
+        ellipsis: true,
+      },
       { title: '部门', dataIndex: 'department', width: 130, ellipsis: true },
       {
         title: '状态',
@@ -122,9 +123,13 @@ function PersonnelTable({
         fixed: 'right',
         render: (_value, record) => (
           <Flex className="personnel-table-actions" gap={2}>
-            <Button type="link" onClick={() => onView(record.id)}>查看</Button>
+            <Button type="link" onClick={() => onView(record.id)}>
+              查看
+            </Button>
             {canUpdate ? (
-              <Button type="link" onClick={() => onEdit(record.id)}>编辑</Button>
+              <Button type="link" onClick={() => onEdit(record.id)}>
+                编辑
+              </Button>
             ) : null}
           </Flex>
         ),
@@ -150,7 +155,11 @@ function PersonnelTable({
             type="error"
             showIcon
             message="人员列表加载失败"
-            action={<Button size="small" onClick={onRetry}>重试</Button>}
+            action={
+              <Button size="small" onClick={onRetry}>
+                重试
+              </Button>
+            }
           />
         ) : undefined
       }

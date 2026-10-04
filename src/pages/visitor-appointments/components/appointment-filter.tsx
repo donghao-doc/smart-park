@@ -107,12 +107,18 @@ function AppointmentFilter({
       >
         <Row gutter={[24, 16]} align="middle">
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="visitorName" label={<span className="appointment-filter-label">访客姓名</span>}>
+            <Form.Item
+              name="visitorName"
+              label={<span className="appointment-filter-label">访客姓名</span>}
+            >
               <Input allowClear placeholder="请输入访客姓名" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="enterpriseId" label={<span className="appointment-filter-label">所属企业</span>}>
+            <Form.Item
+              name="enterpriseId"
+              label={<span className="appointment-filter-label">所属企业</span>}
+            >
               <Select
                 allowClear={!enterpriseLocked}
                 showSearch
@@ -124,19 +130,27 @@ function AppointmentFilter({
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="dateRange" label={<span className="appointment-filter-label">预约日期</span>}>
+            <Form.Item
+              name="dateRange"
+              label={<span className="appointment-filter-label">预约日期</span>}
+            >
               <RangePicker allowClear className="appointment-filter-range" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="status" label={<span className="appointment-filter-label">预约状态</span>}>
+            <Form.Item
+              name="status"
+              label={<span className="appointment-filter-label">预约状态</span>}
+            >
               <Select allowClear placeholder="请选择状态" options={statusOptions} />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
               <Col>
-                <Button type="primary" htmlType="submit">查询</Button>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
               </Col>
               <Col>
                 <Button onClick={handleReset}>重置</Button>

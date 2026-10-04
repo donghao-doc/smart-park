@@ -101,12 +101,7 @@ function VehicleTable({
       width: 64 + (canUpdate ? 50 : 0) + (canChangeStatus ? 50 : 0),
       fixed: 'right',
       render: (_value, vehicle) => (
-        <Flex
-          className="vehicle-table-actions"
-          align="center"
-          gap={2}
-          wrap={false}
-        >
+        <Flex className="vehicle-table-actions" align="center" gap={2} wrap={false}>
           <Button
             type="link"
             aria-label={`查看${vehicle.plateNumber}的车辆档案`}
@@ -151,19 +146,27 @@ function VehicleTable({
     <DataTablePanel<VehicleDto>
       ariaLabel="车辆档案列表"
       className="vehicle-table-panel"
-      toolbar={canCreate ? (
-        <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-          新增车辆
-        </Button>
-      ) : undefined}
-      feedback={loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          title="车辆档案加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
-        />
-      ) : undefined}
+      toolbar={
+        canCreate ? (
+          <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+            新增车辆
+          </Button>
+        ) : undefined
+      }
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            title="车辆档案加载失败"
+            action={
+              <Button size="small" onClick={onRetry}>
+                重试
+              </Button>
+            }
+          />
+        ) : undefined
+      }
       tableProps={{
         rowKey: 'id',
         columns,

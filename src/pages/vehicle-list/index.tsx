@@ -34,7 +34,9 @@ function VehicleListPage() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
   const [reloadVersion, setReloadVersion] = useState(0)
-  const [enterpriseOptions, setEnterpriseOptions] = useState<NonNullable<SelectProps['options']>>([])
+  const [enterpriseOptions, setEnterpriseOptions] = useState<NonNullable<SelectProps['options']>>(
+    [],
+  )
   const [optionsLoading, setOptionsLoading] = useState(true)
   const [optionsError, setOptionsError] = useState(false)
   const [optionsVersion, setOptionsVersion] = useState(0)

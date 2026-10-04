@@ -67,9 +67,8 @@ export function getWorkOrderActions(
 ): WorkOrderAction[] {
   const actions: WorkOrderAction[] = []
   const canProcess = permissions.includes('work-order:process')
-  const canHandle = canProcess && (
-    order.assigneeId === userId || permissions.includes('work-order:reopen')
-  )
+  const canHandle =
+    canProcess && (order.assigneeId === userId || permissions.includes('work-order:reopen'))
   if (canProcess && order.status === 'pending_acceptance') actions.push('accept')
   if (canProcess && (order.status === 'pending_processing' || order.status === 'processing')) {
     actions.push('assign')
@@ -77,13 +76,15 @@ export function getWorkOrderActions(
   if (canHandle && order.status === 'pending_processing') actions.push('start')
   if (canHandle && order.status === 'processing') actions.push('submit')
   if (
-    permissions.includes('work-order:confirm') && order.status === 'pending_confirmation' &&
+    permissions.includes('work-order:confirm') &&
+    order.status === 'pending_confirmation' &&
     order.assigneeId !== userId
   ) {
     actions.push('confirm')
   }
   if (
-    permissions.includes('work-order:cancel') && order.status !== 'completed' &&
+    permissions.includes('work-order:cancel') &&
+    order.status !== 'completed' &&
     order.status !== 'cancelled'
   ) {
     actions.push('cancel')
@@ -99,6 +100,9 @@ export function getWorkOrderActions(
 
 /** 未归档的工单可由具备创建或处理权限的账号维护图片，企业范围仍由接口校验 */
 export function canEditWorkOrderImages(order: WorkOrderDto, permissions: PermissionCode[]) {
-  return order.status !== 'completed' && order.status !== 'cancelled' &&
+  return (
+    order.status !== 'completed' &&
+    order.status !== 'cancelled' &&
     (permissions.includes('work-order:create') || permissions.includes('work-order:process'))
+  )
 }

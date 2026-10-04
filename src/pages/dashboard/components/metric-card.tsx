@@ -17,8 +17,16 @@ const metricPresentation: Record<
   DashboardMetricKey,
   { icon: ReactNode; className: string; path: string }
 > = {
-  enterprise: { icon: <BankOutlined />, className: 'is-blue', path: '/enterprises' },
-  personnel: { icon: <TeamOutlined />, className: 'is-green', path: '/personnel' },
+  enterprise: {
+    icon: <BankOutlined />,
+    className: 'is-blue',
+    path: '/enterprises',
+  },
+  personnel: {
+    icon: <TeamOutlined />,
+    className: 'is-green',
+    path: '/personnel',
+  },
   visitor: {
     icon: <UserAddOutlined />,
     className: 'is-cyan',

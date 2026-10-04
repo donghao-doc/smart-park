@@ -33,10 +33,7 @@ const statusOptions = [
 /**
  * 人员列表筛选表单，负责收集、提交和重置筛选条件
  */
-function PersonnelFilter({
-  enterpriseOptions,
-  onSearch,
-}: PersonnelFilterProps) {
+function PersonnelFilter({ enterpriseOptions, onSearch }: PersonnelFilterProps) {
   const [form] = Form.useForm<PersonnelFilterValues>()
 
   /**
@@ -65,7 +62,10 @@ function PersonnelFilter({
               </Form.Item>
             </Col>
             <Col xs={24} md={12} lg={8}>
-              <Form.Item name="phone" label={<span className="personnel-filter-label">手机号</span>}>
+              <Form.Item
+                name="phone"
+                label={<span className="personnel-filter-label">手机号</span>}
+              >
                 <Input allowClear placeholder="请输入手机号" maxLength={11} />
               </Form.Item>
             </Col>
@@ -94,7 +94,9 @@ function PersonnelFilter({
             <Col xs={24} md={12} lg={16}>
               <Row gutter={12} justify="end" wrap={false}>
                 <Col>
-                  <Button type="primary" htmlType="submit">查询</Button>
+                  <Button type="primary" htmlType="submit">
+                    查询
+                  </Button>
                 </Col>
                 <Col>
                   <Button onClick={handleReset}>重置</Button>

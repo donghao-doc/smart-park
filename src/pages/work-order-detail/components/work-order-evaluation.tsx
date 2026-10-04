@@ -47,7 +47,9 @@ function WorkOrderEvaluation({ order, canConfirm, busy, onConfirm }: WorkOrderEv
           <h3 className="work-order-detail-subheading">服务评价</h3>
           {order.rating ? (
             <Rate disabled value={order.rating} tooltips={ratingLabels} />
-          ) : <p className="work-order-detail-secondary">企业已确认完成，未评分</p>}
+          ) : (
+            <p className="work-order-detail-secondary">企业已确认完成，未评分</p>
+          )}
           <p className="work-order-detail-description">{order.feedback || '暂无文字反馈'}</p>
           <Alert type="success" showIcon title="企业已确认处理结果，工单已完成" />
         </>
@@ -61,18 +63,29 @@ function WorkOrderEvaluation({ order, canConfirm, busy, onConfirm }: WorkOrderEv
           <Form.Item
             name="rating"
             label="请对本次服务进行评价"
-            rules={[{
-              type: 'number',
-              min: 1,
-              max: 5,
-              required: true,
-              message: '请先选择 1～5 分的服务评价',
-            }]}
+            rules={[
+              {
+                type: 'number',
+                min: 1,
+                max: 5,
+                required: true,
+                message: '请先选择 1～5 分的服务评价',
+              },
+            ]}
           >
-            <Rate className="work-order-detail-rating" tooltips={ratingLabels} aria-label="服务评价，1 至 5 分" />
+            <Rate
+              className="work-order-detail-rating"
+              tooltips={ratingLabels}
+              aria-label="服务评价，1 至 5 分"
+            />
           </Form.Item>
           <Form.Item name="feedback" label="评价反馈（可选）" rules={[{ max: 1000 }]}>
-            <Input.TextArea rows={3} maxLength={1000} showCount placeholder="请填写服务体验或改进建议" />
+            <Input.TextArea
+              rows={3}
+              maxLength={1000}
+              showCount
+              placeholder="请填写服务体验或改进建议"
+            />
           </Form.Item>
           <Row gutter={[12, 12]}>
             <Col xs={24} sm={12}>
@@ -81,7 +94,9 @@ function WorkOrderEvaluation({ order, canConfirm, busy, onConfirm }: WorkOrderEv
               </Button>
             </Col>
             <Col xs={24} sm={12}>
-              <Button block htmlType="submit" disabled={busy}>提交评价</Button>
+              <Button block htmlType="submit" disabled={busy}>
+                提交评价
+              </Button>
             </Col>
           </Row>
         </Form>
@@ -89,7 +104,9 @@ function WorkOrderEvaluation({ order, canConfirm, busy, onConfirm }: WorkOrderEv
         <p className="work-order-detail-secondary">
           {order.status === 'pending_confirmation'
             ? '等待企业联系人确认处理结果，处理人不能确认自己处理的工单'
-            : order.status === 'cancelled' ? '工单已取消，重新打开并处理后可确认评价' : '处理结果提交后，企业联系人可确认并评价服务'}
+            : order.status === 'cancelled'
+              ? '工单已取消，重新打开并处理后可确认评价'
+              : '处理结果提交后，企业联系人可确认并评价服务'}
         </p>
       )}
     </>

@@ -72,8 +72,7 @@ export const useUserStore = create<UserStoreState>((set, get) => ({
     pendingUserRequest = request
     return request
   },
-  hasPermission: (permission) =>
-    get().currentUser?.role.permissions.includes(permission) ?? false,
+  hasPermission: (permission) => get().currentUser?.role.permissions.includes(permission) ?? false,
   resetUser: () => {
     // 使旧会话中仍在执行的请求失效，避免响应覆盖新会话用户
     userRequestVersion += 1

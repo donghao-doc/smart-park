@@ -60,11 +60,15 @@ function DashboardPage() {
   const [visitorTrend, setVisitorTrend] = useState<VisitorTrendPointDto[]>([])
   const [visitorLoading, setVisitorLoading] = useState(true)
   const [visitorError, setVisitorError] = useState(false)
-  const [visitorParams, setVisitorParams] = useState<DashboardTrendParams>({ range: '7d' })
+  const [visitorParams, setVisitorParams] = useState<DashboardTrendParams>({
+    range: '7d',
+  })
   const [workOrderTrend, setWorkOrderTrend] = useState<WorkOrderTrendPointDto[]>([])
   const [workOrderLoading, setWorkOrderLoading] = useState(true)
   const [workOrderError, setWorkOrderError] = useState(false)
-  const [workOrderParams, setWorkOrderParams] = useState<DashboardTrendParams>({ range: '7d' })
+  const [workOrderParams, setWorkOrderParams] = useState<DashboardTrendParams>({
+    range: '7d',
+  })
 
   useEffect(() => {
     let active = true
@@ -191,7 +195,10 @@ function DashboardPage() {
     () => ({
       animationDuration: 500,
       color: ['#1677ff'],
-      tooltip: { trigger: 'axis', valueFormatter: (value: unknown) => `${value} 人` },
+      tooltip: {
+        trigger: 'axis',
+        valueFormatter: (value: unknown) => `${value} 人`,
+      },
       grid: { left: 48, right: 18, top: 30, bottom: 30 },
       xAxis: {
         type: 'category',
@@ -207,7 +214,11 @@ function DashboardPage() {
         min: 0,
         max: 500,
         interval: 100,
-        nameTextStyle: { color: '#7885a0', fontSize: 12, padding: [0, 0, 0, -26] },
+        nameTextStyle: {
+          color: '#7885a0',
+          fontSize: 12,
+          padding: [0, 0, 0, -26],
+        },
         axisLabel: { color: '#667493', fontSize: 12 },
         splitLine: { lineStyle: { color: '#e7edf5' } },
       },
@@ -268,7 +279,11 @@ function DashboardPage() {
         min: 0,
         max: 100,
         interval: 20,
-        nameTextStyle: { color: '#7885a0', fontSize: 12, padding: [0, 0, 0, -18] },
+        nameTextStyle: {
+          color: '#7885a0',
+          fontSize: 12,
+          padding: [0, 0, 0, -18],
+        },
         axisLabel: { color: '#667493', fontSize: 12 },
         splitLine: { lineStyle: { color: '#e7edf5' } },
       },
@@ -315,9 +330,7 @@ function DashboardPage() {
    */
   function handleTrendRangeChange(target: 'visitor' | 'workOrder', range: DashboardTrendRange) {
     const params: DashboardTrendParams =
-      range === 'custom'
-        ? { range, startDate: '2024-04-16', endDate: '2024-04-22' }
-        : { range }
+      range === 'custom' ? { range, startDate: '2024-04-16', endDate: '2024-04-22' } : { range }
 
     if (target === 'visitor') {
       setVisitorLoading(true)
@@ -331,10 +344,7 @@ function DashboardPage() {
   /**
    * 应用用户选择的趋势自定义日期范围
    */
-  function handleCustomRangeChange(
-    target: 'visitor' | 'workOrder',
-    dateStrings: [string, string],
-  ) {
+  function handleCustomRangeChange(target: 'visitor' | 'workOrder', dateStrings: [string, string]) {
     const [startDate, endDate] = dateStrings
     if (!startDate || !endDate) {
       return
@@ -354,11 +364,14 @@ function DashboardPage() {
     <div className="dashboard-page">
       <section className="dashboard-metrics" aria-label="园区核心指标">
         {summaryError ? (
-          <Alert className="dashboard-section-error" type="error" showIcon message="核心指标加载失败" />
+          <Alert
+            className="dashboard-section-error"
+            type="error"
+            showIcon
+            message="核心指标加载失败"
+          />
         ) : summary ? (
-          summary.metrics.map((metric) => (
-            <MetricCard key={metric.key} metric={metric} />
-          ))
+          summary.metrics.map((metric) => <MetricCard key={metric.key} metric={metric} />)
         ) : (
           Array.from({ length: 6 }, (_, index) => (
             <div className="dashboard-metric-skeleton" key={index}>
@@ -380,9 +393,7 @@ function DashboardPage() {
           chartAriaLabel="访客人数趋势折线图"
           option={visitorOption}
           onRangeChange={(range) => handleTrendRangeChange('visitor', range)}
-          onCustomRangeChange={(dateStrings) =>
-            handleCustomRangeChange('visitor', dateStrings)
-          }
+          onCustomRangeChange={(dateStrings) => handleCustomRangeChange('visitor', dateStrings)}
         />
 
         <TrendChartCard
@@ -396,9 +407,7 @@ function DashboardPage() {
           chartAriaLabel="新增与完成工单趋势折线图"
           option={workOrderOption}
           onRangeChange={(range) => handleTrendRangeChange('workOrder', range)}
-          onCustomRangeChange={(dateStrings) =>
-            handleCustomRangeChange('workOrder', dateStrings)
-          }
+          onCustomRangeChange={(dateStrings) => handleCustomRangeChange('workOrder', dateStrings)}
         />
       </section>
 

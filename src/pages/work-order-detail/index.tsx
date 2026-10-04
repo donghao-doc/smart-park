@@ -7,25 +7,22 @@ import {
   ReloadOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import {
-  Alert,
-  App,
-  Button,
-  Card,
-  Col,
-  Descriptions,
-  Flex,
-  Row,
-  Skeleton,
-  Space,
-} from 'antd'
+import { Alert, App, Button, Card, Col, Descriptions, Flex, Row, Skeleton, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 
-import { reqGetWorkOrder, reqGetWorkOrderOptions, reqUpdateWorkOrder, reqUpdateWorkOrderImages } from '@/api'
+import {
+  reqGetWorkOrder,
+  reqGetWorkOrderOptions,
+  reqUpdateWorkOrder,
+  reqUpdateWorkOrderImages,
+} from '@/api'
 import WorkOrderImageUpload from '@/components/work-order-image-upload'
 import WorkOrderActionModal from '@/pages/work-order-list/components/work-order-action-modal'
-import { WorkOrderPriorityTag, WorkOrderStatusTag } from '@/pages/work-order-list/components/work-order-tag'
+import {
+  WorkOrderPriorityTag,
+  WorkOrderStatusTag,
+} from '@/pages/work-order-list/components/work-order-tag'
 import { useUserStore } from '@/stores/user'
 import type {
   WorkOrderAction,
@@ -85,7 +82,9 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
         if (active) setLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [id, reloadVersion])
 
   useEffect(() => {
@@ -104,7 +103,9 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
         if (active) setOptionsLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [action, actionOrder, optionsVersion])
 
   /** 重新读取详情，同步其他页面或账号产生的变更 */
@@ -148,7 +149,8 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
     void message.success('现场图片已保存')
   }
 
-  if (loading) return <Skeleton className="work-order-detail-loading" active paragraph={{ rows: 16 }} />
+  if (loading)
+    return <Skeleton className="work-order-detail-loading" active paragraph={{ rows: 16 }} />
 
   if (loadError || !order) {
     return (
@@ -157,12 +159,14 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
         showIcon
         title="工单详情加载失败"
         description="工单可能不存在，或当前账号无权查看"
-        action={(
+        action={
           <Space wrap>
             <Button onClick={handleReload}>重试</Button>
-            <Button><Link to="/work-orders">返回工单中心</Link></Button>
+            <Button>
+              <Link to="/work-orders">返回工单中心</Link>
+            </Button>
           </Space>
-        )}
+        }
       />
     )
   }
@@ -175,7 +179,9 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
     <Flex className="work-order-detail-page" vertical gap={16}>
       <Flex align="center" justify="space-between" gap={16} wrap>
         <Flex align="center" gap={12} wrap>
-          <h1 className="work-order-detail-title">{order.code} <span>{order.title}</span></h1>
+          <h1 className="work-order-detail-title">
+            {order.code} <span>{order.title}</span>
+          </h1>
           <WorkOrderStatusTag status={order.status} />
         </Flex>
         <Flex align="center" gap={8} wrap>
@@ -186,18 +192,24 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
           >
             返回工单中心
           </Button>
-          <Button icon={<ReloadOutlined />} disabled={busy} onClick={handleReload}>刷新</Button>
-          {actions.filter((item) => item !== 'confirm').map((item) => (
-            <Button
-              key={item}
-              type={item === 'accept' || item === 'start' || item === 'submit' ? 'primary' : 'default'}
-              danger={item === 'cancel'}
-              disabled={busy}
-              onClick={() => handleOpenAction(item)}
-            >
-              {workOrderActionLabels[item]}
-            </Button>
-          ))}
+          <Button icon={<ReloadOutlined />} disabled={busy} onClick={handleReload}>
+            刷新
+          </Button>
+          {actions
+            .filter((item) => item !== 'confirm')
+            .map((item) => (
+              <Button
+                key={item}
+                type={
+                  item === 'accept' || item === 'start' || item === 'submit' ? 'primary' : 'default'
+                }
+                danger={item === 'cancel'}
+                disabled={busy}
+                onClick={() => handleOpenAction(item)}
+              >
+                {workOrderActionLabels[item]}
+              </Button>
+            ))}
         </Flex>
       </Flex>
 
@@ -212,13 +224,41 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
                 column={{ xs: 1, sm: 2 }}
                 items={[
                   { key: 'code', label: '工单编号', children: order.code },
-                  { key: 'creator', label: '提交人', children: order.creatorName },
-                  { key: 'type', label: '工单类型', children: workOrderTypeLabels[order.type] },
-                  { key: 'location', label: '问题位置', children: order.location },
-                  { key: 'created', label: '创建时间', children: formatDateTime(order.createdAt) },
-                  { key: 'status', label: '工单状态', children: <WorkOrderStatusTag status={order.status} /> },
-                  { key: 'contact', label: '企业联系人', children: order.contactName },
-                  { key: 'updated', label: '更新时间', children: formatDateTime(order.updatedAt) },
+                  {
+                    key: 'creator',
+                    label: '提交人',
+                    children: order.creatorName,
+                  },
+                  {
+                    key: 'type',
+                    label: '工单类型',
+                    children: workOrderTypeLabels[order.type],
+                  },
+                  {
+                    key: 'location',
+                    label: '问题位置',
+                    children: order.location,
+                  },
+                  {
+                    key: 'created',
+                    label: '创建时间',
+                    children: formatDateTime(order.createdAt),
+                  },
+                  {
+                    key: 'status',
+                    label: '工单状态',
+                    children: <WorkOrderStatusTag status={order.status} />,
+                  },
+                  {
+                    key: 'contact',
+                    label: '企业联系人',
+                    children: order.contactName,
+                  },
+                  {
+                    key: 'updated',
+                    label: '更新时间',
+                    children: formatDateTime(order.updatedAt),
+                  },
                 ]}
               />
             </Card>
@@ -248,12 +288,24 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
                 items={[
                   {
                     key: 'enterprise',
-                    label: <Space><BankOutlined />所属企业</Space>,
-                    children: <Link to={`/enterprises/${order.enterpriseId}`}>{order.enterpriseName}</Link>,
+                    label: (
+                      <Space>
+                        <BankOutlined />
+                        所属企业
+                      </Space>
+                    ),
+                    children: (
+                      <Link to={`/enterprises/${order.enterpriseId}`}>{order.enterpriseName}</Link>
+                    ),
                   },
                   {
                     key: 'contact',
-                    label: <Space><UserOutlined />企业联系人</Space>,
+                    label: (
+                      <Space>
+                        <UserOutlined />
+                        企业联系人
+                      </Space>
+                    ),
                     children: (
                       <Flex align="center" gap={8} wrap>
                         <span>{order.contactName}</span>
@@ -269,17 +321,32 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
                   },
                   {
                     key: 'location',
-                    label: <Space><EnvironmentOutlined />位置</Space>,
+                    label: (
+                      <Space>
+                        <EnvironmentOutlined />
+                        位置
+                      </Space>
+                    ),
                     children: order.location,
                   },
                   {
                     key: 'priority',
-                    label: <Space><ExclamationCircleOutlined />紧急程度</Space>,
+                    label: (
+                      <Space>
+                        <ExclamationCircleOutlined />
+                        紧急程度
+                      </Space>
+                    ),
                     children: <WorkOrderPriorityTag priority={order.priority} />,
                   },
                   {
                     key: 'assignee',
-                    label: <Space><UserOutlined />处理人</Space>,
+                    label: (
+                      <Space>
+                        <UserOutlined />
+                        处理人
+                      </Space>
+                    ),
                     children: order.assigneeName ?? '尚未分派',
                   },
                 ]}
@@ -291,12 +358,14 @@ function WorkOrderDetailContent({ id }: WorkOrderDetailContentProps) {
                 order={order}
                 canConfirm={actions.includes('confirm')}
                 busy={busy}
-                onConfirm={(rating, feedback) => void handleActionSubmit({
-                  action: 'confirm',
-                  expectedStatus: order.status,
-                  rating,
-                  remark: feedback,
-                })}
+                onConfirm={(rating, feedback) =>
+                  void handleActionSubmit({
+                    action: 'confirm',
+                    expectedStatus: order.status,
+                    rating,
+                    remark: feedback,
+                  })
+                }
               />
             </Card>
           </Flex>

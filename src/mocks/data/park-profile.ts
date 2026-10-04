@@ -1,8 +1,4 @@
-import type {
-  ParkBuildingDto,
-  ParkInfoDto,
-  ParkSpaceDto,
-} from '@/types/park-profile'
+import type { ParkBuildingDto, ParkInfoDto, ParkSpaceDto } from '@/types/park-profile'
 
 /** 园区基础信息初始数据 */
 export const seedParkInfo: ParkInfoDto = {

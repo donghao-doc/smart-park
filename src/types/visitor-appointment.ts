@@ -4,13 +4,7 @@ import type { PageResult } from './api'
  * 访客预约状态
  */
 export type VisitorAppointmentStatus =
-  | 'pending'
-  | 'approved'
-  | 'checked_in'
-  | 'checked_out'
-  | 'rejected'
-  | 'cancelled'
-  | 'expired'
+  'pending' | 'approved' | 'checked_in' | 'checked_out' | 'rejected' | 'cancelled' | 'expired'
 
 /**
  * 访客预约列表与详情共用的数据结构
@@ -106,12 +100,7 @@ export interface CreateVisitorAppointmentRequest {
 /**
  * 访客预约可执行的流程动作
  */
-export type VisitorAppointmentAction =
-  | 'approve'
-  | 'reject'
-  | 'check_in'
-  | 'check_out'
-  | 'cancel'
+export type VisitorAppointmentAction = 'approve' | 'reject' | 'check_in' | 'check_out' | 'cancel'
 
 /**
  * 更新访客预约流程状态时提交的数据

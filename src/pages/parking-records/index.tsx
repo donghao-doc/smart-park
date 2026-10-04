@@ -34,7 +34,11 @@ function ParkingRecordsPage() {
     let active = true
     void (async () => {
       try {
-        const result = await reqGetParkingRecords({ ...filters, page, pageSize })
+        const result = await reqGetParkingRecords({
+          ...filters,
+          page,
+          pageSize,
+        })
         if (active) {
           setRecords(result.list)
           setTotal(result.total)

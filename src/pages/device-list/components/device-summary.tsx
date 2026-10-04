@@ -37,7 +37,11 @@ function DeviceSummary({ summary, loading, loadError, onRetry }: DeviceSummaryPr
         type="error"
         showIcon
         title="设备统计加载失败"
-        action={<Button size="small" onClick={onRetry}>重试</Button>}
+        action={
+          <Button size="small" onClick={onRetry}>
+            重试
+          </Button>
+        }
       />
     )
   }
@@ -46,15 +50,9 @@ function DeviceSummary({ summary, loading, loadError, onRetry }: DeviceSummaryPr
       <Row gutter={[12, 12]}>
         {metrics.map(({ key, label, icon }) => {
           const count = summary ? (key === 'total' ? summary.total : summary.counts[key]) : 0
-          const percentage = summary?.total ? Math.round(count / summary.total * 100) : 0
+          const percentage = summary?.total ? Math.round((count / summary.total) * 100) : 0
           return (
-            <Col
-              key={key}
-              xs={24}
-              sm={12}
-              lg={8}
-              xl={{ flex: '1 1 20%' }}
-            >
+            <Col key={key} xs={24} sm={12} lg={8} xl={{ flex: '1 1 20%' }}>
               <Card className={`device-metric-card is-${key}`}>
                 {summary ? (
                   <Flex align="start" gap={16}>
@@ -66,25 +64,19 @@ function DeviceSummary({ summary, loading, loadError, onRetry }: DeviceSummaryPr
                     >
                       {icon}
                     </Flex>
-                    <Flex
-                      vertical
-                      flex={1}
-                      gap={8}
-                      className="device-metric-content"
-                    >
+                    <Flex vertical flex={1} gap={8} className="device-metric-content">
                       <span className="device-metric-label">{label}</span>
-                      <Flex
-                        align="baseline"
-                        justify="space-between"
-                        gap={8}
-                        wrap
-                      >
+                      <Flex align="baseline" justify="space-between" gap={8} wrap>
                         <Statistic value={count} suffix="台" />
-                        {key !== 'total' ? <span className="device-metric-percentage">{percentage}%</span> : null}
+                        {key !== 'total' ? (
+                          <span className="device-metric-percentage">{percentage}%</span>
+                        ) : null}
                       </Flex>
                     </Flex>
                   </Flex>
-                ) : <Skeleton active title={false} paragraph={{ rows: 2 }} />}
+                ) : (
+                  <Skeleton active title={false} paragraph={{ rows: 2 }} />
+                )}
               </Card>
             </Col>
           )

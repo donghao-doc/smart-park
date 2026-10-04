@@ -83,7 +83,9 @@ export function authorizeRequest(
   const accessToken = authorization?.startsWith('Bearer ') ? authorization.slice(7).trim() : ''
 
   if (!accessToken) {
-    return { response: createErrorResponse(401, 40101, '登录状态已失效，请重新登录') }
+    return {
+      response: createErrorResponse(401, 40101, '登录状态已失效，请重新登录'),
+    }
   }
 
   const state = getMockState()
@@ -91,30 +93,40 @@ export function authorizeRequest(
   const session = state.sessions[sessionIndex]
 
   if (!session) {
-    return { response: createErrorResponse(401, 40101, '登录状态已失效，请重新登录') }
+    return {
+      response: createErrorResponse(401, 40101, '登录状态已失效，请重新登录'),
+    }
   }
 
   if (new Date(session.expiresAt).getTime() <= Date.now()) {
     state.sessions.splice(sessionIndex, 1)
     saveMockState(state)
-    return { response: createErrorResponse(401, 40102, '登录已过期，请重新登录') }
+    return {
+      response: createErrorResponse(401, 40102, '登录已过期，请重新登录'),
+    }
   }
 
   const user = state.users.find((item) => item.id === session.userId)
   if (!user) {
     state.sessions.splice(sessionIndex, 1)
     saveMockState(state)
-    return { response: createErrorResponse(401, 40101, '登录状态已失效，请重新登录') }
+    return {
+      response: createErrorResponse(401, 40101, '登录状态已失效，请重新登录'),
+    }
   }
 
   if (user.status === 'disabled') {
     state.sessions.splice(sessionIndex, 1)
     saveMockState(state)
-    return { response: createErrorResponse(403, 40301, '账号已停用，请联系超级管理员') }
+    return {
+      response: createErrorResponse(403, 40301, '账号已停用，请联系超级管理员'),
+    }
   }
 
   if (permission && !mockRoles[user.roleCode].permissions.includes(permission)) {
-    return { response: createErrorResponse(403, 40302, '当前账号无权执行此操作') }
+    return {
+      response: createErrorResponse(403, 40302, '当前账号无权执行此操作'),
+    }
   }
 
   return { state, user, accessToken }

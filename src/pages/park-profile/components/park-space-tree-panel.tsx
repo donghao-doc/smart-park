@@ -1,9 +1,4 @@
-import {
-  ApartmentOutlined,
-  BankFilled,
-  HomeOutlined,
-  SearchOutlined,
-} from '@ant-design/icons'
+import { ApartmentOutlined, BankFilled, HomeOutlined, SearchOutlined } from '@ant-design/icons'
 import type { TreeDataNode } from 'antd'
 import { Input, Tree } from 'antd'
 import { useMemo } from 'react'

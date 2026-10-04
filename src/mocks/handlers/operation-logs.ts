@@ -22,8 +22,11 @@ function parsePage(value: string | null, fallback: number) {
 function isValidTime(value: string | null) {
   if (value === null) return true
   const date = new Date(value)
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
-    Number.isFinite(date.getTime()) && date.toISOString() === value
+  return (
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
+    Number.isFinite(date.getTime()) &&
+    date.toISOString() === value
+  )
 }
 
 /** 列表只传输摘要，原始请求信息通过独立详情接口读取 */
@@ -66,18 +69,24 @@ export const operationLogHandlers = [
     if (result && !Object.hasOwn(operationLogResultLabels, result)) {
       return createErrorResponse(400, 400122, '操作结果筛选条件不正确')
     }
-    if (!isValidTime(startTime) || !isValidTime(endTime) ||
-      (startTime && endTime && Date.parse(startTime) > Date.parse(endTime))) {
+    if (
+      !isValidTime(startTime) ||
+      !isValidTime(endTime) ||
+      (startTime && endTime && Date.parse(startTime) > Date.parse(endTime))
+    ) {
       return createErrorResponse(400, 400123, '请选择有效的操作时间范围')
     }
 
-    const logs = seedOperationLogs.filter((log) =>
-      (!operatorName || log.operatorName.toLowerCase().includes(operatorName)) &&
-      (!module || log.module === module) &&
-      (!result || log.result === result) &&
-      (!startTime || Date.parse(log.operatedAt) >= Date.parse(startTime)) &&
-      (!endTime || Date.parse(log.operatedAt) <= Date.parse(endTime)),
-    ).sort((a, b) => Date.parse(b.operatedAt) - Date.parse(a.operatedAt))
+    const logs = seedOperationLogs
+      .filter(
+        (log) =>
+          (!operatorName || log.operatorName.toLowerCase().includes(operatorName)) &&
+          (!module || log.module === module) &&
+          (!result || log.result === result) &&
+          (!startTime || Date.parse(log.operatedAt) >= Date.parse(startTime)) &&
+          (!endTime || Date.parse(log.operatedAt) <= Date.parse(endTime)),
+      )
+      .sort((a, b) => Date.parse(b.operatedAt) - Date.parse(a.operatedAt))
     const start = (page - 1) * pageSize
 
     return createSuccessResponse({

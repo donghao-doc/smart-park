@@ -11,7 +11,12 @@ import {
 } from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
 import { useUserStore } from '@/stores/user'
-import type { DeviceDetailDto, DeviceDto, DeviceMutationRequest, DeviceSummaryDto } from '@/types/device'
+import type {
+  DeviceDetailDto,
+  DeviceDto,
+  DeviceMutationRequest,
+  DeviceSummaryDto,
+} from '@/types/device'
 import DeviceDetailModal from './components/device-detail-modal'
 import DeviceFilter, { type DeviceFilterValues } from './components/device-filter'
 import DeviceFormModal from './components/device-form-modal'
@@ -80,7 +85,9 @@ function DeviceListPage() {
         if (active && !correctedPage) setLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [filters, page, pageSize, reloadVersion])
 
   useEffect(() => {
@@ -98,7 +105,9 @@ function DeviceListPage() {
         if (active) setSummaryLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [reloadVersion])
 
   useEffect(() => {
@@ -116,7 +125,9 @@ function DeviceListPage() {
         if (active) setLocationsLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [locationsVersion, reloadVersion])
 
   useEffect(() => {
@@ -136,7 +147,9 @@ function DeviceListPage() {
       }
     })()
     // 关闭或切换设备时忽略旧响应，避免详情覆盖或错误回填
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [detailVersion, dialogMode, selectedId])
 
   /** 刷新设备列表、统计及位置选项，清空可能过期的勾选 */

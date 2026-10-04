@@ -1,10 +1,7 @@
 import { Form, Input, Modal, Select } from 'antd'
 import { useEffect } from 'react'
 
-import type {
-  EnterpriseDetailDto,
-  EnterpriseMutationRequest,
-} from '@/types/enterprise'
+import type { EnterpriseDetailDto, EnterpriseMutationRequest } from '@/types/enterprise'
 import './enterprise-form-modal.scss'
 
 interface EnterpriseFormModalProps {
@@ -96,15 +93,18 @@ function EnterpriseFormModal({
             label="统一社会信用代码"
             rules={[
               { required: true, message: '请输入统一社会信用代码' },
-              { pattern: /^[0-9A-Z]{18}$/, message: '请输入 18 位大写字母或数字' },
+              {
+                pattern: /^[0-9A-Z]{18}$/,
+                message: '请输入 18 位大写字母或数字',
+              },
             ]}
           >
             <Input placeholder="请输入 18 位统一社会信用代码" maxLength={18} />
           </Form.Item>
-          <Form.Item name="industry" label="所属行业" rules={[{ required: true }]}> 
+          <Form.Item name="industry" label="所属行业" rules={[{ required: true }]}>
             <Select showSearch placeholder="请选择所属行业" options={industryOptions} />
           </Form.Item>
-          <Form.Item name="companyType" label="企业类型" rules={[{ required: true }]}> 
+          <Form.Item name="companyType" label="企业类型" rules={[{ required: true }]}>
             <Select
               options={[
                 { label: '有限责任公司', value: '有限责任公司' },
@@ -113,16 +113,16 @@ function EnterpriseFormModal({
               ]}
             />
           </Form.Item>
-          <Form.Item name="contactName" label="联系人" rules={[{ required: true }]}> 
+          <Form.Item name="contactName" label="联系人" rules={[{ required: true }]}>
             <Input placeholder="请输入联系人姓名" />
           </Form.Item>
-          <Form.Item name="contactPhone" label="联系电话" rules={[{ required: true }]}> 
+          <Form.Item name="contactPhone" label="联系电话" rules={[{ required: true }]}>
             <Input placeholder="请输入联系电话" />
           </Form.Item>
-          <Form.Item name="officeLocation" label="办公位置" rules={[{ required: true }]}> 
+          <Form.Item name="officeLocation" label="办公位置" rules={[{ required: true }]}>
             <Input placeholder="例如 A区1号楼201" />
           </Form.Item>
-          <Form.Item name="status" label="状态" rules={[{ required: true }]}> 
+          <Form.Item name="status" label="状态" rules={[{ required: true }]}>
             <Select
               options={[
                 { label: '已入驻', value: 'active' },

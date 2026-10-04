@@ -75,7 +75,10 @@ function WorkOrderActionModal({
       okText={workOrderActionLabels[action]}
       cancelText="返回"
       confirmLoading={submitting}
-      okButtonProps={{ danger: action === 'cancel', disabled: assigning && (optionsLoading || optionsError) }}
+      okButtonProps={{
+        danger: action === 'cancel',
+        disabled: assigning && (optionsLoading || optionsError),
+      }}
       cancelButtonProps={{ disabled: submitting }}
       closable={!submitting}
       mask={{ closable: !submitting }}
@@ -84,7 +87,9 @@ function WorkOrderActionModal({
       onOk={() => form.submit()}
       onCancel={onCancel}
     >
-      <p className="work-order-action-subject">{order?.code} · {order?.title}</p>
+      <p className="work-order-action-subject">
+        {order?.code} · {order?.title}
+      </p>
       <Form
         name="work-order-action"
         form={form}
@@ -100,13 +105,24 @@ function WorkOrderActionModal({
                 type="error"
                 showIcon
                 title="处理人选项加载失败"
-                action={<Button size="small" onClick={onRetryOptions}>重试</Button>}
+                action={
+                  <Button size="small" onClick={onRetryOptions}>
+                    重试
+                  </Button>
+                }
               />
             ) : null}
-            <Form.Item name="assigneeId" label="处理人" rules={[{ required: true, message: '请选择处理人' }]}>
+            <Form.Item
+              name="assigneeId"
+              label="处理人"
+              rules={[{ required: true, message: '请选择处理人' }]}
+            >
               <Select
                 placeholder="请选择工单处理人"
-                options={options?.assignees.map((item) => ({ value: item.id, label: item.name }))}
+                options={options?.assignees.map((item) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
                 loading={optionsLoading}
               />
             </Form.Item>
@@ -122,9 +138,15 @@ function WorkOrderActionModal({
         ) : null}
         <Form.Item
           name="remark"
-          label={action === 'submit' ? '处理结果说明' : action === 'confirm' ? '评价反馈' : '操作说明'}
+          label={
+            action === 'submit' ? '处理结果说明' : action === 'confirm' ? '评价反馈' : '操作说明'
+          }
           rules={[
-            { required: remarkRequired, whitespace: true, message: '请填写具体说明' },
+            {
+              required: remarkRequired,
+              whitespace: true,
+              message: '请填写具体说明',
+            },
             { max: 1000 },
           ]}
         >

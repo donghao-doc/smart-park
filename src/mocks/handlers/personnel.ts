@@ -102,9 +102,10 @@ export const personnelHandlers = [
       return createErrorResponse(400, 40051, '人员状态筛选条件不正确')
     }
 
-    const scopedPersonnel = auth.user.roleCode === 'enterprise_user'
-      ? auth.state.personnel.filter((item) => item.enterpriseId === auth.user.enterpriseId)
-      : auth.state.personnel
+    const scopedPersonnel =
+      auth.user.roleCode === 'enterprise_user'
+        ? auth.state.personnel.filter((item) => item.enterpriseId === auth.user.enterpriseId)
+        : auth.state.personnel
     const filteredPersonnel = scopedPersonnel.filter((item) => {
       const matchesName = !name || item.name.toLowerCase().includes(name)
       const matchesPhone = !phone || item.phone.includes(phone)
@@ -165,9 +166,7 @@ export const personnelHandlers = [
       return createErrorResponse(400, 40053, '所属企业不存在')
     }
 
-    if (
-      auth.state.personnel.some((item) => item.employeeNumber === body.employeeNumber?.trim())
-    ) {
+    if (auth.state.personnel.some((item) => item.employeeNumber === body.employeeNumber?.trim())) {
       return createErrorResponse(409, 40920, '工号已存在')
     }
 

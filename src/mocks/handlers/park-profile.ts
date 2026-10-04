@@ -1,9 +1,5 @@
 import { delay, http } from 'msw'
-import type {
-  ParkInfoDto,
-  ParkSpaceStatus,
-  UpdateParkInfoRequest,
-} from '@/types/park-profile'
+import type { ParkInfoDto, ParkSpaceStatus, UpdateParkInfoRequest } from '@/types/park-profile'
 import { parkBuildings, parkSpaces, seedParkInfo } from '../data/park-profile'
 import {
   authorizeRequest,

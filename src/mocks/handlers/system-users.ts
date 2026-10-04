@@ -279,7 +279,10 @@ export const systemUserHandlers = [
       auth.state.sessions = auth.state.sessions.filter((item) => item.userId !== user.id)
     }
     saveMockState(auth.state)
-    return createSuccessResponse(toUserDto(auth.state, user), body.status === 'active' ? '用户已启用' : '用户已停用')
+    return createSuccessResponse(
+      toUserDto(auth.state, user),
+      body.status === 'active' ? '用户已启用' : '用户已停用',
+    )
   }),
 
   http.post('/api/system/users/:id/reset-password', async ({ request, params }) => {

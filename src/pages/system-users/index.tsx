@@ -28,7 +28,9 @@ function SystemUsersPage() {
   const canCreate = useUserStore((state) => state.hasPermission('system-user:create'))
   const canUpdate = useUserStore((state) => state.hasPermission('system-user:update'))
   const canChangeStatus = useUserStore((state) => state.hasPermission('system-user:status'))
-  const canResetPassword = useUserStore((state) => state.hasPermission('system-user:reset-password'))
+  const canResetPassword = useUserStore((state) =>
+    state.hasPermission('system-user:reset-password'),
+  )
   const [users, setUsers] = useState<UserDto[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -81,7 +83,9 @@ function SystemUsersPage() {
         if (active && !correctedPage) setLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [filters, page, pageSize, reloadVersion])
 
   useEffect(() => {
@@ -96,18 +100,24 @@ function SystemUsersPage() {
         const allEnterprises = [...enterprises.list]
         // 企业接口有单页上限，分页加载完整选项，避免遗漏后续企业
         for (let nextPage = 2; allEnterprises.length < enterprises.total; nextPage += 1) {
-          const nextResult = await reqGetEnterprises({ page: nextPage, pageSize: 100 })
+          const nextResult = await reqGetEnterprises({
+            page: nextPage,
+            pageSize: 100,
+          })
           if (!active) return
           if (nextResult.list.length === 0) break
           allEnterprises.push(...nextResult.list)
         }
         if (active) {
           setRoleOptions(roles.map((role) => ({ value: role.code, label: role.name })))
-          setEnterpriseOptions(allEnterprises.map((enterprise) => ({
-            value: enterprise.id,
-            label: enterprise.status === 'disabled' ? `${enterprise.name}（已停用）` : enterprise.name,
-            disabled: enterprise.status === 'disabled',
-          })))
+          setEnterpriseOptions(
+            allEnterprises.map((enterprise) => ({
+              value: enterprise.id,
+              label:
+                enterprise.status === 'disabled' ? `${enterprise.name}（已停用）` : enterprise.name,
+              disabled: enterprise.status === 'disabled',
+            })),
+          )
           setOptionsError(false)
         }
       } catch {
@@ -116,7 +126,9 @@ function SystemUsersPage() {
         if (active) setOptionsLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [formOpen, optionsVersion])
 
   /** 重新加载当前筛选条件下的列表 */
@@ -188,9 +200,10 @@ function SystemUsersPage() {
     const action = status === 'active' ? '启用' : '停用'
     const confirmation = modal.confirm({
       title: `确认${action}用户「${user.username}」？`,
-      content: status === 'disabled'
-        ? '停用后该用户将无法登录，现有登录会话也会失效'
-        : '启用后该用户可使用原密码重新登录',
+      content:
+        status === 'disabled'
+          ? '停用后该用户将无法登录，现有登录会话也会失效'
+          : '启用后该用户可使用原密码重新登录',
       okText: `确认${action}`,
       cancelText: '取消',
       okButtonProps: { danger: status === 'disabled' },
@@ -226,7 +239,9 @@ function SystemUsersPage() {
             content: (
               <Flex vertical gap={12}>
                 <span>用户：{user.username}</span>
-                <Typography.Text code copyable>{result.temporaryPassword}</Typography.Text>
+                <Typography.Text code copyable>
+                  {result.temporaryPassword}
+                </Typography.Text>
                 <span>{result.message}，请妥善保存本次显示的临时密码</span>
               </Flex>
             ),

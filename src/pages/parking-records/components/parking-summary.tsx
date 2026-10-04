@@ -69,7 +69,11 @@ function ParkingSummary({ summary, loading, loadError, onRetry }: ParkingSummary
         type="error"
         showIcon
         title="停车统计加载失败"
-        action={<Button size="small" onClick={onRetry}>重试</Button>}
+        action={
+          <Button size="small" onClick={onRetry}>
+            重试
+          </Button>
+        }
       />
     )
   }
@@ -79,16 +83,12 @@ function ParkingSummary({ summary, loading, loadError, onRetry }: ParkingSummary
       <Row gutter={[16, 16]}>
         {metrics.map((metric) => {
           const change = summary?.[metric.changeKey]
-          const changeText = change == null
-            ? '暂无基数'
-            : `${change > 0 ? '+' : ''}${change}${metric.key === 'currentParked' ? '' : '%'}`
+          const changeText =
+            change == null
+              ? '暂无基数'
+              : `${change > 0 ? '+' : ''}${change}${metric.key === 'currentParked' ? '' : '%'}`
           return (
-            <Col
-              key={metric.key}
-              xs={24}
-              sm={12}
-              xl={6}
-            >
+            <Col key={metric.key} xs={24} sm={12} xl={6}>
               <Card className={`parking-metric-card ${metric.className}`}>
                 {summary ? (
                   <Flex align="start" gap={18}>

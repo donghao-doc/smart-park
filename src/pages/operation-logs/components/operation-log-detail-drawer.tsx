@@ -42,7 +42,11 @@ function OperationLogDetailDrawer({
       mask={!screens.sm}
       destroyOnHidden
       onClose={onClose}
-      footer={<Flex justify="end"><Button onClick={onClose}>关闭</Button></Flex>}
+      footer={
+        <Flex justify="end">
+          <Button onClick={onClose}>关闭</Button>
+        </Flex>
+      }
     >
       {loading ? (
         <Spin description="正在加载日志详情">
@@ -53,7 +57,11 @@ function OperationLogDetailDrawer({
           type="error"
           showIcon
           title="日志详情加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
+          action={
+            <Button size="small" onClick={onRetry}>
+              重试
+            </Button>
+          }
         />
       ) : log ? (
         <Flex vertical gap={16}>
@@ -69,7 +77,11 @@ function OperationLogDetailDrawer({
                   label: '操作时间',
                   children: dayjs(log.operatedAt).format('YYYY-MM-DD HH:mm:ss'),
                 },
-                { key: 'operatorName', label: '操作人', children: log.operatorName },
+                {
+                  key: 'operatorName',
+                  label: '操作人',
+                  children: log.operatorName,
+                },
                 { key: 'roleName', label: '角色', children: log.roleName },
                 { key: 'ipAddress', label: 'IP 地址', children: log.ipAddress },
                 {
@@ -87,13 +99,37 @@ function OperationLogDetailDrawer({
               size="small"
               colon={false}
               items={[
-                { key: 'module', label: '模块', children: operationLogModuleLabels[log.module] },
+                {
+                  key: 'module',
+                  label: '模块',
+                  children: operationLogModuleLabels[log.module],
+                },
                 { key: 'action', label: '操作动作', children: log.action },
-                { key: 'objectName', label: '操作对象', children: log.objectName ?? '—' },
-                { key: 'objectId', label: '对象 ID', children: log.objectId ?? '—' },
-                { key: 'requestMethod', label: '请求方式', children: log.requestMethod },
-                { key: 'requestUrl', label: '请求地址', children: log.requestUrl },
-                { key: 'description', label: '操作描述', children: log.description },
+                {
+                  key: 'objectName',
+                  label: '操作对象',
+                  children: log.objectName ?? '—',
+                },
+                {
+                  key: 'objectId',
+                  label: '对象 ID',
+                  children: log.objectId ?? '—',
+                },
+                {
+                  key: 'requestMethod',
+                  label: '请求方式',
+                  children: log.requestMethod,
+                },
+                {
+                  key: 'requestUrl',
+                  label: '请求地址',
+                  children: log.requestUrl,
+                },
+                {
+                  key: 'description',
+                  label: '操作描述',
+                  children: log.description,
+                },
               ]}
             />
           </section>
@@ -114,11 +150,16 @@ function OperationLogDetailDrawer({
               {paramsText ? (
                 <Typography.Paragraph
                   className="operation-log-request-params"
-                  copyable={{ text: paramsText, tooltips: ['复制请求参数', '已复制'] }}
+                  copyable={{
+                    text: paramsText,
+                    tooltips: ['复制请求参数', '已复制'],
+                  }}
                 >
                   <pre>{paramsText}</pre>
                 </Typography.Paragraph>
-              ) : <Typography.Text type="secondary">无请求参数</Typography.Text>}
+              ) : (
+                <Typography.Text type="secondary">无请求参数</Typography.Text>
+              )}
             </Flex>
           </section>
         </Flex>

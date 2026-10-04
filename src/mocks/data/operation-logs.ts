@@ -183,7 +183,11 @@ const scenarios: LogScenario[] = [
     requestMethod: 'PUT',
     requestUrl: '/api/system/users/usr_1005',
     description: '修改用户登录账号',
-    requestParams: { username: 'admin', name: '王五', roleCode: 'enterprise_user' },
+    requestParams: {
+      username: 'admin',
+      name: '王五',
+      roleCode: 'enterprise_user',
+    },
     failureReason: '登录账号已被使用，请更换账号后重试。',
   },
 ]
@@ -213,7 +217,6 @@ function createOperationLog(index: number): OperationLogDetailDto {
 }
 
 /** 操作日志种子数据，独立于可编辑业务数据，保留历史操作快照 */
-export const seedOperationLogs: OperationLogDetailDto[] = Array.from(
-  { length: 156 },
-  (_, index) => createOperationLog(index),
+export const seedOperationLogs: OperationLogDetailDto[] = Array.from({ length: 156 }, (_, index) =>
+  createOperationLog(index),
 )

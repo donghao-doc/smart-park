@@ -25,7 +25,9 @@ function ScrollableModal({
 
         return {
           ...customClassNames,
-          container: ['scrollable-modal-container', customClassNames?.container].filter(Boolean).join(' '),
+          container: ['scrollable-modal-container', customClassNames?.container]
+            .filter(Boolean)
+            .join(' '),
           header: ['scrollable-modal-header', customClassNames?.header].filter(Boolean).join(' '),
           body: ['scrollable-modal-body', customClassNames?.body].filter(Boolean).join(' '),
           footer: ['scrollable-modal-footer', customClassNames?.footer].filter(Boolean).join(' '),

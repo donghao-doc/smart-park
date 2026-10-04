@@ -124,11 +124,13 @@ function DeviceTable({
     <DataTablePanel<DeviceDto>
       ariaLabel="设备列表"
       className="device-table-panel"
-      toolbar={(
+      toolbar={
         <>
           <Flex align="center" gap={12}>
             {canCreate ? (
-              <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>新增设备</Button>
+              <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+                新增设备
+              </Button>
             ) : null}
           </Flex>
           <Button
@@ -140,21 +142,31 @@ function DeviceTable({
             刷新
           </Button>
         </>
-      )}
-      feedback={loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          title="设备列表加载失败"
-          action={<Button size="small" onClick={onReload}>重试</Button>}
-        />
-      ) : undefined}
+      }
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            title="设备列表加载失败"
+            action={
+              <Button size="small" onClick={onReload}>
+                重试
+              </Button>
+            }
+          />
+        ) : undefined
+      }
       tableProps={{
         rowKey: 'id',
         columns,
         dataSource: devices,
         loading,
-        rowSelection: { selectedRowKeys: selectedKeys, onChange: onSelect, columnWidth: 44 },
+        rowSelection: {
+          selectedRowKeys: selectedKeys,
+          onChange: onSelect,
+          columnWidth: 44,
+        },
         locale: { emptyText: '暂无设备，请调整筛选条件或新增设备' },
       }}
       scrollX={1210}

@@ -75,7 +75,9 @@ $navigation-header-height: 62px;
     border-radius: 0 8px 8px 0;
     color: #405276;
     line-height: 48px;
-    transition: background-color 160ms ease, color 160ms ease;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
 
     &:hover {
       background: #f1f6fe;

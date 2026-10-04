@@ -48,7 +48,11 @@ function ParkingDetailModal({
           type="error"
           showIcon
           title="停车详情加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
+          action={
+            <Button size="small" onClick={onRetry}>
+              重试
+            </Button>
+          }
         />
       ) : record ? (
         <ParkingDetailContent record={record} />
@@ -66,9 +70,11 @@ function ParkingDetailContent({ record }: { /** 当前通行快照 */ record: Pa
           className="parking-detail-alert"
           type="warning"
           showIcon
-          title={record.status === 'unauthorized'
-            ? '车辆无通行权限，已在入口拦截，未实际入场'
-            : '车辆连续停留已满 24 小时，请联系所属企业核实'}
+          title={
+            record.status === 'unauthorized'
+              ? '车辆无通行权限，已在入口拦截，未实际入场'
+              : '车辆连续停留已满 24 小时，请联系所属企业核实'
+          }
         />
       ) : null}
       <Descriptions
@@ -76,9 +82,21 @@ function ParkingDetailContent({ record }: { /** 当前通行快照 */ record: Pa
         column={{ xs: 1, sm: 2 }}
         items={[
           { key: 'plate', label: '车牌号', children: record.plateNumber },
-          { key: 'status', label: '停车状态', children: <ParkingStatus status={record.status} /> },
-          { key: 'type', label: '车辆类型', children: parkingVehicleTypeLabels[record.vehicleType] },
-          { key: 'duration', label: '停留时长', children: formatParkingDuration(record) },
+          {
+            key: 'status',
+            label: '停车状态',
+            children: <ParkingStatus status={record.status} />,
+          },
+          {
+            key: 'type',
+            label: '车辆类型',
+            children: parkingVehicleTypeLabels[record.vehicleType],
+          },
+          {
+            key: 'duration',
+            label: '停留时长',
+            children: formatParkingDuration(record),
+          },
           {
             key: 'enterprise',
             label: '所属企业',
@@ -97,7 +115,9 @@ function ParkingDetailContent({ record }: { /** 当前通行快照 */ record: Pa
             label: '出场时间',
             children: record.exitedAt
               ? formatDateTime(record.exitedAt)
-              : record.status === 'unauthorized' ? '未入场' : '尚未离场',
+              : record.status === 'unauthorized'
+                ? '未入场'
+                : '尚未离场',
           },
         ]}
       />

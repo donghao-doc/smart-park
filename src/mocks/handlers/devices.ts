@@ -1,10 +1,20 @@
 import { delay, http } from 'msw'
 
 import type { DeviceDetailDto, DeviceMutationRequest, DeviceSummaryDto } from '@/types/device'
-import { deviceCodePattern, isDeviceStatus, isDeviceType, normalizeDeviceCode } from '@/utils/device'
+import {
+  deviceCodePattern,
+  isDeviceStatus,
+  isDeviceType,
+  normalizeDeviceCode,
+} from '@/utils/device'
 import { mockRoles } from '../data/users'
 import { saveMockState } from '../store'
-import { authorizeRequest, createErrorResponse, createSuccessResponse, mockResponseDelay } from '../utils'
+import {
+  authorizeRequest,
+  createErrorResponse,
+  createSuccessResponse,
+  mockResponseDelay,
+} from '../utils'
 
 /** 解析正整数分页参数，拒绝超出安全范围的输入 */
 function parsePageNumber(value: string | null, fallback: number) {
@@ -53,14 +63,18 @@ async function handleDeviceMutation(request: Request, deviceId?: string) {
   const payload = validateDevicePayload(body)
   if (typeof payload === 'string') return createErrorResponse(400, 40110, payload)
   if (
-    existing && existing.status !== payload.status &&
+    existing &&
+    existing.status !== payload.status &&
     !mockRoles[auth.user.roleCode].permissions.includes('device:status')
   ) {
     return createErrorResponse(403, 40302, '当前账号无权修改设备状态')
   }
-  if (auth.state.devices.some(
-    (item) => item.id !== deviceId && normalizeDeviceCode(item.code) === payload.code,
-  )) return createErrorResponse(409, 40970, '设备编码已存在，请使用其他编码')
+  if (
+    auth.state.devices.some(
+      (item) => item.id !== deviceId && normalizeDeviceCode(item.code) === payload.code,
+    )
+  )
+    return createErrorResponse(409, 40970, '设备编码已存在，请使用其他编码')
 
   const now = new Date().toISOString()
   const statusRecords = existing?.statusRecords ?? []
@@ -83,7 +97,11 @@ async function handleDeviceMutation(request: Request, deviceId?: string) {
   if (existing) Object.assign(existing, device)
   else auth.state.devices.unshift(device)
   saveMockState(auth.state)
-  return createSuccessResponse(device, existing ? '设备档案已更新' : '设备登记成功', existing ? 200 : 201)
+  return createSuccessResponse(
+    device,
+    existing ? '设备档案已更新' : '设备登记成功',
+    existing ? 200 : 201,
+  )
 }
 
 /** 设备管理模拟接口，所有读写操作均校验登录和业务权限 */
@@ -122,15 +140,22 @@ export const deviceHandlers = [
     if ((type && !isDeviceType(type)) || (status && !isDeviceStatus(status))) {
       return createErrorResponse(400, 40112, '设备类型或状态筛选条件不正确')
     }
-    const devices = auth.state.devices.filter((item) => (
-      (!keyword || item.name.toLowerCase().includes(keyword) || item.code.toLowerCase().includes(keyword)) &&
-      (!type || item.type === type) &&
-      (!status || item.status === status) &&
-      (!location || item.location === location)
-    )).sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+    const devices = auth.state.devices
+      .filter(
+        (item) =>
+          (!keyword ||
+            item.name.toLowerCase().includes(keyword) ||
+            item.code.toLowerCase().includes(keyword)) &&
+          (!type || item.type === type) &&
+          (!status || item.status === status) &&
+          (!location || item.location === location),
+      )
+      .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
     const start = (page - 1) * pageSize
     return createSuccessResponse({
-      list: devices.slice(start, start + pageSize).map(({ statusRecords: _records, ...device }) => device),
+      list: devices
+        .slice(start, start + pageSize)
+        .map(({ statusRecords: _records, ...device }) => device),
       total: devices.length,
       page,
       pageSize,
@@ -141,8 +166,12 @@ export const deviceHandlers = [
     const auth = authorizeRequest(request, 'device:view')
     if ('response' in auth) return auth.response
     const device = auth.state.devices.find((item) => item.id === params.id)
-    return device ? createSuccessResponse(device) : createErrorResponse(404, 40470, '设备档案不存在')
+    return device
+      ? createSuccessResponse(device)
+      : createErrorResponse(404, 40470, '设备档案不存在')
   }),
   http.post('/api/devices', ({ request }) => handleDeviceMutation(request)),
-  http.put('/api/devices/:id', ({ request, params }) => handleDeviceMutation(request, String(params.id))),
+  http.put('/api/devices/:id', ({ request, params }) =>
+    handleDeviceMutation(request, String(params.id)),
+  ),
 ]

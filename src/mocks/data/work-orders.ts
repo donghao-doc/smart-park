@@ -43,34 +43,60 @@ const titles = [
   '会议室设备调试',
 ]
 const types: WorkOrderType[] = [
-  'repair', 'cleaning', 'repair', 'repair', 'other',
-  'repair', 'complaint', 'repair', 'cleaning', 'other',
+  'repair',
+  'cleaning',
+  'repair',
+  'repair',
+  'other',
+  'repair',
+  'complaint',
+  'repair',
+  'cleaning',
+  'other',
 ]
 const firstStatuses: WorkOrderStatus[] = [
-  'pending_acceptance', 'pending_processing', 'processing', 'pending_confirmation',
-  'pending_processing', 'processing', 'pending_acceptance', 'pending_processing',
-  'completed', 'completed',
+  'pending_acceptance',
+  'pending_processing',
+  'processing',
+  'pending_confirmation',
+  'pending_processing',
+  'processing',
+  'pending_acceptance',
+  'pending_processing',
+  'completed',
+  'completed',
 ]
 
 /** 根据完整生命周期生成可回溯的演示工单 */
 function createWorkOrder(index: number, status: WorkOrderStatus): WorkOrderDto {
   const enterprise = seedEnterprises[index % 10]
   const assignee = seedUsers[index % 2]
-  const createdAt = index < 10
-    ? initializedAt.subtract(30 + index * 18, 'minute')
-    : initializedAt.subtract(1 + index % 21, 'day').subtract(index % 12, 'hour')
-  const history: WorkOrderHistoryDto[] = [{
-    id: `woh_${index}_0`,
-    action: 'create',
-    operatorName: enterprise.contactName,
-    occurredAt: createdAt.toISOString(),
-    remark: '提交工单，请协助处理',
-    status: 'pending_acceptance',
-  }]
+  const createdAt =
+    index < 10
+      ? initializedAt.subtract(30 + index * 18, 'minute')
+      : initializedAt.subtract(1 + (index % 21), 'day').subtract(index % 12, 'hour')
+  const history: WorkOrderHistoryDto[] = [
+    {
+      id: `woh_${index}_0`,
+      action: 'create',
+      operatorName: enterprise.contactName,
+      occurredAt: createdAt.toISOString(),
+      remark: '提交工单，请协助处理',
+      status: 'pending_acceptance',
+    },
+  ]
   const stages = [
-    { action: 'accept', status: 'pending_processing', remark: `已受理，分派给${assignee.name}` },
+    {
+      action: 'accept',
+      status: 'pending_processing',
+      remark: `已受理，分派给${assignee.name}`,
+    },
     { action: 'start', status: 'processing', remark: '已到现场，开始处理问题' },
-    { action: 'submit', status: 'pending_confirmation', remark: '问题已处理，现场检查正常，请企业确认' },
+    {
+      action: 'submit',
+      status: 'pending_confirmation',
+      remark: '问题已处理，现场检查正常，请企业确认',
+    },
     { action: 'confirm', status: 'completed', remark: '企业已确认处理结果' },
   ] as const
   if (status === 'cancelled') {
@@ -106,16 +132,19 @@ function createWorkOrder(index: number, status: WorkOrderStatus): WorkOrderDto {
     contactPhone: enterprise.contactPhone,
     location: enterprise.officeLocation,
     priority: index % 3 === 0 ? 'high' : index % 3 === 1 ? 'medium' : 'low',
-    images: index < 4 ? structuredClone(workOrderSampleImages) : index % 4 === 0
-      ? [structuredClone(workOrderSampleImages[0])]
-      : [],
+    images:
+      index < 4
+        ? structuredClone(workOrderSampleImages)
+        : index % 4 === 0
+          ? [structuredClone(workOrderSampleImages[0])]
+          : [],
     status,
     assigneeId: assigned ? assignee.id : null,
     assigneeName: assigned ? assignee.name : null,
     creatorName: enterprise.contactName,
     createdAt: createdAt.toISOString(),
     updatedAt: history.at(-1)!.occurredAt,
-    rating: status === 'completed' ? 4 + index % 2 : null,
+    rating: status === 'completed' ? 4 + (index % 2) : null,
     feedback: status === 'completed' ? '处理及时，问题已解决' : '',
     history,
   }
@@ -136,4 +165,6 @@ for (const [status, count] of targetCounts) {
 }
 
 /** 458 条工单，覆盖全部状态、四种类型、处理历史和企业范围 */
-export const seedWorkOrders: WorkOrderDto[] = statuses.map((status, index) => createWorkOrder(index, status))
+export const seedWorkOrders: WorkOrderDto[] = statuses.map((status, index) =>
+  createWorkOrder(index, status),
+)

@@ -11,9 +11,11 @@ $login-radius: 8px;
   align-items: center;
   justify-content: center;
   padding: 72px 24px 64px;
-  background: $login-background url('@/assets/images/login-background.png') center center / cover no-repeat;
+  background: $login-background url('@/assets/images/login-background.png') center center / cover
+    no-repeat;
   color: $login-text;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
 .login-header {

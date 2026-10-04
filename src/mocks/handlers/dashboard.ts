@@ -36,10 +36,14 @@ function filterTrendData<T extends { date: string }>(request: Request, source: T
   const startDate = url.searchParams.get('startDate')
   const endDate = url.searchParams.get('endDate')
   if (!startDate || !endDate || startDate > endDate) {
-    return { error: createErrorResponse(400, 40021, '请选择有效的自定义日期范围') }
+    return {
+      error: createErrorResponse(400, 40021, '请选择有效的自定义日期范围'),
+    }
   }
 
-  return { data: source.filter((item) => item.date >= startDate && item.date <= endDate) }
+  return {
+    data: source.filter((item) => item.date >= startDate && item.date <= endDate),
+  }
 }
 
 /**

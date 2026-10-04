@@ -34,9 +34,8 @@ function validateVehiclePayload(value: unknown): VehicleMutationRequest | string
     return '请求参数格式不正确'
   }
   const body = value as Record<string, unknown>
-  const plateNumber = typeof body.plateNumber === 'string'
-    ? normalizeVehiclePlate(body.plateNumber)
-    : ''
+  const plateNumber =
+    typeof body.plateNumber === 'string' ? normalizeVehiclePlate(body.plateNumber) : ''
   const ownerName = typeof body.ownerName === 'string' ? body.ownerName.trim() : ''
   const phone = typeof body.phone === 'string' ? body.phone.trim() : ''
 
@@ -65,12 +64,11 @@ async function handleVehicleMutation(request: Request, vehicleId?: string) {
   const auth = authorizeRequest(request, vehicleId ? 'vehicle:update' : 'vehicle:create')
   if ('response' in auth) return auth.response
 
-  const existing = vehicleId
-    ? auth.state.vehicles.find((item) => item.id === vehicleId)
-    : undefined
+  const existing = vehicleId ? auth.state.vehicles.find((item) => item.id === vehicleId) : undefined
   if (vehicleId && !existing) return createErrorResponse(404, 40450, '车辆档案不存在')
   if (
-    existing && auth.user.roleCode === 'enterprise_user' &&
+    existing &&
+    auth.user.roleCode === 'enterprise_user' &&
     existing.enterpriseId !== auth.user.enterpriseId
   ) {
     return createErrorResponse(403, 40307, '无权修改其他企业车辆档案')
@@ -87,23 +85,24 @@ async function handleVehicleMutation(request: Request, vehicleId?: string) {
 
   const enterprise = auth.state.enterprises.find((item) => item.id === payload.enterpriseId)
   if (!enterprise) return createErrorResponse(400, 40091, '所属企业不存在')
-  if (
-    auth.user.roleCode === 'enterprise_user' && enterprise.id !== auth.user.enterpriseId
-  ) {
+  if (auth.user.roleCode === 'enterprise_user' && enterprise.id !== auth.user.enterpriseId) {
     return createErrorResponse(403, 40307, '无权登记其他企业车辆档案')
   }
   if (
-    existing && existing.status !== payload.status &&
+    existing &&
+    existing.status !== payload.status &&
     !mockRoles[auth.user.roleCode].permissions.includes('vehicle:status')
   ) {
     return createErrorResponse(403, 40302, '当前账号无权启停车辆')
   }
 
   // 停用后仍保留原档案，重复登记时提示编辑或启用原档案
-  if (auth.state.vehicles.some(
-    (item) => item.id !== vehicleId &&
-      normalizeVehiclePlate(item.plateNumber) === payload.plateNumber,
-  )) {
+  if (
+    auth.state.vehicles.some(
+      (item) =>
+        item.id !== vehicleId && normalizeVehiclePlate(item.plateNumber) === payload.plateNumber,
+    )
+  ) {
     return createErrorResponse(409, 40950, '车牌号已存在，请编辑或启用原车辆档案')
   }
 
@@ -135,8 +134,7 @@ export const vehicleHandlers = [
     const auth = authorizeRequest(request, 'vehicle:view')
     if ('response' in auth) return auth.response
     const enterprises = auth.state.enterprises.filter(
-      (item) => auth.user.roleCode !== 'enterprise_user' ||
-        item.id === auth.user.enterpriseId,
+      (item) => auth.user.roleCode !== 'enterprise_user' || item.id === auth.user.enterpriseId,
     )
     return createSuccessResponse(enterprises.map((item) => ({ id: item.id, name: item.name })))
   }),
@@ -160,21 +158,25 @@ export const vehicleHandlers = [
       return createErrorResponse(400, 40093, '车辆类型或状态筛选条件不正确')
     }
 
-    const vehicles = auth.state.vehicles.filter((item) => (
-      (auth.user.roleCode !== 'enterprise_user' || item.enterpriseId === auth.user.enterpriseId) &&
-      (!plateNumber || normalizeVehiclePlate(item.plateNumber).includes(plateNumber)) &&
-      (!type || item.type === type) &&
-      (!status || item.status === status) &&
-      (!enterpriseId || item.enterpriseId === enterpriseId)
-    )).sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+    const vehicles = auth.state.vehicles
+      .filter(
+        (item) =>
+          (auth.user.roleCode !== 'enterprise_user' ||
+            item.enterpriseId === auth.user.enterpriseId) &&
+          (!plateNumber || normalizeVehiclePlate(item.plateNumber).includes(plateNumber)) &&
+          (!type || item.type === type) &&
+          (!status || item.status === status) &&
+          (!enterpriseId || item.enterpriseId === enterpriseId),
+      )
+      .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
     const start = (page - 1) * pageSize
 
     return createSuccessResponse({
       list: vehicles.slice(start, start + pageSize).map((item) => ({
         ...item,
-        enterpriseName: auth.state.enterprises.find(
-          (enterprise) => enterprise.id === item.enterpriseId,
-        )?.name ?? item.enterpriseName,
+        enterpriseName:
+          auth.state.enterprises.find((enterprise) => enterprise.id === item.enterpriseId)?.name ??
+          item.enterpriseName,
       })),
       total: vehicles.length,
       page,
@@ -189,15 +191,16 @@ export const vehicleHandlers = [
     const vehicle = auth.state.vehicles.find((item) => item.id === params.id)
     if (!vehicle) return createErrorResponse(404, 40450, '车辆档案不存在')
     if (
-      auth.user.roleCode === 'enterprise_user' && vehicle.enterpriseId !== auth.user.enterpriseId
+      auth.user.roleCode === 'enterprise_user' &&
+      vehicle.enterpriseId !== auth.user.enterpriseId
     ) {
       return createErrorResponse(403, 40307, '无权查看其他企业车辆档案')
     }
     return createSuccessResponse({
       ...vehicle,
-      enterpriseName: auth.state.enterprises.find(
-        (item) => item.id === vehicle.enterpriseId,
-      )?.name ?? vehicle.enterpriseName,
+      enterpriseName:
+        auth.state.enterprises.find((item) => item.id === vehicle.enterpriseId)?.name ??
+        vehicle.enterpriseName,
     })
   }),
 
@@ -213,7 +216,8 @@ export const vehicleHandlers = [
     const vehicle = auth.state.vehicles.find((item) => item.id === params.id)
     if (!vehicle) return createErrorResponse(404, 40450, '车辆档案不存在')
     if (
-      auth.user.roleCode === 'enterprise_user' && vehicle.enterpriseId !== auth.user.enterpriseId
+      auth.user.roleCode === 'enterprise_user' &&
+      vehicle.enterpriseId !== auth.user.enterpriseId
     ) {
       return createErrorResponse(403, 40307, '无权启停其他企业车辆档案')
     }

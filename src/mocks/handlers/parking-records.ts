@@ -15,10 +15,13 @@ import {
 /** 按账号归属隔离企业数据，并根据当前时刻更新超时状态 */
 function getScopedRecords(user: MockUserEntity): ParkingRecordDto[] {
   return seedParkingRecords
-    .filter((record) => user.roleCode !== 'enterprise_user' || record.enterpriseId === user.enterpriseId)
-    .map((record) => record.status === 'parked' && dayjs().diff(record.enteredAt, 'hour') >= 24
-      ? { ...record, status: 'overtime' as const }
-      : record,
+    .filter(
+      (record) => user.roleCode !== 'enterprise_user' || record.enterpriseId === user.enterpriseId,
+    )
+    .map((record) =>
+      record.status === 'parked' && dayjs().diff(record.enteredAt, 'hour') >= 24
+        ? { ...record, status: 'overtime' as const }
+        : record,
     )
     .sort((a, b) => dayjs(b.enteredAt).valueOf() - dayjs(a.enteredAt).valueOf())
 }
@@ -35,19 +38,25 @@ function parsePage(value: string | null, fallback: number) {
 function isValidTime(value: string | null) {
   if (value === null) return true
   const date = new Date(value)
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
-    Number.isFinite(date.getTime()) && date.toISOString() === value
+  return (
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
+    Number.isFinite(date.getTime()) &&
+    date.toISOString() === value
+  )
 }
 
 /** 判断指定时刻车辆是否已经入场且尚未离场，拦截记录始终排除 */
 function isParkedAt(record: ParkingRecordDto, time: number) {
-  return record.status !== 'unauthorized' && Date.parse(record.enteredAt) <= time &&
+  return (
+    record.status !== 'unauthorized' &&
+    Date.parse(record.enteredAt) <= time &&
     (!record.exitedAt || Date.parse(record.exitedAt) > time)
+  )
 }
 
 /** 计算百分比变化，无比较基数时返回空值 */
 function calculateChange(current: number, previous: number) {
-  return previous === 0 ? null : Math.round((current - previous) / previous * 100)
+  return previous === 0 ? null : Math.round(((current - previous) / previous) * 100)
 }
 
 /** 停车记录只读模拟接口，统一执行通行查看权限和企业隔离 */
@@ -60,15 +69,20 @@ export const parkingRecordHandlers = [
     const records = getScopedRecords(auth.user)
     const now = dayjs()
     const yesterday = now.subtract(1, 'day')
-    const countDaily = (field: 'enteredAt' | 'exitedAt', date: string) => records.filter(
-      (record) => record.status !== 'unauthorized' && record[field] &&
-        dayjs(record[field]).format('YYYY-MM-DD') === date,
-    ).length
-    const countAbnormal = (time: typeof now) => records.filter((record) =>
-      record.status === 'unauthorized'
-        ? dayjs(record.enteredAt).isSame(time, 'day') && Date.parse(record.enteredAt) <= time.valueOf()
-        : isParkedAt(record, time.valueOf()) && time.diff(record.enteredAt, 'hour') >= 24,
-    ).length
+    const countDaily = (field: 'enteredAt' | 'exitedAt', date: string) =>
+      records.filter(
+        (record) =>
+          record.status !== 'unauthorized' &&
+          record[field] &&
+          dayjs(record[field]).format('YYYY-MM-DD') === date,
+      ).length
+    const countAbnormal = (time: typeof now) =>
+      records.filter((record) =>
+        record.status === 'unauthorized'
+          ? dayjs(record.enteredAt).isSame(time, 'day') &&
+            Date.parse(record.enteredAt) <= time.valueOf()
+          : isParkedAt(record, time.valueOf()) && time.diff(record.enteredAt, 'hour') >= 24,
+      ).length
     const today = now.format('YYYY-MM-DD')
     const yesterdayDate = yesterday.format('YYYY-MM-DD')
     const currentParked = records.filter((record) => isParkedAt(record, now.valueOf())).length
@@ -78,9 +92,9 @@ export const parkingRecordHandlers = [
 
     return createSuccessResponse<ParkingRecordSummaryDto>({
       currentParked,
-      parkedChange: currentParked - records.filter(
-        (record) => isParkedAt(record, now.subtract(7, 'day').valueOf()),
-      ).length,
+      parkedChange:
+        currentParked -
+        records.filter((record) => isParkedAt(record, now.subtract(7, 'day').valueOf())).length,
       todayEntries,
       todayExits,
       abnormalVehicles,
@@ -112,17 +126,21 @@ export const parkingRecordHandlers = [
     if (status && !['parked', 'departed', 'overtime', 'unauthorized'].includes(status)) {
       return createErrorResponse(400, 40082, '停车状态筛选条件不正确')
     }
-    if (!isValidTime(startTime) || !isValidTime(endTime) ||
-      (startTime && endTime && Date.parse(startTime) > Date.parse(endTime))) {
+    if (
+      !isValidTime(startTime) ||
+      !isValidTime(endTime) ||
+      (startTime && endTime && Date.parse(startTime) > Date.parse(endTime))
+    ) {
       return createErrorResponse(400, 40083, '请选择有效的入场时间范围')
     }
 
-    const records = getScopedRecords(auth.user).filter((record) =>
-      (!plateNumber || record.plateNumber.includes(plateNumber)) &&
-      (!vehicleType || record.vehicleType === vehicleType) &&
-      (!status || record.status === status) &&
-      (!startTime || Date.parse(record.enteredAt) >= Date.parse(startTime)) &&
-      (!endTime || Date.parse(record.enteredAt) <= Date.parse(endTime)),
+    const records = getScopedRecords(auth.user).filter(
+      (record) =>
+        (!plateNumber || record.plateNumber.includes(plateNumber)) &&
+        (!vehicleType || record.vehicleType === vehicleType) &&
+        (!status || record.status === status) &&
+        (!startTime || Date.parse(record.enteredAt) >= Date.parse(startTime)) &&
+        (!endTime || Date.parse(record.enteredAt) <= Date.parse(endTime)),
     )
     const start = (page - 1) * pageSize
     return createSuccessResponse({

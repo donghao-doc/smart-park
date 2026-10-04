@@ -114,7 +114,11 @@ function EnterpriseTable({
             type="error"
             showIcon
             message="企业列表加载失败"
-            action={<Button size="small" onClick={onRetry}>重试</Button>}
+            action={
+              <Button size="small" onClick={onRetry}>
+                重试
+              </Button>
+            }
           />
         ) : undefined
       }

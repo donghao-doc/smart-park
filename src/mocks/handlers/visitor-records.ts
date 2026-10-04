@@ -48,40 +48,44 @@ function getScopedRecords(state: MockState, user: MockUserEntity): VisitorRecord
       checkedInAt,
       checkedOutAt,
     } = appointment
-    return [{
-      id,
-      code,
-      visitorName,
-      visitorPhone,
-      hostName,
-      enterpriseId,
-      enterpriseName,
-      scheduledStartAt,
-      scheduledEndAt,
-      visitReason,
-      plateNumber,
-      checkedInAt,
-      checkedOutAt,
-      status,
-    }]
+    return [
+      {
+        id,
+        code,
+        visitorName,
+        visitorPhone,
+        hostName,
+        enterpriseId,
+        enterpriseName,
+        scheduledStartAt,
+        scheduledEndAt,
+        visitReason,
+        plateNumber,
+        checkedInAt,
+        checkedOutAt,
+        status,
+      },
+    ]
   })
 
   return [...seedVisitorRecords, ...appointmentRecords]
-    .filter((record) =>
-      user.roleCode !== 'enterprise_user' || record.enterpriseId === user.enterpriseId,
+    .filter(
+      (record) => user.roleCode !== 'enterprise_user' || record.enterpriseId === user.enterpriseId,
     )
-    .sort((a, b) =>
-      dayjs(b.checkedInAt ?? b.scheduledStartAt).valueOf() -
-      dayjs(a.checkedInAt ?? a.scheduledStartAt).valueOf(),
+    .sort(
+      (a, b) =>
+        dayjs(b.checkedInAt ?? b.scheduledStartAt).valueOf() -
+        dayjs(a.checkedInAt ?? a.scheduledStartAt).valueOf(),
     )
 }
 
 /** 校验真实日历日期，防止无效日期被自动滚动到下个月 */
 function isValidDate(value: string | null) {
-  return !value || (
-    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
-    dayjs(value).isValid() &&
-    dayjs(value).format('YYYY-MM-DD') === value
+  return (
+    !value ||
+    (/^\d{4}-\d{2}-\d{2}$/.test(value) &&
+      dayjs(value).isValid() &&
+      dayjs(value).format('YYYY-MM-DD') === value)
   )
 }
 
@@ -95,7 +99,7 @@ function parsePositiveInteger(value: string | null, fallback: number) {
 
 /** 计算较昨日变化，昨日无基数时不生成百分比 */
 function calculateChange(today: number, yesterday: number) {
-  return yesterday === 0 ? null : Math.round((today - yesterday) / yesterday * 100)
+  return yesterday === 0 ? null : Math.round(((today - yesterday) / yesterday) * 100)
 }
 
 /** 到访记录只读模拟接口，沿用访客权限和企业数据隔离 */
@@ -153,11 +157,13 @@ export const visitorRecordHandlers = [
     const records = getScopedRecords(auth.state, auth.user).filter((record) => {
       // 已到访记录按实际签到日期查询，过期未到访记录按预约日期查询
       const date = dayjs(record.checkedInAt ?? record.scheduledStartAt).format('YYYY-MM-DD')
-      return (!visitorName || record.visitorName.toLowerCase().includes(visitorName)) &&
+      return (
+        (!visitorName || record.visitorName.toLowerCase().includes(visitorName)) &&
         (!enterpriseId || record.enterpriseId === enterpriseId) &&
         (!status || record.status === status) &&
         (!startDate || date >= startDate) &&
         (!endDate || date <= endDate)
+      )
     })
     const start = (page - 1) * pageSize
     return createSuccessResponse({

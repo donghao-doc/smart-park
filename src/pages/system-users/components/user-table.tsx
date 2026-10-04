@@ -114,7 +114,8 @@ function UserTable({
       title: '最后登录时间',
       dataIndex: 'lastLoginAt',
       width: 170,
-      render: (value: string | null) => value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '尚未登录',
+      render: (value: string | null) =>
+        value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '尚未登录',
     },
     {
       title: '操作',
@@ -134,10 +135,14 @@ function UserTable({
             </Button>
           ) : null}
           {canResetPassword ? (
-            <Button type="link" onClick={() => onResetPassword(user)}>重置密码</Button>
+            <Button type="link" onClick={() => onResetPassword(user)}>
+              重置密码
+            </Button>
           ) : null}
           {canChangeStatus ? (
-            <Tooltip title={user.role.code === 'super_admin' ? '超级管理员账号不能停用' : undefined}>
+            <Tooltip
+              title={user.role.code === 'super_admin' ? '超级管理员账号不能停用' : undefined}
+            >
               <Button
                 type="link"
                 disabled={user.role.code === 'super_admin'}
@@ -156,30 +161,40 @@ function UserTable({
     <DataTablePanel<UserDto>
       ariaLabel="用户列表"
       className="user-table-panel"
-      toolbar={canCreate ? (
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          disabled={Boolean(editingId)}
-          onClick={onCreate}
-        >
-          新增用户
-        </Button>
-      ) : undefined}
-      feedback={loadError ? (
-        <Alert
-          type="error"
-          showIcon
-          title="用户列表加载失败"
-          action={<Button size="small" onClick={onRetry}>重试</Button>}
-        />
-      ) : undefined}
+      toolbar={
+        canCreate ? (
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            disabled={Boolean(editingId)}
+            onClick={onCreate}
+          >
+            新增用户
+          </Button>
+        ) : undefined
+      }
+      feedback={
+        loadError ? (
+          <Alert
+            type="error"
+            showIcon
+            title="用户列表加载失败"
+            action={
+              <Button size="small" onClick={onRetry}>
+                重试
+              </Button>
+            }
+          />
+        ) : undefined
+      }
       tableProps={{
         rowKey: 'id',
         columns,
         dataSource: users,
         loading,
-        locale: { emptyText: loadError ? '暂时无法获取用户数据' : '暂无符合条件的用户' },
+        locale: {
+          emptyText: loadError ? '暂时无法获取用户数据' : '暂无符合条件的用户',
+        },
       }}
       scrollX={1125}
       pagination={{
