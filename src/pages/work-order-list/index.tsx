@@ -1,10 +1,9 @@
 import { Alert, App, Button } from 'antd'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 
 import {
   reqCreateWorkOrder,
-  reqGetWorkOrder,
   reqGetWorkOrderOptions,
   reqGetWorkOrders,
   reqGetWorkOrderSummary,
@@ -22,7 +21,6 @@ import type {
 } from '@/types/work-order'
 import WorkOrderActionModal from './components/work-order-action-modal'
 import WorkOrderCreateModal from './components/work-order-create-modal'
-import WorkOrderDetailModal from './components/work-order-detail-modal'
 import WorkOrderFilter, { type WorkOrderFilterValues } from './components/work-order-filter'
 import WorkOrderSummary from './components/work-order-summary'
 import WorkOrderTable from './components/work-order-table'
@@ -31,6 +29,7 @@ import './work-order-list.scss'
 /** 工单中心，负责查询、创建及按角色权限执行完整处理流程 */
 function WorkOrderListPage() {
   const { message } = App.useApp()
+  const navigate = useNavigate()
   const currentUser = useUserStore((state) => state.currentUser)
   const [searchParams, setSearchParams] = useSearchParams()
   const [orders, setOrders] = useState<WorkOrderDto[]>([])
@@ -53,11 +52,6 @@ function WorkOrderListPage() {
   const [submitting, setSubmitting] = useState(false)
   const [actionOrder, setActionOrder] = useState<WorkOrderDto>()
   const [action, setAction] = useState<WorkOrderAction>('accept')
-  const [selectedId, setSelectedId] = useState<string>()
-  const [detail, setDetail] = useState<WorkOrderDto>()
-  const [detailLoading, setDetailLoading] = useState(false)
-  const [detailError, setDetailError] = useState(false)
-  const [detailVersion, setDetailVersion] = useState(0)
 
   useEffect(() => {
     let active = true
@@ -125,27 +119,6 @@ function WorkOrderListPage() {
     }
   }, [optionsVersion])
 
-  useEffect(() => {
-    if (!selectedId) return
-    let active = true
-    void (async () => {
-      try {
-        const result = await reqGetWorkOrder(selectedId)
-        if (active) {
-          setDetail(result)
-          setDetailError(false)
-        }
-      } catch {
-        if (active) setDetailError(true)
-      } finally {
-        if (active) setDetailLoading(false)
-      }
-    })()
-    return () => {
-      active = false
-    }
-  }, [selectedId, detailVersion])
-
   const requestedCreate = searchParams.get('action') === 'create' &&
     Boolean(currentUser?.role.permissions.includes('work-order:create'))
 
@@ -179,12 +152,9 @@ function WorkOrderListPage() {
     setFilters(values)
   }
 
-  /** 打开详情前清除上一条工单内容 */
+  /** 跳转至独立详情页，支持刷新和直接访问 */
   function handleView(id: string) {
-    setDetail(undefined)
-    setDetailError(false)
-    setDetailLoading(true)
-    setSelectedId(id)
+    void navigate(`/work-orders/${encodeURIComponent(id)}`)
   }
 
   /** 创建成功后清除筛选，便于立即查看新工单 */
@@ -296,17 +266,6 @@ function WorkOrderListPage() {
         onRetryOptions={handleRetryOptions}
         onSubmit={handleActionSubmit}
         onCancel={() => setActionOrder(undefined)}
-      />
-      <WorkOrderDetailModal
-        open={Boolean(selectedId)}
-        order={detail}
-        loading={detailLoading}
-        loadError={detailError}
-        onRetry={() => {
-          setDetailLoading(true)
-          setDetailVersion((version) => version + 1)
-        }}
-        onClose={() => setSelectedId(undefined)}
       />
     </>
   )

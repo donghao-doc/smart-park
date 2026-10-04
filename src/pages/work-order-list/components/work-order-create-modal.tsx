@@ -1,7 +1,8 @@
 import { Alert, Button, Col, Form, Input, Row, Select } from 'antd'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import ScrollableModal from '@/components/scrollable-modal'
+import WorkOrderImageUpload from '@/components/work-order-image-upload'
 import type { WorkOrderCreateRequest, WorkOrderOptionsDto } from '@/types/work-order'
 import { workOrderPriorityLabels, workOrderTypeLabels } from '@/utils/work-order'
 import './work-order-create-modal.scss'
@@ -40,6 +41,7 @@ function WorkOrderCreateModal({
   onCancel,
 }: WorkOrderCreateModalProps) {
   const [form] = Form.useForm<WorkOrderCreateRequest>()
+  const [imageBusy, setImageBusy] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -47,7 +49,7 @@ function WorkOrderCreateModal({
     form.setFieldsValue({
       type: 'repair',
       priority: 'medium',
-      imageNames: [],
+      images: [],
       enterpriseId: lockedEnterpriseId,
     })
   }, [form, lockedEnterpriseId, open])
@@ -77,11 +79,11 @@ function WorkOrderCreateModal({
       okText="创建工单"
       cancelText="取消"
       confirmLoading={submitting}
-      okButtonProps={{ disabled: optionsLoading || optionsError }}
-      cancelButtonProps={{ disabled: submitting }}
-      closable={!submitting}
-      mask={{ closable: !submitting }}
-      keyboard={!submitting}
+      okButtonProps={{ disabled: optionsLoading || optionsError || imageBusy }}
+      cancelButtonProps={{ disabled: submitting || imageBusy }}
+      closable={!submitting && !imageBusy}
+      mask={{ closable: !submitting && !imageBusy }}
+      keyboard={!submitting && !imageBusy}
       destroyOnHidden
       onOk={() => form.submit()}
       onCancel={onCancel}
@@ -172,18 +174,10 @@ function WorkOrderCreateModal({
           <Input.TextArea rows={3} maxLength={1000} showCount placeholder="请描述问题现象和需要的协助" />
         </Form.Item>
         <Form.Item
-          name="imageNames"
-          label="图片占位"
-          extra="演示附件：输入图片名称后按回车添加，最多 5 个，不上传真实文件"
-          rules={[{
-            validator: async (_rule, names: string[] = []) => {
-              if (names.length > 5 || names.some((name) => !name.trim() || name.length > 80)) {
-                throw new Error('最多添加 5 个图片名称，每个名称不超过 80 字')
-              }
-            },
-          }]}
+          name="images"
+          label="现场图片"
         >
-          <Select mode="tags" placeholder="例如：现场照片.jpg" open={false} />
+          <WorkOrderImageUpload disabled={submitting} onBusyChange={setImageBusy} />
         </Form.Item>
       </Form>
     </ScrollableModal>

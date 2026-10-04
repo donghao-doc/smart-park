@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <title>办公室空调设备现场示例</title>
+  <defs><linearGradient id="wall" x2="1" y2="1"><stop stop-color="#e7edf1"/><stop offset="1" stop-color="#cbd7dd"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-opacity=".18"/></filter></defs>
+  <rect width="640" height="400" fill="url(#wall)"/>
+  <path d="M0 76h640M92 0v400M548 0v400" stroke="#fff" stroke-width="3" opacity=".6"/>
+  <g filter="url(#shadow)"><rect x="80" y="110" width="480" height="170" rx="18" fill="#fafbfc" stroke="#bac5cb" stroke-width="2"/>
+    <path d="M98 237h444l-18 34H116z" fill="#525f68"/>
+    <path d="M116 245h408M119 254h402M124 264h392" stroke="#89969e" stroke-width="3"/>
+    <path d="M112 142h416" stroke="#e0e6e9" stroke-width="2"/>
+    <circle cx="508" cy="211" r="4" fill="#59a9c5"/>
+    <text x="319" y="180" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#94a5ad">SMART AIR</text>
+  </g>
+  <text x="24" y="374" font-family="sans-serif" font-size="18" fill="#596b76">现场示例 · 空调设备</text>
+</svg>

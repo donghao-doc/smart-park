@@ -1,0 +1,21 @@
+.work-order-image-upload {
+  min-width: 0;
+
+  .ant-upload-list-item-thumbnail img {
+    object-fit: cover;
+  }
+
+  .ant-upload-wrapper .ant-upload-list-item {
+    border-color: #dfe7f1;
+  }
+
+  .ant-upload-select {
+    background: #f5f8fc;
+    color: #74829b;
+  }
+}
+
+.work-order-image-upload-hint {
+  color: #7b8ca9;
+  font-size: 12px;
+}

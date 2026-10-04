@@ -8,6 +8,11 @@ import './header-breadcrumb.scss'
 
 const detailRoutes = [
   {
+    path: '/work-orders/:id',
+    parentPath: '/work-orders',
+    title: '工单详情',
+  },
+  {
     path: '/enterprises/:id',
     parentPath: '/enterprises',
     title: '企业详情',

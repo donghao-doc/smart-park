@@ -96,3 +96,9 @@ export function getWorkOrderActions(
   }
   return actions
 }
+
+/** 未归档的工单可由具备创建或处理权限的账号维护图片，企业范围仍由接口校验 */
+export function canEditWorkOrderImages(order: WorkOrderDto, permissions: PermissionCode[]) {
+  return order.status !== 'completed' && order.status !== 'cancelled' &&
+    (permissions.includes('work-order:create') || permissions.includes('work-order:process'))
+}

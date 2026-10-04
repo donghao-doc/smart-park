@@ -4,7 +4,7 @@ import type { MockUserEntity } from './data/users'
 import { seedUsers } from './data/users'
 import { seedVisitorAppointments } from './data/visitor-appointments'
 import { seedVehicles } from './data/vehicles'
-import { seedWorkOrders } from './data/work-orders'
+import { seedWorkOrders, workOrderSampleImages } from './data/work-orders'
 
 const MOCK_STORE_KEY = 'smart-park.mock-state.v13'
 const SESSION_DURATION_SECONDS = 2 * 60 * 60
@@ -101,7 +101,20 @@ export function getMockState(): MockState {
         }
       : parsedState
     if (isMockState(compatibleState)) {
-      if (compatibleState !== parsedState) saveMockState(compatibleState)
+      // 将旧版图片占位迁移为示例附件，不重置已有工单和登录会话
+      let imagesMigrated = false
+      for (const order of compatibleState.workOrders) {
+        if (!Array.isArray(order.images)) {
+          const legacy = order as typeof order & { imageNames?: string[] }
+          order.images = structuredClone(
+            seedWorkOrders.find((item) => item.id === order.id)?.images ??
+            (legacy.imageNames?.length ? [workOrderSampleImages[0]] : []),
+          )
+          delete legacy.imageNames
+          imagesMigrated = true
+        }
+      }
+      if (compatibleState !== parsedState || imagesMigrated) saveMockState(compatibleState)
       return compatibleState
     }
   } catch {

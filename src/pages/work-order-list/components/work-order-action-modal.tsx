@@ -1,6 +1,7 @@
-import { Alert, Button, Form, Input, Modal, Rate, Select } from 'antd'
+import { Alert, Button, Form, Input, Rate, Select } from 'antd'
 import { useEffect } from 'react'
 
+import ScrollableModal from '@/components/scrollable-modal'
 import type {
   WorkOrderAction,
   WorkOrderActionRequest,
@@ -66,7 +67,7 @@ function WorkOrderActionModal({
   }
 
   return (
-    <Modal
+    <ScrollableModal
       className="work-order-action-modal"
       title={workOrderActionLabels[action]}
       open={Boolean(order)}
@@ -135,7 +136,7 @@ function WorkOrderActionModal({
           />
         </Form.Item>
       </Form>
-    </Modal>
+    </ScrollableModal>
   )
 }
 

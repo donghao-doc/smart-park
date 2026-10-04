@@ -4,16 +4,19 @@ import type {
   WorkOrderAction,
   WorkOrderCreateRequest,
   WorkOrderDto,
+  WorkOrderImageDto,
   WorkOrderStatus,
 } from '@/types/work-order'
 import {
   getWorkOrderActions,
+  canEditWorkOrderImages,
   isWorkOrderPriority,
   isWorkOrderStatus,
   isWorkOrderType,
   workOrderActionLabels,
 } from '@/utils/work-order'
 import { mockRoles, type MockUserEntity } from '../data/users'
+import { workOrderSampleImages } from '../data/work-orders'
 import { saveMockState, type MockState } from '../store'
 import { authorizeRequest, createErrorResponse, createSuccessResponse, mockResponseDelay } from '../utils'
 
@@ -32,6 +35,38 @@ function getScopedOrders(state: MockState, user: MockUserEntity) {
 function parsePage(value: string | null, fallback: number) {
   const number = value === null ? fallback : Number(value)
   return Number.isInteger(number) && number > 0 ? number : null
+}
+
+/** 校验附件数量、标识和资源地址，仅接受本地示例及小体积图片 data URL */
+function validateImages(value: unknown): WorkOrderImageDto[] | string {
+  if (!Array.isArray(value) || value.length > 5) return '最多上传 5 张图片'
+  const ids = new Set<string>()
+  const images: WorkOrderImageDto[] = []
+  for (const item of value) {
+    if (!item || typeof item !== 'object') return '图片资料格式不正确'
+    const { id, name, url } = item as Record<string, unknown>
+    if (
+      typeof id !== 'string' || !/^[\w-]{1,100}$/.test(id) || ids.has(id) ||
+      typeof name !== 'string' || !name.trim() || name.length > 80 ||
+      typeof url !== 'string' || url.length > 350_000 || (
+        !workOrderSampleImages.some((image) => image.url === url) &&
+        !/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/.test(url)
+      )
+    ) return '图片资料不正确，请重新上传'
+    ids.add(id)
+    images.push({ id, name: name.trim(), url })
+  }
+  return images
+}
+
+/** 将上传文件转换为可跨刷新展示的模拟地址 */
+async function readImageUrl(file: File): Promise<string> {
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  let binary = ''
+  for (let offset = 0; offset < bytes.length; offset += 8192) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192))
+  }
+  return `data:${file.type};base64,${btoa(binary)}`
 }
 
 /** 服务端再次校验创建资料，避免直接调用接口绕过表单规则 */
@@ -56,12 +91,8 @@ function validateCreatePayload(body: unknown): WorkOrderCreateRequest | string {
     return '请选择有效的工单类型和紧急程度'
   }
   if (!/^1\d{10}$/.test(String(values.contactPhone).trim())) return '请输入有效的 11 位手机号'
-  if (
-    !Array.isArray(values.imageNames) || values.imageNames.length > 5 ||
-    values.imageNames.some((name) => typeof name !== 'string' || !name.trim() || name.length > 80)
-  ) {
-    return '最多添加 5 个图片占位名称，每个名称不超过 80 字'
-  }
+  const images = validateImages(values.images)
+  if (typeof images === 'string') return images
   return {
     title: String(values.title).trim(),
     description: String(values.description).trim(),
@@ -71,12 +102,49 @@ function validateCreatePayload(body: unknown): WorkOrderCreateRequest | string {
     location: String(values.location).trim(),
     type: values.type,
     priority: values.priority,
-    imageNames: values.imageNames.map((name: string) => name.trim()),
+    images,
   }
 }
 
 /** 工单模拟接口，支持分页、数据隔离、统计及完整流程，并持久化变更 */
 export const workOrderHandlers = [
+  http.post('/api/work-orders/images/sample', async ({ request }) => {
+    await delay(mockResponseDelay)
+    const auth = authorizeRequest(request, 'work-order:create')
+    if ('response' in auth) return auth.response
+    try {
+      const body = await request.json() as { sampleIndex?: unknown }
+      if (!Number.isInteger(body?.sampleIndex) || Number(body.sampleIndex) < 0 || Number(body.sampleIndex) > 2) {
+        return createErrorResponse(400, 400108, '请选择有效的示例图片')
+      }
+      return createSuccessResponse({
+        ...workOrderSampleImages[Number(body.sampleIndex)],
+        id: `image_${crypto.randomUUID()}`,
+      }, '图片上传成功', 201)
+    } catch {
+      return createErrorResponse(400, 40001, '请求参数格式不正确')
+    }
+  }),
+  http.post('/api/work-orders/images', async ({ request }) => {
+    await delay(mockResponseDelay)
+    const auth = authorizeRequest(request, 'work-order:create')
+    if ('response' in auth) return auth.response
+    try {
+      const data = await request.formData()
+      const file = data.get('file')
+      if (
+        !(file instanceof File) || !['image/jpeg', 'image/png', 'image/webp'].includes(file.type) ||
+        file.size === 0 || file.size > 256 * 1024 || file.name.length > 80
+      ) return createErrorResponse(400, 400108, '请上传压缩后不超过 256 KB 的 JPG、PNG 或 WebP 图片')
+      return createSuccessResponse<WorkOrderImageDto>({
+        id: `image_${crypto.randomUUID()}`,
+        name: file.name,
+        url: await readImageUrl(file),
+      }, '图片上传成功', 201)
+    } catch {
+      return createErrorResponse(400, 400108, '图片读取失败，请重新上传')
+    }
+  }),
   http.get('/api/work-orders/options', async ({ request }) => {
     await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:view')
@@ -147,16 +215,43 @@ export const workOrderHandlers = [
     if (!order) return createErrorResponse(404, 404100, '工单不存在或无权查看')
     return createSuccessResponse(order)
   }),
-  http.post('/api/work-orders', async ({ request }) => {
+  http.patch('/api/work-orders/:id/images', async ({ request, params }) => {
     await delay(mockResponseDelay)
-    const auth = authorizeRequest(request, 'work-order:create')
-    if ('response' in auth) return auth.response
     let body: unknown
     try {
       body = await request.json()
     } catch {
       return createErrorResponse(400, 40001, '请求参数格式不正确')
     }
+    // 读取请求体后获取最新状态，避免并发流程操作被过期图片请求覆盖
+    const auth = authorizeRequest(request, 'work-order:view')
+    if ('response' in auth) return auth.response
+    const order = getScopedOrders(auth.state, auth.user).find((item) => item.id === params.id)
+    if (!order) return createErrorResponse(404, 404100, '工单不存在或无权操作')
+    if (!canEditWorkOrderImages(order, mockRoles[auth.user.roleCode].permissions)) {
+      return createErrorResponse(403, 403100, '当前角色或工单状态不允许修改图片')
+    }
+    const images = validateImages(body && typeof body === 'object' && 'images' in body ? body.images : null)
+    if (typeof images === 'string') return createErrorResponse(400, 400108, images)
+    order.images = images
+    order.updatedAt = new Date().toISOString()
+    try {
+      saveMockState(auth.state)
+    } catch {
+      return createErrorResponse(507, 507100, '浏览器存储空间不足，请减少图片后重试')
+    }
+    return createSuccessResponse(order, '图片已保存')
+  }),
+  http.post('/api/work-orders', async ({ request }) => {
+    await delay(mockResponseDelay)
+    let body: unknown
+    try {
+      body = await request.json()
+    } catch {
+      return createErrorResponse(400, 40001, '请求参数格式不正确')
+    }
+    const auth = authorizeRequest(request, 'work-order:create')
+    if ('response' in auth) return auth.response
     const payload = validateCreatePayload(body)
     if (typeof payload === 'string') return createErrorResponse(400, 400102, payload)
     const enterprise = auth.state.enterprises.find((item) => item.id === payload.enterpriseId)
@@ -195,21 +290,26 @@ export const workOrderHandlers = [
       }],
     }
     auth.state.workOrders.unshift(order)
-    saveMockState(auth.state)
+    try {
+      saveMockState(auth.state)
+    } catch {
+      return createErrorResponse(507, 507100, '浏览器存储空间不足，请减少图片后重试')
+    }
     return createSuccessResponse(order, '工单创建成功', 201)
   }),
   http.patch('/api/work-orders/:id/actions', async ({ request, params }) => {
     await delay(mockResponseDelay)
-    const auth = authorizeRequest(request, 'work-order:view')
-    if ('response' in auth) return auth.response
-    const order = getScopedOrders(auth.state, auth.user).find((item) => item.id === params.id)
-    if (!order) return createErrorResponse(404, 404100, '工单不存在或无权操作')
     let body: unknown
     try {
       body = await request.json()
     } catch {
       return createErrorResponse(400, 40001, '请求参数格式不正确')
     }
+    // 校验当前持久化状态，阻止并发请求重复执行同一阶段的操作
+    const auth = authorizeRequest(request, 'work-order:view')
+    if ('response' in auth) return auth.response
+    const order = getScopedOrders(auth.state, auth.user).find((item) => item.id === params.id)
+    if (!order) return createErrorResponse(404, 404100, '工单不存在或无权操作')
     if (!body || typeof body !== 'object') return createErrorResponse(400, 40001, '请求参数格式不正确')
     const values = body as Record<string, unknown>
     const action = values.action as WorkOrderAction
@@ -284,7 +384,11 @@ export const workOrderHandlers = [
       remark: remark || workOrderActionLabels[action],
       status: order.status,
     })
-    saveMockState(auth.state)
+    try {
+      saveMockState(auth.state)
+    } catch {
+      return createErrorResponse(507, 507100, '浏览器存储空间不足，请清理浏览器存储后重试')
+    }
     return createSuccessResponse(order, '工单操作成功')
   }),
 ]

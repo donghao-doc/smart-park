@@ -36,8 +36,18 @@ export interface WorkOrderCreateRequest {
   location: string
   /** 处理优先级 */
   priority: WorkOrderPriority
-  /** 图片占位名称，仅用于演示附件，不包含实际上传文件 */
-  imageNames: string[]
+  /** 问题现场图片，最多 5 张，由模拟上传接口返回 */
+  images: WorkOrderImageDto[]
+}
+
+/** 工单图片附件，示例资源或浏览器内模拟上传后生成的预览资料 */
+export interface WorkOrderImageDto {
+  /** 图片唯一标识，用于上传列表和删除附件 */
+  id: string
+  /** 图片显示名称，最多 80 字 */
+  name: string
+  /** 本地示例资源路径或压缩后的图片 data URL */
+  url: string
 }
 
 /** 工单处理历史，用于展示流程及还原历史状态 */

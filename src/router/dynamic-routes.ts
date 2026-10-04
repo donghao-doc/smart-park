@@ -22,6 +22,7 @@ const pageLazyLoaders: Readonly<Record<string, NonNullable<RouteObject['lazy']>>
   'vehicle-list': lazyPage(() => import('@/pages/vehicle-list')),
   'parking-records': lazyPage(() => import('@/pages/parking-records')),
   'work-order-list': lazyPage(() => import('@/pages/work-order-list')),
+  'work-order-detail': lazyPage(() => import('@/pages/work-order-detail')),
   'device-list': lazyPage(() => import('@/pages/device-list')),
   'system-users': lazyPage(() => import('@/pages/system-users')),
   'operation-logs': lazyPage(() => import('@/pages/operation-logs')),
@@ -129,6 +130,15 @@ function createMenuRoutes(menus: MenuItemDto[]): RouteObject[] {
         path: `${menu.path}/:id`,
         loader: createMenuAccessLoader(menu.path, true),
         lazy: pageLazyLoaders['enterprise-detail'],
+      })
+    }
+
+    if (menu.componentKey === 'work-order-list') {
+      pageRoutes.push({
+        id: `dynamic-menu-${menu.id}-detail`,
+        path: `${menu.path}/:id`,
+        loader: createMenuAccessLoader(menu.path, true),
+        lazy: pageLazyLoaders['work-order-detail'],
       })
     }
 

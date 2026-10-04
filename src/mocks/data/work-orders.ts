@@ -1,10 +1,35 @@
 import dayjs from 'dayjs'
 
-import type { WorkOrderDto, WorkOrderHistoryDto, WorkOrderStatus, WorkOrderType } from '@/types/work-order'
+import type {
+  WorkOrderDto,
+  WorkOrderHistoryDto,
+  WorkOrderImageDto,
+  WorkOrderStatus,
+  WorkOrderType,
+} from '@/types/work-order'
 import { seedEnterprises } from './enterprises'
 import { seedUsers } from './users'
 
 const initializedAt = dayjs()
+
+/** 详情页使用的本地现场示例图片，不依赖外部图片服务 */
+export const workOrderSampleImages: WorkOrderImageDto[] = [
+  {
+    id: 'sample-air-conditioner',
+    name: '空调设备.svg',
+    url: '/images/work-orders/air-conditioner.svg',
+  },
+  {
+    id: 'sample-controller',
+    name: '温控面板.svg',
+    url: '/images/work-orders/controller.svg',
+  },
+  {
+    id: 'sample-air-vent',
+    name: '出风口.svg',
+    url: '/images/work-orders/air-vent.svg',
+  },
+]
 const titles = [
   'A栋3层空调不制冷',
   '办公区地毯清洁申请',
@@ -81,7 +106,9 @@ function createWorkOrder(index: number, status: WorkOrderStatus): WorkOrderDto {
     contactPhone: enterprise.contactPhone,
     location: enterprise.officeLocation,
     priority: index % 3 === 0 ? 'high' : index % 3 === 1 ? 'medium' : 'low',
-    imageNames: index % 4 === 0 ? ['现场照片.jpg'] : [],
+    images: index < 4 ? structuredClone(workOrderSampleImages) : index % 4 === 0
+      ? [structuredClone(workOrderSampleImages[0])]
+      : [],
     status,
     assigneeId: assigned ? assignee.id : null,
     assigneeName: assigned ? assignee.name : null,
