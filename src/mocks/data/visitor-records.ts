@@ -5,7 +5,13 @@ import { seedEnterprises } from './enterprises'
 import { seedPersonnel } from './personnel'
 
 const visitorNames = ['李明', '张强', '王芳', '赵磊', '陈静', '刘伟', '杨洋', '黄磊', '周敏', '吴磊']
-const statuses: VisitorRecordStatus[] = ['checked_out', 'checked_in', 'checked_in', 'expired', 'checked_out']
+const statuses: VisitorRecordStatus[] = [
+  'checked_out',
+  'checked_in',
+  'checked_in',
+  'expired',
+  'checked_out',
+]
 const reasons = ['商务洽谈', '项目交流', '客户拜访', '技术交流', '设备维护', '面试沟通']
 
 /** 生成覆盖多个日期、企业和到访状态的历史记录，时间始终早于初始化时刻 */
@@ -21,7 +27,10 @@ function createVisitorRecord(index: number): VisitorRecordDto {
   const duration = dayOffset === 0 ? Math.min(3_600_000, elapsedToday * 0.08) : 3_600_000
   const scheduled = dayOffset === 0
     ? now.startOf('day').add(elapsedToday * (0.6 - (index % 40) * 0.01), 'millisecond')
-    : now.startOf('day').subtract(dayOffset, 'day').add(9, 'hour').add((index % 40) * 15, 'minute')
+    : now.startOf('day')
+      .subtract(dayOffset, 'day')
+      .add(9, 'hour')
+      .add((index % 40) * 15, 'minute')
   const status = statuses[(index + Math.floor(index / 10)) % statuses.length]
   const checkedIn = status === 'expired' ? null : scheduled.add(duration / 12, 'millisecond')
 
@@ -39,7 +48,9 @@ function createVisitorRecord(index: number): VisitorRecordDto {
     plateNumber: index % 3 === 0 ? `京A${String(12_345 + index)}` : null,
     status,
     checkedInAt: checkedIn?.toISOString() ?? null,
-    checkedOutAt: status === 'checked_out' ? checkedIn!.add(duration * 0.75, 'millisecond').toISOString() : null,
+    checkedOutAt: status === 'checked_out'
+      ? checkedIn!.add(duration * 0.75, 'millisecond').toISOString()
+      : null,
   }
 }
 

@@ -21,7 +21,14 @@ interface RecordDetailModalProps {
 }
 
 /** 展示访客、预约及进出园信息，保留加载和失败重试状态 */
-function RecordDetailModal({ open, record, loading, loadError, onRetry, onClose }: RecordDetailModalProps) {
+function RecordDetailModal({
+  open,
+  record,
+  loading,
+  loadError,
+  onRetry,
+  onClose,
+}: RecordDetailModalProps) {
   return (
     <Modal
       className="record-detail-modal"
@@ -56,12 +63,42 @@ function RecordDetailModal({ open, record, loading, loadError, onRetry, onClose 
             { key: 'phone', label: '手机号', children: record.visitorPhone },
             { key: 'host', label: '受访人', children: record.hostName },
             { key: 'plate', label: '车牌号', children: record.plateNumber ?? '未驾车' },
-            { key: 'enterprise', label: '所属企业', children: record.enterpriseName, span: 'filled' },
-            { key: 'scheduledStart', label: '预约开始', children: formatDateTime(record.scheduledStartAt) },
-            { key: 'scheduledEnd', label: '预约结束', children: formatDateTime(record.scheduledEndAt) },
-            { key: 'checkIn', label: '签到时间', children: record.checkedInAt ? formatDateTime(record.checkedInAt) : '未签到' },
-            { key: 'checkOut', label: '签出时间', children: record.checkedOutAt ? formatDateTime(record.checkedOutAt) : record.status === 'checked_in' ? '尚未离园' : '-' },
-            { key: 'reason', label: '来访事由', children: record.visitReason, span: 'filled' },
+            {
+              key: 'enterprise',
+              label: '所属企业',
+              children: record.enterpriseName,
+              span: 'filled',
+            },
+            {
+              key: 'scheduledStart',
+              label: '预约开始',
+              children: formatDateTime(record.scheduledStartAt),
+            },
+            {
+              key: 'scheduledEnd',
+              label: '预约结束',
+              children: formatDateTime(record.scheduledEndAt),
+            },
+            {
+              key: 'checkIn',
+              label: '签到时间',
+              children: record.checkedInAt ? formatDateTime(record.checkedInAt) : '未签到',
+            },
+            {
+              key: 'checkOut',
+              label: '签出时间',
+              children: record.checkedOutAt
+                ? formatDateTime(record.checkedOutAt)
+                : record.status === 'checked_in'
+                  ? '尚未离园'
+                  : '-',
+            },
+            {
+              key: 'reason',
+              label: '来访事由',
+              children: record.visitReason,
+              span: 'filled',
+            },
           ]}
         />
       ) : null}

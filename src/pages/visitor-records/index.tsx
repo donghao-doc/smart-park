@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import type { SelectProps } from 'antd'
 
-import { reqGetEnterprises, reqGetVisitorRecord, reqGetVisitorRecords, reqGetVisitorRecordSummary } from '@/api'
+import {
+  reqGetEnterprises,
+  reqGetVisitorRecord,
+  reqGetVisitorRecords,
+  reqGetVisitorRecordSummary,
+} from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
 import { useUserStore } from '@/stores/user'
 import type { VisitorRecordDto, VisitorRecordSummaryDto } from '@/types/visitor-record'
@@ -40,13 +45,19 @@ function VisitorRecordsPage() {
     void (async () => {
       try {
         const result = await reqGetEnterprises({ page: 1, pageSize: 100 })
-        if (active) setEnterpriseOptions(result.list.map((item) => ({ label: item.name, value: item.id })))
+        if (active) {
+          setEnterpriseOptions(
+            result.list.map((item) => ({ label: item.name, value: item.id })),
+          )
+        }
       } catch {
         // 企业用户仍可展示所属企业，其余接口错误由统一 HTTP 层反馈
         if (active) setEnterpriseOptions([])
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [])
 
   useEffect(() => {
@@ -54,7 +65,9 @@ function VisitorRecordsPage() {
     void (async () => {
       try {
         const result = await reqGetVisitorRecords({
-          ...filters, page, pageSize,
+          ...filters,
+          page,
+          pageSize,
           enterpriseId: enterpriseLocked ? defaultEnterpriseId : filters.enterpriseId,
         })
         if (active) {
@@ -72,7 +85,9 @@ function VisitorRecordsPage() {
         if (active) setLoading(false)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [defaultEnterpriseId, enterpriseLocked, filters, page, pageSize, reloadVersion])
 
   useEffect(() => {
@@ -88,7 +103,9 @@ function VisitorRecordsPage() {
         if (active) setSummaryError(true)
       }
     })()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [reloadVersion])
 
   useEffect(() => {
@@ -108,7 +125,9 @@ function VisitorRecordsPage() {
       }
     })()
     // 关闭弹窗或切换记录后忽略旧请求，避免详情被过期响应覆盖
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [selectedId, detailVersion])
 
   /** 刷新列表和当前账号的今日统计 */

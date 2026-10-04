@@ -30,7 +30,12 @@ interface RecordFilterProps {
 }
 
 /** 到访记录筛选表单，将日期范围转换为接口日期字符串 */
-function RecordFilter({ enterpriseOptions, enterpriseLocked, defaultEnterpriseId, onSearch }: RecordFilterProps) {
+function RecordFilter({
+  enterpriseOptions,
+  enterpriseLocked,
+  defaultEnterpriseId,
+  onSearch,
+}: RecordFilterProps) {
   const [form] = Form.useForm<RecordFilterFormValues>()
 
   /** 提交表单查询条件 */
@@ -63,12 +68,18 @@ function RecordFilter({ enterpriseOptions, enterpriseLocked, defaultEnterpriseId
       >
         <Row gutter={[24, 16]} align="middle">
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="visitorName" label={<span className="record-filter-label">访客姓名</span>}>
+            <Form.Item
+              name="visitorName"
+              label={<span className="record-filter-label">访客姓名</span>}
+            >
               <Input allowClear placeholder="请输入访客姓名" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="enterpriseId" label={<span className="record-filter-label">所属企业</span>}>
+            <Form.Item
+              name="enterpriseId"
+              label={<span className="record-filter-label">所属企业</span>}
+            >
               <Select
                 allowClear={!enterpriseLocked}
                 disabled={enterpriseLocked}
@@ -80,12 +91,22 @@ function RecordFilter({ enterpriseOptions, enterpriseLocked, defaultEnterpriseId
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="dateRange" label={<span className="record-filter-label">到访日期</span>} tooltip="按签到日期查询，已过期记录按预约日期查询">
-              <DatePicker.RangePicker className="record-filter-range" placeholder={['开始日期', '结束日期']} />
+            <Form.Item
+              name="dateRange"
+              label={<span className="record-filter-label">到访日期</span>}
+              tooltip="按签到日期查询，已过期记录按预约日期查询"
+            >
+              <DatePicker.RangePicker
+                className="record-filter-range"
+                placeholder={['开始日期', '结束日期']}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="status" label={<span className="record-filter-label">到访状态</span>}>
+            <Form.Item
+              name="status"
+              label={<span className="record-filter-label">到访状态</span>}
+            >
               <Select
                 allowClear
                 placeholder="请选择状态"
