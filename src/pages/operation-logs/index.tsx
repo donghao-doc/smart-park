@@ -101,10 +101,6 @@ function OperationLogsPage() {
   return (
     <>
       <DataTablePageLayout className="operation-logs-page">
-        <header className="operation-logs-heading">
-          <h1>操作日志</h1>
-          <p>记录系统操作行为，便于安全审计与问题追溯</p>
-        </header>
         <OperationLogFilter onSearch={handleSearch} />
         <OperationLogTable
           logs={logs}
