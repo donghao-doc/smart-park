@@ -1,0 +1,97 @@
+.parking-summary {
+  flex: none;
+}
+
+.parking-metric-card.ant-card {
+  height: 100%;
+  border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-card-body {
+    padding: 20px;
+  }
+
+  &.is-parked .parking-metric-icon {
+    background: #e8f2ff;
+    color: #1677ff;
+  }
+
+  &.is-entry .parking-metric-icon {
+    background: #e2f8f2;
+    color: #00ac8b;
+  }
+
+  &.is-exit .parking-metric-icon {
+    background: #fff1e2;
+    color: #fa8c16;
+  }
+
+  &.is-abnormal .parking-metric-icon {
+    background: #ffebee;
+    color: #f04455;
+  }
+}
+
+.parking-metric-icon {
+  width: 54px;
+  height: 54px;
+  flex: none;
+  border-radius: 12px;
+  font-size: 28px;
+}
+
+.parking-metric-content {
+  min-width: 0;
+
+  .ant-statistic-title {
+    margin-bottom: 8px;
+    color: #536486;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ant-statistic-content {
+    color: #07184d;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .ant-statistic-content-suffix {
+    margin-left: 8px;
+    color: #536486;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.parking-metric-comparison {
+  margin-top: 10px;
+  color: #7c8ba7;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.parking-metric-change {
+  color: #667493;
+
+  &.is-increase {
+    color: #f04455;
+  }
+
+  &.is-decrease {
+    color: #00ac8b;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .parking-metric-card.ant-card .ant-card-body {
+    padding: 16px 12px;
+  }
+
+  .parking-metric-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+}

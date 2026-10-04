@@ -1,0 +1,17 @@
+.parking-detail-alert {
+  margin-bottom: 16px;
+}
+
+.parking-detail-modal {
+  .ant-descriptions-item-label {
+    color: #405276;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ant-descriptions-item-content {
+    overflow-wrap: anywhere;
+    color: #536486;
+    font-size: 14px;
+  }
+}

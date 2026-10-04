@@ -1,0 +1,28 @@
+.parking-page-heading {
+  flex: none;
+
+  h1 {
+    margin: 0 0 6px;
+    color: #07184d;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: #667493;
+    font-size: 14px;
+  }
+}
+
+// 小屏和低矮视口保留筛选与分页的操作空间，允许页面纵向滚动
+@media (max-width: 767px), (max-height: 760px) {
+  .parking-records-page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .parking-table-panel {
+    min-height: 440px;
+  }
+}
