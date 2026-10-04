@@ -1,4 +1,4 @@
-import { App, Flex } from 'antd'
+import { App } from 'antd'
 import { useEffect, useState, type Key } from 'react'
 
 import {
@@ -205,10 +205,6 @@ function DeviceListPage() {
   return (
     <>
       <DataTablePageLayout className="device-page">
-        <Flex vertical gap={6} className="device-page-heading">
-          <h1>设备列表</h1>
-          <p>统一管理园区各类设备，保障设备稳定运行</p>
-        </Flex>
         <DeviceSummary
           summary={summary}
           loading={summaryLoading}
