@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type {
   WorkOrderAction,
@@ -18,12 +18,7 @@ import {
 import { mockRoles, type MockUserEntity } from '../data/users'
 import { workOrderSampleImages } from '../data/work-orders'
 import { saveMockState, type MockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 const metricStatuses: WorkOrderStatus[] = [
   'pending_acceptance',
@@ -123,7 +118,6 @@ function validateCreatePayload(body: unknown): WorkOrderCreateRequest | string {
 /** 工单模拟接口，支持分页、数据隔离、统计及完整流程，并持久化变更 */
 export const workOrderHandlers = [
   http.post('/api/work-orders/images/sample', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:create')
     if ('response' in auth) return auth.response
     try {
@@ -148,7 +142,6 @@ export const workOrderHandlers = [
     }
   }),
   http.post('/api/work-orders/images', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:create')
     if ('response' in auth) return auth.response
     try {
@@ -180,7 +173,6 @@ export const workOrderHandlers = [
     }
   }),
   http.get('/api/work-orders/options', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:view')
     if ('response' in auth) return auth.response
     return createSuccessResponse({
@@ -207,7 +199,6 @@ export const workOrderHandlers = [
     })
   }),
   http.get('/api/work-orders/summary', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:view')
     if ('response' in auth) return auth.response
     const orders = getScopedOrders(auth.state, auth.user)
@@ -226,7 +217,6 @@ export const workOrderHandlers = [
     )
   }),
   http.get('/api/work-orders', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:view')
     if ('response' in auth) return auth.response
     const query = new URL(request.url).searchParams
@@ -260,7 +250,6 @@ export const workOrderHandlers = [
     })
   }),
   http.get('/api/work-orders/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'work-order:view')
     if ('response' in auth) return auth.response
     const order = getScopedOrders(auth.state, auth.user).find((item) => item.id === params.id)
@@ -268,7 +257,6 @@ export const workOrderHandlers = [
     return createSuccessResponse(order)
   }),
   http.patch('/api/work-orders/:id/images', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     let body: unknown
     try {
       body = await request.json()
@@ -297,7 +285,6 @@ export const workOrderHandlers = [
     return createSuccessResponse(order, '图片已保存')
   }),
   http.post('/api/work-orders', async ({ request }) => {
-    await delay(mockResponseDelay)
     let body: unknown
     try {
       body = await request.json()
@@ -356,7 +343,6 @@ export const workOrderHandlers = [
     return createSuccessResponse(order, '工单创建成功', 201)
   }),
   http.patch('/api/work-orders/:id/actions', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     let body: unknown
     try {
       body = await request.json()

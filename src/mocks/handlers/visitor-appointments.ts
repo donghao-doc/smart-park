@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 import type { PermissionCode } from '@/types/auth'
 import type {
   CreateVisitorAppointmentRequest,
@@ -7,12 +7,7 @@ import type {
   VisitorAppointmentStatus,
 } from '@/types/visitor-appointment'
 import { saveMockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /**
  * 判断访客预约状态查询值是否合法
@@ -174,7 +169,6 @@ function validateCreatePayload(body: Partial<CreateVisitorAppointmentRequest>) {
 /** 访客预约模拟接口 */
 export const visitorAppointmentHandlers = [
   http.get('/api/visitor-appointments/summary', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'visitor:view')
     if ('response' in auth) {
       return auth.response
@@ -207,7 +201,6 @@ export const visitorAppointmentHandlers = [
   }),
 
   http.get('/api/visitor-appointments', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'visitor:view')
     if ('response' in auth) {
       return auth.response
@@ -266,7 +259,6 @@ export const visitorAppointmentHandlers = [
   }),
 
   http.post('/api/visitor-appointments', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'visitor:create')
     if ('response' in auth) {
       return auth.response
@@ -300,9 +292,10 @@ export const visitorAppointmentHandlers = [
 
     const now = new Date().toISOString()
     const sequence = auth.state.visitorAppointments.length + 1
+    const scheduledDate = body.scheduledStartAt!.slice(0, 10).replaceAll('-', '')
     const appointment = {
       id: `visit_${crypto.randomUUID()}`,
-      code: `V${body.scheduledStartAt!.slice(0, 10).replaceAll('-', '')}${String(sequence).padStart(4, '0')}`,
+      code: `V${scheduledDate}${String(sequence).padStart(4, '0')}`,
       visitorName: body.visitorName!.trim(),
       visitorPhone: body.visitorPhone!.trim(),
       hostId: host.id,
@@ -328,8 +321,6 @@ export const visitorAppointmentHandlers = [
   }),
 
   http.patch('/api/visitor-appointments/:id/status', async ({ request, params }) => {
-    await delay(mockResponseDelay)
-
     let body: Partial<UpdateVisitorAppointmentStatusRequest>
     try {
       body = (await request.json()) as Partial<UpdateVisitorAppointmentStatusRequest>

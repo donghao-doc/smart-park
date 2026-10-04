@@ -5,11 +5,6 @@ import { mockRoles, type MockUserEntity } from './data/users'
 import { getMockState, saveMockState, type MockState } from './store'
 
 /**
- * MSW 普通接口的统一模拟延迟
- */
-export const mockResponseDelay = 300
-
-/**
  * 创建符合项目规范的成功响应
  */
 export function createSuccessResponse<T>(data: T, message = '请求成功', status = 200) {

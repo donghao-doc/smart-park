@@ -1,15 +1,10 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type { VehicleMutationRequest, VehicleStatus, VehicleType } from '@/types/vehicle'
 import { normalizeVehiclePlate, vehiclePlatePattern } from '@/utils/vehicle'
 import { mockRoles } from '../data/users'
 import { saveMockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /** 判断车辆启停状态是否合法 */
 function isVehicleStatus(value: unknown): value is VehicleStatus {
@@ -60,7 +55,6 @@ function validateVehiclePayload(value: unknown): VehicleMutationRequest | string
 
 /** 登记或更新车辆，统一车牌唯一性、企业范围及独立启停权限校验 */
 async function handleVehicleMutation(request: Request, vehicleId?: string) {
-  await delay(mockResponseDelay)
   const auth = authorizeRequest(request, vehicleId ? 'vehicle:update' : 'vehicle:create')
   if ('response' in auth) return auth.response
 
@@ -130,7 +124,6 @@ async function handleVehicleMutation(request: Request, vehicleId?: string) {
 /** 车辆档案模拟接口，统一执行权限和企业数据范围校验 */
 export const vehicleHandlers = [
   http.get('/api/vehicles/enterprise-options', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'vehicle:view')
     if ('response' in auth) return auth.response
     const enterprises = auth.state.enterprises.filter(
@@ -140,7 +133,6 @@ export const vehicleHandlers = [
   }),
 
   http.get('/api/vehicles', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'vehicle:view')
     if ('response' in auth) return auth.response
 
@@ -185,7 +177,6 @@ export const vehicleHandlers = [
   }),
 
   http.get('/api/vehicles/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'vehicle:view')
     if ('response' in auth) return auth.response
     const vehicle = auth.state.vehicles.find((item) => item.id === params.id)
@@ -210,7 +201,6 @@ export const vehicleHandlers = [
   ),
 
   http.patch('/api/vehicles/:id/status', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'vehicle:status')
     if ('response' in auth) return auth.response
     const vehicle = auth.state.vehicles.find((item) => item.id === params.id)

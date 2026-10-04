@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 import type {
   PersonnelCertificateType,
   PersonnelMutationRequest,
@@ -6,12 +6,7 @@ import type {
   UpdatePersonnelStatusRequest,
 } from '@/types/personnel'
 import { saveMockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /**
  * 判断人员状态查询值是否合法
@@ -80,7 +75,6 @@ function canAccessPersonnel(
 /** 人员管理模拟接口 */
 export const personnelHandlers = [
   http.get('/api/personnel', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'personnel:view')
     if ('response' in auth) {
       return auth.response
@@ -124,7 +118,6 @@ export const personnelHandlers = [
   }),
 
   http.get('/api/personnel/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'personnel:view')
     if ('response' in auth) {
       return auth.response
@@ -143,7 +136,6 @@ export const personnelHandlers = [
   }),
 
   http.post('/api/personnel', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'personnel:create')
     if ('response' in auth) {
       return auth.response
@@ -200,7 +192,6 @@ export const personnelHandlers = [
   }),
 
   http.put('/api/personnel/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'personnel:update')
     if ('response' in auth) {
       return auth.response
@@ -261,7 +252,6 @@ export const personnelHandlers = [
   }),
 
   http.patch('/api/personnel/:id/status', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'personnel:status')
     if ('response' in auth) {
       return auth.response

@@ -1,21 +1,15 @@
-import { delay, http } from 'msw'
-import type { ParkInfoDto, ParkSpaceStatus, UpdateParkInfoRequest } from '@/types/park-profile'
-import { parkBuildings, parkSpaces, seedParkInfo } from '../data/park-profile'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
-
-let parkInfo: ParkInfoDto = { ...seedParkInfo }
+import { http } from 'msw'
+import type { ParkSpaceStatus, UpdateParkInfoRequest } from '@/types/park-profile'
+import { parkBuildings, parkSpaces } from '../data/park-profile'
+import { getMockState, saveMockState } from '../store'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /**
  * 组装园区档案汇总数据
  */
 function createParkProfileData() {
   return {
-    info: { ...parkInfo },
+    info: { ...getMockState().parkInfo },
     summary: {
       buildingCount: parkBuildings.length,
       floorCount: parkBuildings.reduce((total, building) => total + building.floors.length, 0),
@@ -60,7 +54,6 @@ function validateUpdatePayload(body: Partial<UpdateParkInfoRequest>) {
 /** 园区档案模拟接口 */
 export const parkProfileHandlers = [
   http.get('/api/park/profile', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'park:view')
     if ('response' in auth) {
       return auth.response
@@ -70,7 +63,6 @@ export const parkProfileHandlers = [
   }),
 
   http.put('/api/park/profile', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'park:update')
     if ('response' in auth) {
       return auth.response
@@ -88,8 +80,8 @@ export const parkProfileHandlers = [
       return createErrorResponse(400, 40031, validationMessage)
     }
 
-    parkInfo = {
-      ...parkInfo,
+    auth.state.parkInfo = {
+      ...auth.state.parkInfo,
       name: body.name!.trim(),
       address: body.address!.trim(),
       contactName: body.contactName!.trim(),
@@ -97,12 +89,12 @@ export const parkProfileHandlers = [
       area: body.area!,
       description: body.description!.trim(),
     }
+    saveMockState(auth.state)
 
     return createSuccessResponse(createParkProfileData(), '园区信息更新成功')
   }),
 
   http.get('/api/park/spaces', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'park:view')
     if ('response' in auth) {
       return auth.response

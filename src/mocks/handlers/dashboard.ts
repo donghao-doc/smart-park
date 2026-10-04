@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 import type { DashboardTrendRange } from '@/types/dashboard'
 import {
   dashboardMetrics,
@@ -7,12 +7,7 @@ import {
   visitorTrendData,
   workOrderTrendData,
 } from '../data/dashboard'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /**
  * 解析 Dashboard 趋势范围并筛选对应日期数据
@@ -51,7 +46,6 @@ function filterTrendData<T extends { date: string }>(request: Request, source: T
  */
 export const dashboardHandlers = [
   http.get('/api/dashboard/summary', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'dashboard:view')
     if ('response' in auth) {
       return auth.response
@@ -63,7 +57,6 @@ export const dashboardHandlers = [
   }),
 
   http.get('/api/dashboard/visitor-trend', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'dashboard:view')
     if ('response' in auth) {
       return auth.response
@@ -74,7 +67,6 @@ export const dashboardHandlers = [
   }),
 
   http.get('/api/dashboard/work-order-trend', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'dashboard:view')
     if ('response' in auth) {
       return auth.response
@@ -85,7 +77,6 @@ export const dashboardHandlers = [
   }),
 
   http.get('/api/dashboard/tasks', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'dashboard:view')
     if ('response' in auth) {
       return auth.response
@@ -95,7 +86,6 @@ export const dashboardHandlers = [
   }),
 
   http.get('/api/dashboard/device-statuses', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'dashboard:view')
     if ('response' in auth) {
       return auth.response

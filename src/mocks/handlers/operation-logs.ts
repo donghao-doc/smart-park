@@ -1,14 +1,9 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type { OperationLogDetailDto, OperationLogDto } from '@/types/operation-log'
 import { operationLogModuleLabels, operationLogResultLabels } from '@/utils/operation-log'
 import { seedOperationLogs } from '../data/operation-logs'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /** 校验正整数分页参数，省略时使用默认值 */
 function parsePage(value: string | null, fallback: number) {
@@ -47,7 +42,6 @@ function toLogDto(log: OperationLogDetailDto): OperationLogDto {
 /** 操作日志只读接口，列表和详情均要求日志查看权限 */
 export const operationLogHandlers = [
   http.get('/api/system/operation-logs', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'operation-log:view')
     if ('response' in auth) return auth.response
 
@@ -97,7 +91,6 @@ export const operationLogHandlers = [
     })
   }),
   http.get('/api/system/operation-logs/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'operation-log:view')
     if ('response' in auth) return auth.response
 

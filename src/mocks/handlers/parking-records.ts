@@ -1,16 +1,11 @@
 import dayjs from 'dayjs'
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type { ParkingRecordDto, ParkingRecordSummaryDto } from '@/types/parking-record'
 import { normalizeVehiclePlate } from '@/utils/vehicle'
 import { seedParkingRecords } from '../data/parking-records'
 import type { MockUserEntity } from '../data/users'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /** 按账号归属隔离企业数据，并根据当前时刻更新超时状态 */
 function getScopedRecords(user: MockUserEntity): ParkingRecordDto[] {
@@ -62,7 +57,6 @@ function calculateChange(current: number, previous: number) {
 /** 停车记录只读模拟接口，统一执行通行查看权限和企业隔离 */
 export const parkingRecordHandlers = [
   http.get('/api/parking-records/summary', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'parking-record:view')
     if ('response' in auth) return auth.response
 
@@ -104,7 +98,6 @@ export const parkingRecordHandlers = [
     })
   }),
   http.get('/api/parking-records', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'parking-record:view')
     if ('response' in auth) return auth.response
 
@@ -151,7 +144,6 @@ export const parkingRecordHandlers = [
     })
   }),
   http.get('/api/parking-records/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'parking-record:view')
     if ('response' in auth) return auth.response
 

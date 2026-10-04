@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 import type {
   CreateUserRequest,
   UpdateUserRequest,
@@ -12,7 +12,6 @@ import {
   createSuccessResponse,
   isRoleCode,
   isUserStatus,
-  mockResponseDelay,
   toUserDto,
 } from '../utils'
 
@@ -79,7 +78,6 @@ function parsePositiveInteger(value: string | null, fallback: number) {
  */
 export const systemUserHandlers = [
   http.get('/api/system/roles', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:view')
     if ('response' in auth) {
       return auth.response
@@ -93,7 +91,6 @@ export const systemUserHandlers = [
   }),
 
   http.get('/api/system/users', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:view')
     if ('response' in auth) {
       return auth.response
@@ -153,7 +150,6 @@ export const systemUserHandlers = [
   }),
 
   http.get('/api/system/users/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:view')
     if ('response' in auth) {
       return auth.response
@@ -168,7 +164,6 @@ export const systemUserHandlers = [
   }),
 
   http.post('/api/system/users', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:create')
     if ('response' in auth) {
       return auth.response
@@ -210,7 +205,6 @@ export const systemUserHandlers = [
   }),
 
   http.put('/api/system/users/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:update')
     if ('response' in auth) {
       return auth.response
@@ -247,7 +241,6 @@ export const systemUserHandlers = [
   }),
 
   http.patch('/api/system/users/:id/status', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:status')
     if ('response' in auth) {
       return auth.response
@@ -286,7 +279,6 @@ export const systemUserHandlers = [
   }),
 
   http.post('/api/system/users/:id/reset-password', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'system-user:reset-password')
     if ('response' in auth) {
       return auth.response

@@ -1,16 +1,11 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 import type {
   EnterpriseDetailDto,
   EnterpriseMutationRequest,
   EnterpriseStatus,
 } from '@/types/enterprise'
 import { saveMockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 const creditCodePattern = /^[0-9A-Z]{18}$/
 
@@ -106,7 +101,6 @@ function formatContactPhone(value: string) {
 /** 企业管理模拟接口 */
 export const enterpriseHandlers = [
   http.get('/api/enterprises', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'enterprise:view')
     if ('response' in auth) {
       return auth.response
@@ -148,7 +142,6 @@ export const enterpriseHandlers = [
   }),
 
   http.get('/api/enterprises/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'enterprise:view')
     if ('response' in auth) {
       return auth.response
@@ -167,7 +160,6 @@ export const enterpriseHandlers = [
   }),
 
   http.post('/api/enterprises', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'enterprise:create')
     if ('response' in auth) {
       return auth.response
@@ -244,7 +236,6 @@ export const enterpriseHandlers = [
   }),
 
   http.put('/api/enterprises/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'enterprise:update')
     if ('response' in auth) {
       return auth.response

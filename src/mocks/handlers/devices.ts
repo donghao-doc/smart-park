@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type { DeviceDetailDto, DeviceMutationRequest, DeviceSummaryDto } from '@/types/device'
 import {
@@ -9,12 +9,7 @@ import {
 } from '@/utils/device'
 import { mockRoles } from '../data/users'
 import { saveMockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /** 解析正整数分页参数，拒绝超出安全范围的输入 */
 function parsePageNumber(value: string | null, fallback: number) {
@@ -49,7 +44,6 @@ function validateDevicePayload(value: unknown): DeviceMutationRequest | string {
 
 /** 新增或更新设备，统一执行编码唯一性、独立状态权限和历史记录维护 */
 async function handleDeviceMutation(request: Request, deviceId?: string) {
-  await delay(mockResponseDelay)
   const auth = authorizeRequest(request, deviceId ? 'device:update' : 'device:create')
   if ('response' in auth) return auth.response
   const existing = deviceId ? auth.state.devices.find((item) => item.id === deviceId) : undefined
@@ -107,7 +101,6 @@ async function handleDeviceMutation(request: Request, deviceId?: string) {
 /** 设备管理模拟接口，所有读写操作均校验登录和业务权限 */
 export const deviceHandlers = [
   http.get('/api/devices/summary', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'device:view')
     if ('response' in auth) return auth.response
     const summary: DeviceSummaryDto = {
@@ -118,13 +111,11 @@ export const deviceHandlers = [
     return createSuccessResponse(summary)
   }),
   http.get('/api/devices/locations', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'device:view')
     if ('response' in auth) return auth.response
     return createSuccessResponse([...new Set(auth.state.devices.map((item) => item.location))])
   }),
   http.get('/api/devices', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'device:view')
     if ('response' in auth) return auth.response
     const query = new URL(request.url).searchParams
@@ -162,7 +153,6 @@ export const deviceHandlers = [
     })
   }),
   http.get('/api/devices/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'device:view')
     if ('response' in auth) return auth.response
     const device = auth.state.devices.find((item) => item.id === params.id)

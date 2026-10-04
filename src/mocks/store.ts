@@ -6,6 +6,7 @@ import { seedVisitorAppointments } from './data/visitor-appointments'
 import { seedVehicles } from './data/vehicles'
 import { seedWorkOrders, workOrderSampleImages } from './data/work-orders'
 import { seedDevices } from './data/devices'
+import { seedParkInfo } from './data/park-profile'
 
 const MOCK_STORE_KEY = 'smart-park.mock-state.v13'
 const SESSION_DURATION_SECONDS = 2 * 60 * 60
@@ -26,6 +27,8 @@ export interface MockSession {
  * 浏览器中持久化的 Mock 数据
  */
 export interface MockState {
+  /** 园区基础信息，与业务修改一同持久化并参与数据重置 */
+  parkInfo: typeof seedParkInfo
   /** 用户种子数据版本，用于增量补充演示账号而不覆盖已有修改 */
   userSeedVersion: number
   /** 当前用户数据 */
@@ -51,6 +54,7 @@ export interface MockState {
  */
 function createInitialState(): MockState {
   return {
+    parkInfo: structuredClone(seedParkInfo),
     userSeedVersion: 1,
     users: structuredClone(seedUsers),
     enterprises: structuredClone(seedEnterprises),
@@ -73,6 +77,9 @@ function isMockState(value: unknown): value is MockState {
 
   const state = value as Partial<MockState>
   return (
+    !!state.parkInfo &&
+    typeof state.parkInfo === 'object' &&
+    !Array.isArray(state.parkInfo) &&
     Array.isArray(state.users) &&
     Array.isArray(state.enterprises) &&
     Array.isArray(state.personnel) &&
@@ -98,15 +105,18 @@ export function getMockState(): MockState {
 
   try {
     const parsedState: unknown = JSON.parse(rawState)
-    // 增量补充新增业务模块，保留已有企业、人员和登录会话
+    // 增量补充园区档案和新增业务模块，保留已有业务修改及登录会话
     const compatibleState =
       parsedState &&
       typeof parsedState === 'object' &&
-      (!('vehicles' in parsedState) ||
+      (!('parkInfo' in parsedState) ||
+        !('vehicles' in parsedState) ||
         !('workOrders' in parsedState) ||
         !('devices' in parsedState))
         ? {
             ...parsedState,
+            parkInfo:
+              'parkInfo' in parsedState ? parsedState.parkInfo : structuredClone(seedParkInfo),
             vehicles:
               'vehicles' in parsedState ? parsedState.vehicles : structuredClone(seedVehicles),
             workOrders:
@@ -163,6 +173,11 @@ export function getMockState(): MockState {
  */
 export function saveMockState(state: MockState) {
   localStorage.setItem(MOCK_STORE_KEY, JSON.stringify(state))
+}
+
+/** 恢复全部可修改业务数据并清除模拟会话，保留其他应用的存储 */
+export function resetMockState() {
+  saveMockState(createInitialState())
 }
 
 /**

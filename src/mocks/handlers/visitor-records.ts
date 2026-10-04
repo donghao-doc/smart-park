@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type {
   VisitorRecordDto,
@@ -9,12 +9,7 @@ import type {
 import { seedVisitorRecords } from '../data/visitor-records'
 import type { MockUserEntity } from '../data/users'
 import type { MockState } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
 
 /** 判断查询状态是否属于到访记录 */
 function isVisitorRecordStatus(value: unknown): value is VisitorRecordStatus {
@@ -105,7 +100,6 @@ function calculateChange(today: number, yesterday: number) {
 /** 到访记录只读模拟接口，沿用访客权限和企业数据隔离 */
 export const visitorRecordHandlers = [
   http.get('/api/visitor-records/summary', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'visitor:view')
     if ('response' in auth) return auth.response
 
@@ -127,7 +121,6 @@ export const visitorRecordHandlers = [
     })
   }),
   http.get('/api/visitor-records', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'visitor:view')
     if ('response' in auth) return auth.response
 
@@ -174,7 +167,6 @@ export const visitorRecordHandlers = [
     })
   }),
   http.get('/api/visitor-records/:id', async ({ request, params }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request, 'visitor:view')
     if ('response' in auth) return auth.response
 

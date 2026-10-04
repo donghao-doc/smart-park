@@ -1,4 +1,4 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 import type { LoginRequest } from '@/types/auth'
 import { filterMenusByPermissions } from '../data/menus'
 import { mockRoles } from '../data/users'
@@ -8,20 +8,13 @@ import {
   mockSessionDurationSeconds,
   saveMockState,
 } from '../store'
-import {
-  authorizeRequest,
-  createErrorResponse,
-  createSuccessResponse,
-  mockResponseDelay,
-  toUserDto,
-} from '../utils'
+import { authorizeRequest, createErrorResponse, createSuccessResponse, toUserDto } from '../utils'
 
 /**
  * 认证模块 Mock 接口
  */
 export const authHandlers = [
   http.get('/api/auth/demo-accounts', async () => {
-    await delay(mockResponseDelay)
     const state = getMockState()
     const demoUserIds = new Set(['usr_1001', 'usr_1002', 'usr_1003'])
     const demoAccounts = state.users
@@ -37,8 +30,6 @@ export const authHandlers = [
   }),
 
   http.post('/api/auth/login', async ({ request }) => {
-    await delay(mockResponseDelay)
-
     let body: Partial<LoginRequest>
     try {
       body = (await request.json()) as Partial<LoginRequest>
@@ -79,7 +70,6 @@ export const authHandlers = [
   }),
 
   http.get('/api/auth/me', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request)
     if ('response' in auth) {
       return auth.response
@@ -89,7 +79,6 @@ export const authHandlers = [
   }),
 
   http.get('/api/auth/menus', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request)
     if ('response' in auth) {
       return auth.response
@@ -100,7 +89,6 @@ export const authHandlers = [
   }),
 
   http.post('/api/auth/logout', async ({ request }) => {
-    await delay(mockResponseDelay)
     const auth = authorizeRequest(request)
     if ('response' in auth) {
       return auth.response
