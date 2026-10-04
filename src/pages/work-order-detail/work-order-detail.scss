@@ -64,7 +64,8 @@ $detail-secondary: #7b8ca9;
     }
   }
 
-  .ant-descriptions-row > td {
+  .ant-descriptions-row > td,
+  .ant-descriptions-row:last-child > td {
     padding-bottom: 12px;
     border-bottom: 1px solid #edf2f8;
   }
