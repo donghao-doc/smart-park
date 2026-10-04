@@ -1,0 +1,7 @@
+node_modules/
+dist/
+dist-ssr/
+pnpm-lock.yaml
+public/mockServiceWorker.js
+docs/ui-concepts/
+docs/ui-designs/

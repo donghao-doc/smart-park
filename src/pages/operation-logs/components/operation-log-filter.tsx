@@ -6,11 +6,17 @@ import type {
   OperationLogModule,
   OperationLogResult,
 } from '@/types/operation-log'
-import { operationLogModuleLabels, operationLogResultLabels } from '@/utils/operation-log'
+import {
+  operationLogModuleLabels,
+  operationLogResultLabels,
+} from '@/utils/operation-log'
 import './operation-log-filter.scss'
 
 /** 提交给页面的日志筛选条件，分页由页面独立管理 */
-export type OperationLogFilterValues = Omit<OperationLogListParams, 'page' | 'pageSize'>
+export type OperationLogFilterValues = Omit<
+  OperationLogListParams,
+  'page' | 'pageSize'
+>
 
 interface OperationLogFilterFormValues {
   /** 操作人姓名关键词 */
@@ -28,8 +34,12 @@ interface OperationLogFilterProps {
   onSearch: (values: OperationLogFilterValues) => void
 }
 
-const moduleOptions = Object.entries(operationLogModuleLabels).map(([value, label]) => ({ value, label }))
-const resultOptions = Object.entries(operationLogResultLabels).map(([value, label]) => ({ value, label }))
+const moduleOptions = Object.entries(operationLogModuleLabels).map(
+  ([value, label]) => ({ value, label }),
+)
+const resultOptions = Object.entries(operationLogResultLabels).map(
+  ([value, label]) => ({ value, label }),
+)
 
 /** 收集日志查询条件，将本地时间转换为包含整分钟的 UTC 查询边界 */
 function OperationLogFilter({ onSearch }: OperationLogFilterProps) {
@@ -76,13 +86,19 @@ function OperationLogFilter({ onSearch }: OperationLogFilterProps) {
               name="module"
               label={<span className="operation-log-filter-label">模块</span>}
             >
-              <Select allowClear placeholder="请选择模块" options={moduleOptions} />
+              <Select
+                allowClear
+                placeholder="请选择模块"
+                options={moduleOptions}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="timeRange"
-              label={<span className="operation-log-filter-label">操作时间</span>}
+              label={
+                <span className="operation-log-filter-label">操作时间</span>
+              }
             >
               <DatePicker.RangePicker
                 className="operation-log-filter-range"
@@ -95,15 +111,23 @@ function OperationLogFilter({ onSearch }: OperationLogFilterProps) {
           <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="result"
-              label={<span className="operation-log-filter-label">操作结果</span>}
+              label={
+                <span className="operation-log-filter-label">操作结果</span>
+              }
             >
-              <Select allowClear placeholder="请选择结果" options={resultOptions} />
+              <Select
+                allowClear
+                placeholder="请选择结果"
+                options={resultOptions}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
               <Col>
-                <Button type="primary" htmlType="submit">查询</Button>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
               </Col>
               <Col>
                 <Button onClick={handleReset}>重置</Button>

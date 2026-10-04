@@ -1,0 +1,15 @@
+{
+  "editor.rulers": [80],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.renderValidationDecorations": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "oxc.enable.oxlint": true,
+  "oxc.enable.oxfmt": false,
+  "oxc.lint.run": "onType",
+  "eslint.enable": true,
+  "eslint.run": "onType",
+  "eslint.validate": ["css", "scss", "html", "json", "jsonc"],
+  "prettier.requireConfig": true
+}
