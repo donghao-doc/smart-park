@@ -152,11 +152,9 @@ function VehicleTable({
       ariaLabel="车辆档案列表"
       className="vehicle-table-panel"
       toolbar={canCreate ? (
-        <Flex flex={1} justify="end">
-          <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-            新增车辆
-          </Button>
-        </Flex>
+        <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+          新增车辆
+        </Button>
       ) : undefined}
       feedback={loadError ? (
         <Alert
