@@ -1,0 +1,11 @@
+.operation-log-table-panel {
+  .ant-table-tbody > tr.is-selected > td {
+    background: #eaf4ff;
+  }
+}
+
+.operation-log-view-button.ant-btn {
+  height: auto;
+  padding: 0;
+  font-size: 14px;
+}

@@ -1,0 +1,82 @@
+.operation-log-detail-drawer {
+  .ant-drawer-header {
+    padding: 20px;
+    border-bottom-color: #e1e9f3;
+  }
+
+  .ant-drawer-title {
+    color: #0b1d4b;
+    font-size: 18px;
+    font-weight: 650;
+  }
+
+  .ant-drawer-body {
+    padding: 20px;
+  }
+
+  .ant-drawer-footer {
+    padding: 14px 20px;
+    border-top-color: #e1e9f3;
+  }
+}
+
+.operation-log-detail-section {
+  padding: 16px;
+  border: 1px solid #e1e9f3;
+  border-radius: 8px;
+  background: #fff;
+
+  .ant-descriptions-title {
+    color: #0b1d4b;
+    font-size: 16px;
+    font-weight: 650;
+  }
+
+  .ant-descriptions-item-label {
+    min-width: 88px;
+    color: #7585a3;
+    font-size: 14px;
+  }
+
+  .ant-descriptions-item-content {
+    color: #2d4068;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .ant-alert-description {
+    font-size: 12px;
+  }
+}
+
+.operation-log-detail-title {
+  margin: 0;
+  color: #0b1d4b;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.operation-log-request-params.ant-typography {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #e1e9f3;
+  border-radius: 6px;
+  background: #f5f8fc;
+  color: #44628b;
+
+  pre {
+    margin: 0 0 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+
+.operation-log-detail-loading {
+  min-height: 240px;
+}

@@ -1,0 +1,19 @@
+.operation-log-result-tag.ant-tag {
+  min-width: 54px;
+  margin: 0;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 26px;
+  text-align: center;
+
+  &.is-success {
+    background: #e5f8f1;
+    color: #079a70;
+  }
+
+  &.is-failure {
+    background: #ffebee;
+    color: #e9384f;
+  }
+}

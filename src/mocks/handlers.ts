@@ -11,6 +11,7 @@ import { vehicleHandlers } from './handlers/vehicles'
 import { parkingRecordHandlers } from './handlers/parking-records'
 import { workOrderHandlers } from './handlers/work-orders'
 import { deviceHandlers } from './handlers/devices'
+import { operationLogHandlers } from './handlers/operation-logs'
 
 /**
  * 项目接口模拟处理器集合
@@ -28,4 +29,5 @@ export const handlers = [
   ...parkingRecordHandlers,
   ...workOrderHandlers,
   ...deviceHandlers,
+  ...operationLogHandlers,
 ] satisfies RequestHandler[]
