@@ -14,7 +14,11 @@ const statusLabels: Record<VisitorRecordStatus, string> = {
 
 /** 统一列表与详情中的到访状态文案及颜色 */
 function RecordStatus({ status }: RecordStatusProps) {
-  return <Tag className={`record-status-tag is-${status}`} variant="filled">{statusLabels[status]}</Tag>
+  return (
+    <Tag className={`record-status-tag is-${status}`} variant="filled">
+      {statusLabels[status]}
+    </Tag>
+  )
 }
 
 export default RecordStatus

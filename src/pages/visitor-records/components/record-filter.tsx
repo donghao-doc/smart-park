@@ -52,8 +52,15 @@ function RecordFilter({ enterpriseOptions, enterpriseLocked, defaultEnterpriseId
 
   return (
     <section className="record-filter-panel" aria-label="到访记录筛选">
-      <Form form={form} layout="horizontal" labelAlign="left" labelCol={{ flex: 'none' }} wrapperCol={{ flex: '1 1 0' }}
-        initialValues={{ enterpriseId: enterpriseLocked ? defaultEnterpriseId : undefined }} onFinish={handleFinish}>
+      <Form
+        form={form}
+        layout="horizontal"
+        labelAlign="left"
+        labelCol={{ flex: 'none' }}
+        wrapperCol={{ flex: '1 1 0' }}
+        initialValues={{ enterpriseId: enterpriseLocked ? defaultEnterpriseId : undefined }}
+        onFinish={handleFinish}
+      >
         <Row gutter={[24, 16]} align="middle">
           <Col xs={24} md={12} lg={8}>
             <Form.Item name="visitorName" label={<span className="record-filter-label">访客姓名</span>}>
@@ -62,27 +69,44 @@ function RecordFilter({ enterpriseOptions, enterpriseLocked, defaultEnterpriseId
           </Col>
           <Col xs={24} md={12} lg={8}>
             <Form.Item name="enterpriseId" label={<span className="record-filter-label">所属企业</span>}>
-              <Select allowClear={!enterpriseLocked} disabled={enterpriseLocked} showSearch optionFilterProp="label"
-                placeholder="请选择所属企业" options={enterpriseOptions} />
+              <Select
+                allowClear={!enterpriseLocked}
+                disabled={enterpriseLocked}
+                showSearch
+                optionFilterProp="label"
+                placeholder="请选择所属企业"
+                options={enterpriseOptions}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="dateRange" label={<span className="record-filter-label">到访日期</span>}
-              tooltip="按签到日期查询，已过期记录按预约日期查询">
+            <Form.Item name="dateRange" label={<span className="record-filter-label">到访日期</span>} tooltip="按签到日期查询，已过期记录按预约日期查询">
               <DatePicker.RangePicker className="record-filter-range" placeholder={['开始日期', '结束日期']} />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
             <Form.Item name="status" label={<span className="record-filter-label">到访状态</span>}>
-              <Select allowClear placeholder="请选择状态" options={[
-                { label: '已到访', value: 'checked_in' }, { label: '已离园', value: 'checked_out' }, { label: '已过期', value: 'expired' },
-              ]} />
+              <Select
+                allowClear
+                placeholder="请选择状态"
+                options={[
+                  { label: '已到访', value: 'checked_in' },
+                  { label: '已离园', value: 'checked_out' },
+                  { label: '已过期', value: 'expired' },
+                ]}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={16}>
             <Row gutter={12} justify="end" wrap={false}>
-              <Col><Button type="primary" htmlType="submit">查询</Button></Col>
-              <Col><Button onClick={handleReset}>重置</Button></Col>
+              <Col>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+              </Col>
+              <Col>
+                <Button onClick={handleReset}>重置</Button>
+              </Col>
             </Row>
           </Col>
         </Row>

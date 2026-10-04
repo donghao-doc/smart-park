@@ -42,7 +42,11 @@ function RecordTable({ records, total, page, pageSize, loading, loadError, onVie
     { title: '状态', dataIndex: 'status', width: 96, render: (status: VisitorRecordStatus) => <RecordStatus status={status} /> },
     {
       title: '查看', key: 'action', width: 70, fixed: 'right',
-      render: (_value, record) => <Button type="link" aria-label={`查看${record.visitorName}的到访记录`} onClick={() => onView(record.id)}>查看</Button>,
+      render: (_value, record) => (
+        <Button type="link" aria-label={`查看${record.visitorName}的到访记录`} onClick={() => onView(record.id)}>
+          查看
+        </Button>
+      ),
     },
   ]
 
@@ -50,11 +54,26 @@ function RecordTable({ records, total, page, pageSize, loading, loadError, onVie
     <DataTablePanel<VisitorRecordDto>
       ariaLabel="到访记录列表"
       className="record-table-panel"
-      toolbar={<>
-        <h2 className="record-table-title">到访记录</h2>
-        <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>刷新</Button>
-      </>}
-      feedback={loadError ? <Alert type="error" showIcon title="到访记录加载失败" action={<Button size="small" onClick={onReload}>重试</Button>} /> : undefined}
+      toolbar={
+        <>
+          <h2 className="record-table-title">到访记录</h2>
+          <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>
+            刷新
+          </Button>
+        </>
+      }
+      feedback={loadError ? (
+        <Alert
+          type="error"
+          showIcon
+          title="到访记录加载失败"
+          action={
+            <Button size="small" onClick={onReload}>
+              重试
+            </Button>
+          }
+        />
+      ) : undefined}
       tableProps={{ rowKey: 'id', columns, dataSource: records, loading, locale: { emptyText: '暂无到访记录' } }}
       scrollX={1247}
       pagination={{ current: page, pageSize, total, onChange: onPageChange }}

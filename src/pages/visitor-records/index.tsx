@@ -139,23 +139,41 @@ function VisitorRecordsPage() {
   return (
     <>
       <DataTablePageLayout className="visitor-records-page">
-        <RecordFilter enterpriseOptions={visibleEnterpriseOptions} enterpriseLocked={enterpriseLocked}
-          defaultEnterpriseId={defaultEnterpriseId} onSearch={handleSearch} />
+        <RecordFilter
+          enterpriseOptions={visibleEnterpriseOptions}
+          enterpriseLocked={enterpriseLocked}
+          defaultEnterpriseId={defaultEnterpriseId}
+          onSearch={handleSearch}
+        />
         <RecordSummary summary={summary} loadError={summaryError} onRetry={handleReload} />
-        <RecordTable records={records} total={total} page={page} pageSize={pageSize}
-          loading={loading} loadError={loadError} onView={handleView} onReload={handleReload}
+        <RecordTable
+          records={records}
+          total={total}
+          page={page}
+          pageSize={pageSize}
+          loading={loading}
+          loadError={loadError}
+          onView={handleView}
+          onReload={handleReload}
           onPageChange={(nextPage, nextPageSize) => {
             if (page === nextPage && pageSize === nextPageSize) return
             setLoading(true)
             setPage(nextPage)
             setPageSize(nextPageSize)
-          }} />
+          }}
+        />
       </DataTablePageLayout>
-      <RecordDetailModal open={Boolean(selectedId)} record={detail} loading={detailLoading} loadError={detailError}
+      <RecordDetailModal
+        open={Boolean(selectedId)}
+        record={detail}
+        loading={detailLoading}
+        loadError={detailError}
         onRetry={() => {
           setDetailLoading(true)
           setDetailVersion((version) => version + 1)
-        }} onClose={() => setSelectedId(undefined)} />
+        }}
+        onClose={() => setSelectedId(undefined)}
+      />
     </>
   )
 }

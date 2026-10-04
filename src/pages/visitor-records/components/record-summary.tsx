@@ -21,7 +21,18 @@ const metrics = [
 /** 展示今日到访、离园人数和较昨日变化，统计不受列表筛选影响 */
 function RecordSummary({ summary, loadError, onRetry }: RecordSummaryProps) {
   if (loadError) {
-    return <Alert type="error" showIcon title="到访统计加载失败" action={<Button size="small" onClick={onRetry}>重试</Button>} />
+    return (
+      <Alert
+        type="error"
+        showIcon
+        title="到访统计加载失败"
+        action={
+          <Button size="small" onClick={onRetry}>
+            重试
+          </Button>
+        }
+      />
+    )
   }
 
   return (
@@ -34,8 +45,20 @@ function RecordSummary({ summary, loadError, onRetry }: RecordSummaryProps) {
               <Card className={`record-metric-card ${metric.className}`}>
                 {summary ? (
                   <Flex align="center" gap={20}>
-                    <Flex align="center" justify="center" className="record-metric-icon" aria-hidden="true">{metric.icon}</Flex>
-                    <Statistic className="record-metric-statistic" title={metric.label} value={summary[metric.key]} suffix="人" />
+                    <Flex
+                      align="center"
+                      justify="center"
+                      className="record-metric-icon"
+                      aria-hidden="true"
+                    >
+                      {metric.icon}
+                    </Flex>
+                    <Statistic
+                      className="record-metric-statistic"
+                      title={metric.label}
+                      value={summary[metric.key]}
+                      suffix="人"
+                    />
                     <div className="record-metric-comparison">
                       <div className="record-metric-compare-label">较昨日</div>
                       <Flex align="center" gap={4} className={`record-metric-change ${change != null && change > 0 ? 'is-increase' : change != null && change < 0 ? 'is-decrease' : ''}`}>
@@ -45,7 +68,9 @@ function RecordSummary({ summary, loadError, onRetry }: RecordSummaryProps) {
                       </Flex>
                     </div>
                   </Flex>
-                ) : <Skeleton active title={false} paragraph={{ rows: 2 }} />}
+                ) : (
+                  <Skeleton active title={false} paragraph={{ rows: 2 }} />
+                )}
               </Card>
             </Col>
           )
