@@ -26,7 +26,7 @@ interface WorkOrderCreateModalProps {
   onCancel: () => void
 }
 
-/** 创建工单表单，代企业创建时保留明确的结果确认联系人 */
+/** 创建工单表单，代企业创建时指定确认联系人，长表单仅在内容区滚动 */
 function WorkOrderCreateModal({
   open,
   options,
@@ -70,6 +70,13 @@ function WorkOrderCreateModal({
   return (
     <Modal
       className="work-order-create-modal"
+      classNames={{
+        container: 'work-order-create-container',
+        header: 'work-order-create-header',
+        body: 'work-order-create-body',
+        footer: 'work-order-create-footer',
+      }}
+      centered
       title="创建工单"
       open={open}
       width={720}
