@@ -1,0 +1,22 @@
+.device-detail-modal {
+  .ant-descriptions-item-content {
+    overflow-wrap: anywhere;
+    color: #536486;
+  }
+}
+
+.device-detail-loading {
+  min-height: 260px;
+}
+
+.device-history-title {
+  margin: 0 0 20px;
+  color: #273755;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.device-history-meta {
+  color: #7484a5;
+  font-size: 12px;
+}

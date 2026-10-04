@@ -1,0 +1,74 @@
+.device-summary {
+  flex: none;
+}
+
+.device-metric-card.ant-card {
+  height: 100%;
+  border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-card-body {
+    padding: 18px;
+  }
+
+  .ant-statistic-content {
+    color: #07184d;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .ant-statistic-content-suffix {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &.is-normal .device-metric-icon {
+    background: #e2f8f2;
+    color: #00ac8b;
+  }
+
+  &.is-fault .device-metric-icon {
+    background: #fff0ed;
+    color: #fa541c;
+  }
+
+  &.is-disabled .device-metric-icon {
+    background: #edf0f5;
+    color: #667493;
+  }
+}
+
+.device-metric-icon {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 12px;
+  background: #e8f2ff;
+  color: #1677ff;
+  font-size: 26px;
+}
+
+.device-metric-label {
+  color: #273755;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.device-metric-percentage {
+  color: #7484a5;
+  font-size: 12px;
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .device-metric-card.ant-card .ant-card-body {
+    padding: 16px 12px;
+  }
+
+  .device-metric-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}

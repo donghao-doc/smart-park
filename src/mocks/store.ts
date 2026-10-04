@@ -5,6 +5,7 @@ import { seedUsers } from './data/users'
 import { seedVisitorAppointments } from './data/visitor-appointments'
 import { seedVehicles } from './data/vehicles'
 import { seedWorkOrders, workOrderSampleImages } from './data/work-orders'
+import { seedDevices } from './data/devices'
 
 const MOCK_STORE_KEY = 'smart-park.mock-state.v13'
 const SESSION_DURATION_SECONDS = 2 * 60 * 60
@@ -37,6 +38,8 @@ export interface MockState {
   vehicles: typeof seedVehicles
   /** 工单资料及可回溯的流程记录 */
   workOrders: typeof seedWorkOrders
+  /** 园区设备档案及最近状态变化记录 */
+  devices: typeof seedDevices
   /** 当前有效或待清理的登录会话 */
   sessions: MockSession[]
 }
@@ -52,6 +55,7 @@ function createInitialState(): MockState {
     visitorAppointments: structuredClone(seedVisitorAppointments),
     vehicles: structuredClone(seedVehicles),
     workOrders: structuredClone(seedWorkOrders),
+    devices: structuredClone(seedDevices),
     sessions: [],
   }
 }
@@ -72,6 +76,7 @@ function isMockState(value: unknown): value is MockState {
     Array.isArray(state.visitorAppointments) &&
     Array.isArray(state.vehicles) &&
     Array.isArray(state.workOrders) &&
+    Array.isArray(state.devices) &&
     Array.isArray(state.sessions)
   )
 }
@@ -92,12 +97,13 @@ export function getMockState(): MockState {
     const parsedState: unknown = JSON.parse(rawState)
     // 增量补充新增业务模块，保留已有企业、人员和登录会话
     const compatibleState = parsedState && typeof parsedState === 'object' && (
-      !('vehicles' in parsedState) || !('workOrders' in parsedState)
+      !('vehicles' in parsedState) || !('workOrders' in parsedState) || !('devices' in parsedState)
     )
       ? {
           ...parsedState,
           vehicles: 'vehicles' in parsedState ? parsedState.vehicles : structuredClone(seedVehicles),
           workOrders: 'workOrders' in parsedState ? parsedState.workOrders : structuredClone(seedWorkOrders),
+          devices: 'devices' in parsedState ? parsedState.devices : structuredClone(seedDevices),
         }
       : parsedState
     if (isMockState(compatibleState)) {

@@ -1,0 +1,30 @@
+.device-filter-panel {
+  flex: none;
+  padding: 18px 20px;
+  border: 1px solid #dfe7f1;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-form-item {
+    margin: 0;
+  }
+
+  .ant-form-item-label label {
+    color: #273755;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ant-input-prefix {
+    color: #7c8ba7;
+  }
+}
+
+.device-filter-label {
+  display: inline-block;
+  inline-size: 4em;
+  text-align: justify;
+  text-align-last: justify;
+  white-space: nowrap;
+}
