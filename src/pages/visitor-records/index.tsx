@@ -139,10 +139,6 @@ function VisitorRecordsPage() {
   return (
     <>
       <DataTablePageLayout className="visitor-records-page">
-        <header className="visitor-records-heading">
-          <h1>到访记录</h1>
-          <p>记录园区访客到访情况，支持多条件查询</p>
-        </header>
         <RecordFilter enterpriseOptions={visibleEnterpriseOptions} enterpriseLocked={enterpriseLocked}
           defaultEnterpriseId={defaultEnterpriseId} onSearch={handleSearch} />
         <RecordSummary summary={summary} loadError={summaryError} onRetry={handleReload} />
