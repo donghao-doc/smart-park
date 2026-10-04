@@ -51,6 +51,7 @@ function WorkOrderTable({
   onReload,
   onPageChange,
 }: WorkOrderTableProps) {
+  const canCreate = currentUser?.role.permissions.includes('work-order:create') ?? false
   const columns: TableColumnsType<WorkOrderDto> = [
     { title: '工单编号', dataIndex: 'code', width: 150 },
     {
@@ -150,14 +151,15 @@ function WorkOrderTable({
       ariaLabel="工单列表"
       className="work-order-table-panel"
       toolbar={
-        <Flex flex={1} justify="space-between" align="center">
-          <span className="work-order-table-title">工单列表</span>
-          <Flex gap={12}>
-            {currentUser?.role.permissions.includes('work-order:create') ? (
-              <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>创建工单</Button>
-            ) : null}
-            <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>刷新</Button>
-          </Flex>
+        <Flex
+          flex={1}
+          justify={canCreate ? 'space-between' : 'end'}
+          align="center"
+        >
+          {canCreate ? (
+            <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>创建工单</Button>
+          ) : null}
+          <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>刷新</Button>
         </Flex>
       }
       feedback={loadError ? (
