@@ -1,4 +1,3 @@
-import { LockOutlined } from '@ant-design/icons'
 import { App, Flex, Typography, type SelectProps } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -20,7 +19,6 @@ import type { UserDto } from '@/types/auth'
 import UserFilter, { type UserFilterValues } from './components/user-filter'
 import UserFormModal, { type UserFormValues } from './components/user-form-modal'
 import UserTable from './components/user-table'
-import './system-users.scss'
 
 /** 用户管理页面，负责账号查询、资料维护、启停及模拟密码重置 */
 function SystemUsersPage() {
@@ -252,13 +250,6 @@ function SystemUsersPage() {
   return (
     <>
       <DataTablePageLayout className="system-users-page">
-        <Flex className="system-users-heading" vertical gap={8}>
-          <h1>用户管理</h1>
-          <Flex className="system-users-access-note" align="center" gap={8}>
-            <LockOutlined />
-            <span>仅超级管理员可访问</span>
-          </Flex>
-        </Flex>
         <UserFilter onSearch={handleSearch} />
         <UserTable
           users={users}
