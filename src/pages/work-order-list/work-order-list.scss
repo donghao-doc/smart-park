@@ -1,0 +1,29 @@
+.work-order-page-header {
+  flex: none;
+
+  h1 {
+    margin: 0;
+    color: #07184d;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  p {
+    margin: 0;
+    color: #7c8ba7;
+    font-size: 14px;
+  }
+}
+
+// 小屏或低矮窗口允许页面滚动，保留筛选、操作按钮和分页的完整空间
+@media (max-width: 1199px), (max-height: 760px) {
+  .work-order-list-page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .work-order-table-panel {
+    min-height: 440px;
+  }
+}

@@ -1,0 +1,39 @@
+.work-order-table-title {
+  color: #273755;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.work-order-table-panel {
+  .ant-table-thead > tr > th {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    white-space: nowrap;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    white-space: nowrap;
+  }
+
+  .ant-btn-link {
+    height: 24px;
+    padding: 0;
+  }
+}
+
+// 分页器没有总数换行属性，小屏单独留一行避免被页码挤压
+@media (max-width: 480px) {
+  .work-order-table-panel {
+    .ant-pagination {
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+
+    .ant-pagination-total-text {
+      flex-basis: 100%;
+      white-space: nowrap;
+    }
+  }
+}

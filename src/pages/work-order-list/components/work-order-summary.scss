@@ -1,0 +1,98 @@
+.work-order-summary {
+  flex: none;
+}
+
+.work-order-metric-card.ant-card {
+  height: 100%;
+  border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-card-body {
+    padding: 20px 18px;
+  }
+
+  &.is-pending_acceptance .work-order-metric-icon {
+    background: #fff1e2;
+    color: #fa8c16;
+  }
+
+  &.is-pending_processing .work-order-metric-icon {
+    background: #e8f2ff;
+    color: #1677ff;
+  }
+
+  &.is-processing .work-order-metric-icon,
+  &.is-completed .work-order-metric-icon {
+    background: #e2f8f2;
+    color: #00ac8b;
+  }
+
+  &.is-pending_confirmation .work-order-metric-icon {
+    background: #f0ebff;
+    color: #8055ef;
+  }
+}
+
+.work-order-metric-icon {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 12px;
+  font-size: 26px;
+}
+
+.work-order-metric-content {
+  min-width: 0;
+
+  .ant-statistic-title {
+    margin-bottom: 8px;
+    color: #273755;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .ant-statistic-content {
+    color: #07184d;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .ant-statistic-content-suffix {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.work-order-metric-comparison {
+  margin-top: 12px;
+  color: #7c8ba7;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.work-order-metric-change {
+  color: #667493;
+
+  &.is-increase {
+    color: #f04455;
+  }
+
+  &.is-decrease {
+    color: #00ac8b;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .work-order-metric-card.ant-card .ant-card-body {
+    padding: 16px 12px;
+  }
+
+  .work-order-metric-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
