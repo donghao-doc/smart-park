@@ -212,10 +212,6 @@ function VehicleListPage() {
   return (
     <>
       <DataTablePageLayout className="vehicle-page">
-        <header className="vehicle-page-header">
-          <h1>车辆档案</h1>
-          <p>管理园区内车辆信息，支持车辆登记、状态维护等操作</p>
-        </header>
         <VehicleFilter
           enterpriseOptions={enterpriseOptions}
           optionsLoading={optionsLoading}
