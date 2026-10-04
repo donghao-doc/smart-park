@@ -57,7 +57,7 @@ function DeviceSummary({ summary, loading, loadError, onRetry }: DeviceSummaryPr
             >
               <Card className={`device-metric-card is-${key}`}>
                 {summary ? (
-                  <Flex align="center" gap={16}>
+                  <Flex align="start" gap={16}>
                     <Flex
                       align="center"
                       justify="center"
@@ -66,9 +66,19 @@ function DeviceSummary({ summary, loading, loadError, onRetry }: DeviceSummaryPr
                     >
                       {icon}
                     </Flex>
-                    <Flex vertical flex={1} gap={8}>
+                    <Flex
+                      vertical
+                      flex={1}
+                      gap={8}
+                      className="device-metric-content"
+                    >
                       <span className="device-metric-label">{label}</span>
-                      <Flex align="baseline" justify="space-between" gap={8}>
+                      <Flex
+                        align="baseline"
+                        justify="space-between"
+                        gap={8}
+                        wrap
+                      >
                         <Statistic value={count} suffix="台" />
                         {key !== 'total' ? <span className="device-metric-percentage">{percentage}%</span> : null}
                       </Flex>

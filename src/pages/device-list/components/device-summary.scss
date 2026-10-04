@@ -16,6 +16,7 @@
     font-size: 28px;
     font-weight: 700;
     line-height: 1.2;
+    white-space: nowrap;
   }
 
   .ant-statistic-content-suffix {
@@ -56,9 +57,14 @@
   font-weight: 600;
 }
 
+.device-metric-content {
+  min-width: 0;
+}
+
 .device-metric-percentage {
   color: #7484a5;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 @media (min-width: 1200px) and (max-width: 1399px) {
