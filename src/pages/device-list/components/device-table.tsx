@@ -126,21 +126,19 @@ function DeviceTable({
       className="device-table-panel"
       toolbar={(
         <>
-          <Flex align="baseline" gap={8} wrap>
-            <h2 className="device-table-title">设备列表</h2>
-            <span className="device-table-total">（共 {total} 条）</span>
-          </Flex>
           <Flex align="center" gap={12}>
-            <Button
-              icon={<ReloadOutlined />}
-              aria-label="刷新设备列表及统计"
-              onClick={onReload}
-              loading={loading}
-            />
             {canCreate ? (
               <Button type="primary" icon={<PlusCircleOutlined />} onClick={onCreate}>新增设备</Button>
             ) : null}
           </Flex>
+          <Button
+            icon={<ReloadOutlined />}
+            aria-label="刷新设备列表及统计"
+            onClick={onReload}
+            loading={loading}
+          >
+            刷新
+          </Button>
         </>
       )}
       feedback={loadError ? (
