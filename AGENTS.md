@@ -152,6 +152,13 @@ const tabletActionSpan = tabletRemainder === 0 ? 24 : 12
 - 业务页面继续负责列定义、单元格渲染、权限判断、路由跳转和数据请求，不应把具体业务规则下沉到公共表格组件
 - 企业管理页面是该模式的参考实现；新增相似列表页面时应复用公共组件，而不是复制 `useTableScrollHeight` 或依赖 Ant Design 表格内部 DOM 结构
 
+## 公共滚动弹窗规范
+
+- 长表单、详情等需要固定标题和底部按钮、仅内容区滚动的弹窗，统一使用 `src/components/scrollable-modal` 提供的 `ScrollableModal`
+- 公共组件基于 Ant Design `Modal`，默认居中、根据视口限制高度、禁止内容区横向滚动，并将纵向滚动条放在弹窗右边缘；页面不得重复实现这些滚动布局样式
+- 标题、宽度、底部按钮、提交加载状态、关闭行为等继续通过 `Modal` 属性配置，表单状态和业务操作由页面组件负责
+- 业务样式通过 `className` 或 `classNames` 追加，公共组件会保留滚动区域所需的类名；避免覆盖容器限高、内容区 overflow 等公共布局规则
+
 ## 异步接口调用规范
 
 - 调用异步接口时默认使用 `async/await` 配合 `try...catch` 处理成功与异常流程，不使用 `.then().catch()` 链式调用

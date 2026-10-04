@@ -8,29 +8,6 @@
   }
 }
 
-// Modal 没有整体限高属性，通过语义化容器保留标题和按钮，仅让内容区收缩滚动
-.work-order-create-modal .work-order-create-container {
-  display: flex;
-  max-height: calc(100dvh - 48px);
-  padding: 20px 0;
-  flex-direction: column;
-}
-
-.work-order-create-modal .work-order-create-header,
-.work-order-create-modal .work-order-create-footer {
-  flex: none;
-  padding-inline: 24px;
-}
-
-.work-order-create-modal .work-order-create-body {
-  min-height: 0;
-  padding-inline: 24px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  scrollbar-gutter: stable;
-}
-
 .work-order-create-feedback {
   margin-bottom: 16px;
 }

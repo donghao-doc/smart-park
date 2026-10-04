@@ -1,6 +1,7 @@
-import { Alert, Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import { Alert, Button, Col, Form, Input, Row, Select } from 'antd'
 import { useEffect } from 'react'
 
+import ScrollableModal from '@/components/scrollable-modal'
 import type { WorkOrderCreateRequest, WorkOrderOptionsDto } from '@/types/work-order'
 import { workOrderPriorityLabels, workOrderTypeLabels } from '@/utils/work-order'
 import './work-order-create-modal.scss'
@@ -68,15 +69,8 @@ function WorkOrderCreateModal({
   }
 
   return (
-    <Modal
+    <ScrollableModal
       className="work-order-create-modal"
-      classNames={{
-        container: 'work-order-create-container',
-        header: 'work-order-create-header',
-        body: 'work-order-create-body',
-        footer: 'work-order-create-footer',
-      }}
-      centered
       title="创建工单"
       open={open}
       width={720}
@@ -192,7 +186,7 @@ function WorkOrderCreateModal({
           <Select mode="tags" placeholder="例如：现场照片.jpg" open={false} />
         </Form.Item>
       </Form>
-    </Modal>
+    </ScrollableModal>
   )
 }
 

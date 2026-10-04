@@ -1,0 +1,23 @@
+// 内容容器限高，标题和按钮不收缩，滚动区占据剩余空间
+.scrollable-modal .scrollable-modal-container {
+  display: flex;
+  max-height: calc(100dvh - 48px);
+  padding: 20px 0;
+  flex-direction: column;
+}
+
+.scrollable-modal .scrollable-modal-header,
+.scrollable-modal .scrollable-modal-footer {
+  flex: none;
+  padding-inline: 24px;
+}
+
+// 内边距由内容区承担，让滚动条贴近弹窗边缘，同时容纳表单栅格的 gutter
+.scrollable-modal .scrollable-modal-body {
+  min-height: 0;
+  padding-inline: 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+}
