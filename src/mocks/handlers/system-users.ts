@@ -107,6 +107,8 @@ export const systemUserHandlers = [
     }
 
     const keyword = url.searchParams.get('keyword')?.trim().toLowerCase()
+    const username = url.searchParams.get('username')?.trim().toLowerCase()
+    const name = url.searchParams.get('name')?.trim().toLowerCase()
     const roleCode = url.searchParams.get('roleCode')
     const status = url.searchParams.get('status')
     const enterpriseId = url.searchParams.get('enterpriseId')
@@ -128,9 +130,18 @@ export const systemUserHandlers = [
         const matchesRole = !roleCode || user.roleCode === roleCode
         const matchesStatus = !status || user.status === status
         const matchesEnterprise = !enterpriseId || user.enterpriseId === enterpriseId
-        return matchesKeyword && matchesRole && matchesStatus && matchesEnterprise
+        const matchesUsername = !username || user.username.toLowerCase().includes(username)
+        const matchesName = !name || user.name.toLowerCase().includes(name)
+        return (
+          matchesKeyword &&
+          matchesUsername &&
+          matchesName &&
+          matchesRole &&
+          matchesStatus &&
+          matchesEnterprise
+        )
       })
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt) || a.id.localeCompare(b.id))
 
     const start = (page - 1) * pageSize
     return createSuccessResponse({

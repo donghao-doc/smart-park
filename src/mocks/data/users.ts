@@ -142,7 +142,7 @@ export const mockRoles: Record<RoleCode, RoleDto> = {
 }
 
 /**
- * 覆盖三个固定角色的初始账号数据
+ * 用户管理标准种子数据，包含三个演示登录账号及分页所需的业务账号
  */
 export const seedUsers: MockUserEntity[] = [
   {
@@ -182,3 +182,38 @@ export const seedUsers: MockUserEntity[] = [
     updatedAt: '2026-09-01T01:10:00.000Z',
   },
 ]
+
+const sampleNames = ['赵六', '孙七', '周八', '吴九', '周十', '陈一', '张二']
+const sampleUsernames = ['zhaoliu', 'sunqi', 'zhouba', 'wujiu', 'zhoushi', 'chenyi', 'zhanger']
+// 仅关联仍在入驻的企业，保证企业归属符合用户创建约束
+const activeEnterpriseIds = ['ent_1001', 'ent_1002', 'ent_1003', 'ent_1005', 'ent_1006', 'ent_1007']
+
+/** 创建覆盖不同角色、启停状态及首次登录状态的用户样本 */
+function createSampleUser(index: number): MockUserEntity {
+  const sequence = index + 4
+  const sampleIndex = index % sampleNames.length
+  const roleCode: RoleCode = index % 4 === 1 ? 'park_operator' : 'enterprise_user'
+  const createdAt = new Date(Date.UTC(2026, 7, 31, 16) - index * 3_600_000).toISOString()
+  const lastLoginAt = index % 9 === 0
+    ? null
+    : new Date(Date.UTC(2026, 9, 3, 8, 45) - index * 3_600_000).toISOString()
+
+  return {
+    id: `usr_${1000 + sequence}`,
+    username: index < sampleNames.length
+      ? sampleUsernames[sampleIndex]
+      : `${sampleUsernames[sampleIndex]}${sequence}`,
+    name: sampleNames[sampleIndex],
+    password: 'User@12345',
+    roleCode,
+    enterpriseId: roleCode === 'enterprise_user'
+      ? activeEnterpriseIds[index % activeEnterpriseIds.length]
+      : null,
+    status: index % 5 === 0 ? 'disabled' : 'active',
+    lastLoginAt,
+    createdAt,
+    updatedAt: lastLoginAt ?? createdAt,
+  }
+}
+
+seedUsers.push(...Array.from({ length: 53 }, (_value, index) => createSampleUser(index)))

@@ -1,0 +1,49 @@
+.user-role-tag.ant-tag,
+.user-status-tag.ant-tag {
+  min-width: 58px;
+  margin: 0;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 26px;
+  text-align: center;
+}
+
+.user-role-tag.ant-tag {
+  &.is-super_admin {
+    background: #ffebee;
+    color: #f04455;
+  }
+
+  &.is-park_operator {
+    background: #e8f2ff;
+    color: #1677ff;
+  }
+
+  &.is-enterprise_user {
+    background: #fff0df;
+    color: #e97b16;
+  }
+}
+
+.user-status-tag.ant-tag {
+  &.is-active {
+    background: #e2f7f0;
+    color: #079b79;
+  }
+
+  &.is-disabled {
+    background: #ffebee;
+    color: #f04455;
+  }
+}
+
+.user-table-actions {
+  white-space: nowrap;
+
+  .ant-btn-link {
+    height: auto;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+}

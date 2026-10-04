@@ -11,6 +11,10 @@ export interface UserListParams {
   pageSize?: number
   /** 匹配用户名或姓名的关键词 */
   keyword?: string
+  /** 按登录账号独立进行模糊匹配，不区分大小写 */
+  username?: string
+  /** 按用户姓名独立进行模糊匹配 */
+  name?: string
   /** 按固定角色筛选 */
   roleCode?: RoleCode
   /** 按账号状态筛选 */

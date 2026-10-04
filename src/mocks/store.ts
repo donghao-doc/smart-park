@@ -26,6 +26,8 @@ export interface MockSession {
  * 浏览器中持久化的 Mock 数据
  */
 export interface MockState {
+  /** 用户种子数据版本，用于增量补充演示账号而不覆盖已有修改 */
+  userSeedVersion: number
   /** 当前用户数据 */
   users: MockUserEntity[]
   /** 企业摘要数据 */
@@ -49,6 +51,7 @@ export interface MockState {
  */
 function createInitialState(): MockState {
   return {
+    userSeedVersion: 1,
     users: structuredClone(seedUsers),
     enterprises: structuredClone(seedEnterprises),
     personnel: structuredClone(seedPersonnel),
@@ -107,6 +110,20 @@ export function getMockState(): MockState {
         }
       : parsedState
     if (isMockState(compatibleState)) {
+      // 旧存储只补充缺失的账号，保留已编辑资料、密码、启停状态和会话
+      const usersMigrated = compatibleState.userSeedVersion !== 1
+      if (usersMigrated) {
+        const existingIds = new Set(compatibleState.users.map((user) => user.id))
+        const existingUsernames = new Set(
+          compatibleState.users.map((user) => user.username.toLowerCase()),
+        )
+        const missingUsers = seedUsers.filter(
+          (user) => !existingIds.has(user.id) &&
+            !existingUsernames.has(user.username.toLowerCase()),
+        )
+        compatibleState.users.push(...structuredClone(missingUsers))
+        compatibleState.userSeedVersion = 1
+      }
       // 将旧版图片占位迁移为示例附件，不重置已有工单和登录会话
       let imagesMigrated = false
       for (const order of compatibleState.workOrders) {
@@ -120,7 +137,9 @@ export function getMockState(): MockState {
           imagesMigrated = true
         }
       }
-      if (compatibleState !== parsedState || imagesMigrated) saveMockState(compatibleState)
+      if (compatibleState !== parsedState || imagesMigrated || usersMigrated) {
+        saveMockState(compatibleState)
+      }
       return compatibleState
     }
   } catch {
