@@ -55,6 +55,15 @@ $detail-secondary: #7b8ca9;
 }
 
 .work-order-detail-related {
+  .ant-descriptions-item-container {
+    align-items: center;
+
+    .ant-descriptions-item-label,
+    .ant-descriptions-item-content {
+      align-items: center;
+    }
+  }
+
   .ant-descriptions-row > td {
     padding-bottom: 12px;
     border-bottom: 1px solid #edf2f8;
