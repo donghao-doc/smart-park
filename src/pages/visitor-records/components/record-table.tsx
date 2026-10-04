@@ -1,5 +1,5 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import { Alert, Button, type TableColumnsType } from 'antd'
+import { Alert, Button, Flex, type TableColumnsType } from 'antd'
 
 import DataTablePanel from '@/components/data-table-panel'
 import type { VisitorRecordDto, VisitorRecordStatus } from '@/types/visitor-record'
@@ -107,12 +107,11 @@ function RecordTable({
       ariaLabel="到访记录列表"
       className="record-table-panel"
       toolbar={
-        <>
-          <h2 className="record-table-title">到访记录</h2>
+        <Flex flex={1} justify="end">
           <Button icon={<ReloadOutlined />} loading={loading} onClick={onReload}>
             刷新
           </Button>
-        </>
+        </Flex>
       }
       feedback={loadError ? (
         <Alert
