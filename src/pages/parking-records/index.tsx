@@ -123,10 +123,6 @@ function ParkingRecordsPage() {
   return (
     <>
       <DataTablePageLayout className="parking-records-page">
-        <header className="parking-page-heading">
-          <h1>停车记录</h1>
-          <p>记录园区车辆进出情况，支持多维度查询与管理</p>
-        </header>
         <ParkingSummary
           summary={summary}
           loading={summaryLoading}
