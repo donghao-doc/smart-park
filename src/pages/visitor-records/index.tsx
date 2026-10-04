@@ -139,13 +139,13 @@ function VisitorRecordsPage() {
   return (
     <>
       <DataTablePageLayout className="visitor-records-page">
+        <RecordSummary summary={summary} loadError={summaryError} onRetry={handleReload} />
         <RecordFilter
           enterpriseOptions={visibleEnterpriseOptions}
           enterpriseLocked={enterpriseLocked}
           defaultEnterpriseId={defaultEnterpriseId}
           onSearch={handleSearch}
         />
-        <RecordSummary summary={summary} loadError={summaryError} onRetry={handleReload} />
         <RecordTable
           records={records}
           total={total}
