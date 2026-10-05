@@ -49,12 +49,7 @@ function ProfilePage() {
   }
 
   return (
-    <Flex vertical gap={20} className="profile-page">
-      <header>
-        <h1 className="profile-page-title">个人中心</h1>
-        <p className="profile-page-description">查看账号信息，管理个人资料与登录密码</p>
-      </header>
-
+    <section className="profile-page" aria-label="个人中心">
       <Row gutter={[20, 20]} align="stretch">
         <Col xs={24} xl={8}>
           <Card className="profile-card profile-identity-card">
@@ -136,7 +131,7 @@ function ProfilePage() {
           </Card>
         </Col>
       </Row>
-    </Flex>
+    </section>
   )
 }
 
