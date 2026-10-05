@@ -9,7 +9,7 @@ import { useUserStore } from '@/stores/user'
 import type { MockDataDto, MockExceptionSetting, MockSettings } from '@/types/mock-data'
 import MockDataSummary from './components/mock-data-summary'
 import MockDelayCard from './components/mock-delay-card'
-import MockExceptionTable from './components/mock-exception-table'
+import MockExceptionCard from './components/mock-exception-card'
 import './mock-data-management.scss'
 
 /** Mock 数据管理页面，通过接口维护浏览器内的模拟环境 */
@@ -142,48 +142,15 @@ function MockDataManagementPage() {
             onChange={handleDelayChange}
           />
 
-          <Card className="mock-data-panel">
-            <h2 className="mock-data-section-title">异常模拟</h2>
-            <p className="mock-data-section-description">
-              按接口模块设置异常状态码，用于模拟接口异常场景
-            </p>
-            <MockExceptionTable
-              settings={draft.exceptions}
-              disabled={disabled}
-              onChange={handleExceptionChange}
-            />
-            <p className="mock-data-login-note">
-              Login 异常仅作用于登录接口，当前用户与菜单接口保持可用
-            </p>
-            <Alert
-              className="mock-data-browser-notice"
-              type="warning"
-              showIcon
-              title="当前浏览器"
-              description="所有 Mock 配置仅在当前浏览器内生效，不会影响其他用户或生产环境。刷新页面后仍会保留已保存的设置。"
-            />
-            <Flex align="center" justify="space-between" gap={16} wrap="wrap">
-              <Flex align="center" gap={16} wrap="wrap">
-                <Button danger disabled={disabled} onClick={() => setResetOpen(true)}>
-                  恢复初始数据
-                </Button>
-                <span className="mock-data-reset-note">
-                  清除业务修改及配置并退出登录，此操作不可撤销
-                </span>
-              </Flex>
-              <Flex align="center" gap={12}>
-                {hasChanges && <span className="mock-data-unsaved">有未保存的设置</span>}
-                <Button
-                  type="primary"
-                  loading={saving}
-                  disabled={disabled || !hasChanges}
-                  onClick={() => void handleSave()}
-                >
-                  保存设置
-                </Button>
-              </Flex>
-            </Flex>
-          </Card>
+          <MockExceptionCard
+            settings={draft.exceptions}
+            disabled={disabled}
+            saving={saving}
+            hasChanges={hasChanges}
+            onChange={handleExceptionChange}
+            onSave={() => void handleSave()}
+            onReset={() => setResetOpen(true)}
+          />
         </>
       )}
       <ScrollableModal

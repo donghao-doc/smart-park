@@ -12,54 +12,6 @@
   }
 }
 
-.mock-data-section-title {
-  margin: 0 0 4px;
-  color: #0b1d4b;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.mock-data-section-description {
-  margin: 0 0 12px;
-  color: #7885a0;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.mock-data-login-note,
-.mock-data-reset-note {
-  color: #7885a0;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.mock-data-login-note {
-  margin: 8px 0 12px;
-}
-
-.mock-data-browser-notice.ant-alert.ant-alert-with-description {
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  border-color: #ffe0b5;
-  background: #fff7eb;
-
-  .ant-alert-title {
-    color: #ad4e00;
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .ant-alert-description {
-    color: #ad4e00;
-    font-size: 14px;
-  }
-}
-
-.mock-data-unsaved {
-  color: #b66b13;
-  font-size: 12px;
-}
-
 @media (max-width: 640px) {
   .mock-data-panel.ant-card .ant-card-body {
     padding: 16px;

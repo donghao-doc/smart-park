@@ -1,0 +1,62 @@
+.mock-exception-card.ant-card {
+  border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-card-body {
+    padding: 16px 20px;
+  }
+}
+
+.mock-exception-card-title {
+  margin: 0 0 4px;
+  color: #0b1d4b;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.mock-exception-card-description {
+  margin: 0 0 12px;
+  color: #7885a0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.mock-exception-login-note,
+.mock-exception-reset-note {
+  color: #7885a0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.mock-exception-login-note {
+  margin: 8px 0 12px;
+}
+
+.mock-exception-browser-notice.ant-alert.ant-alert-with-description {
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-color: #ffe0b5;
+  background: #fff7eb;
+
+  .ant-alert-title {
+    color: #ad4e00;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ant-alert-description {
+    color: #ad4e00;
+    font-size: 14px;
+  }
+}
+
+.mock-exception-unsaved {
+  color: #b66b13;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .mock-exception-card.ant-card .ant-card-body {
+    padding: 16px;
+  }
+}
