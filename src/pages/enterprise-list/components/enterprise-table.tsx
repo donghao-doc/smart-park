@@ -1,9 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Alert, Button, Flex, Tag, type TableColumnsType } from 'antd'
+import { Alert, Button, Flex, Tag, type TableColumnsType, type TableProps } from 'antd'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router'
 
 import DataTablePanel from '@/components/data-table-panel'
+import TableExportActions, { type TableExportActionsProps } from '@/components/table-export-actions'
 import type { EnterpriseListItemDto, EnterpriseStatus } from '@/types/enterprise'
 import './enterprise-table.scss'
 
@@ -24,6 +25,10 @@ interface EnterpriseTableProps {
   canCreate: boolean
   /** 当前用户是否可以编辑企业 */
   canUpdate: boolean
+  /** 包含跨页勾选状态的表格选择配置 */
+  rowSelection: NonNullable<TableProps<EnterpriseListItemDto>['rowSelection']>
+  /** 已选数量、导出状态及导出操作 */
+  exportActions: TableExportActionsProps
   /** 打开新增企业表单 */
   onCreate: () => void
   /** 打开指定企业的编辑表单 */
@@ -35,7 +40,7 @@ interface EnterpriseTableProps {
 }
 
 /**
- * 企业列表表格，负责工具栏、状态反馈、列渲染和分页交互
+ * 企业列表表格，负责工具栏、状态反馈、列渲染、分页及跨页勾选导出
  */
 function EnterpriseTable({
   enterprises,
@@ -46,6 +51,8 @@ function EnterpriseTable({
   loadError,
   canCreate,
   canUpdate,
+  rowSelection,
+  exportActions,
   onCreate,
   onEdit,
   onRetry,
@@ -102,11 +109,21 @@ function EnterpriseTable({
     <DataTablePanel<EnterpriseListItemDto>
       ariaLabel="企业列表"
       toolbar={
-        canCreate ? (
-          <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-            新增企业
-          </Button>
-        ) : undefined
+        <Flex
+          className="enterprise-table-toolbar"
+          flex={1}
+          justify="start"
+          align="center"
+          gap={12}
+          wrap
+        >
+          {canCreate ? (
+            <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+              新增企业
+            </Button>
+          ) : null}
+          <TableExportActions {...exportActions} />
+        </Flex>
       }
       feedback={
         loadError ? (
@@ -124,6 +141,7 @@ function EnterpriseTable({
       }
       tableProps={{
         rowKey: 'id',
+        rowSelection,
         columns,
         dataSource: enterprises,
         loading,
@@ -134,6 +152,7 @@ function EnterpriseTable({
         pageSize,
         total,
         onChange: onPageChange,
+        showTotal: () => `已选择 ${exportActions.selectedCount} 项 · 共 ${total} 条记录`,
       }}
     />
   )

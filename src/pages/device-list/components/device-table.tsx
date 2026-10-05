@@ -1,8 +1,8 @@
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons'
-import { Alert, Button, Flex, type TableColumnsType } from 'antd'
-import type { Key } from 'react'
+import { Alert, Button, Flex, type TableColumnsType, type TableProps } from 'antd'
 
 import DataTablePanel from '@/components/data-table-panel'
+import TableExportActions, { type TableExportActionsProps } from '@/components/table-export-actions'
 import type { DeviceDto, DeviceStatus, DeviceType } from '@/types/device'
 import { formatDateTime } from '@/utils'
 import { deviceTypeLabels } from '@/utils/device'
@@ -26,10 +26,10 @@ interface DeviceTableProps {
   canCreate: boolean
   /** 是否允许编辑 */
   canUpdate: boolean
-  /** 当前页已选设备标识 */
-  selectedKeys: Key[]
-  /** 更新当前页选择 */
-  onSelect: (keys: Key[]) => void
+  /** 包含跨页勾选状态的表格选择配置 */
+  rowSelection: NonNullable<TableProps<DeviceDto>['rowSelection']>
+  /** 已选数量、导出状态及导出操作 */
+  exportActions: TableExportActionsProps
   /** 打开新增弹窗 */
   onCreate: () => void
   /** 查看设备详情 */
@@ -42,7 +42,7 @@ interface DeviceTableProps {
   onPageChange: (page: number, pageSize: number) => void
 }
 
-/** 设备表格，复用公共滚动面板并显示当前页勾选数量 */
+/** 设备表格，复用公共滚动面板并提供跨页勾选和 Excel 导出入口 */
 function DeviceTable({
   devices,
   total,
@@ -52,8 +52,8 @@ function DeviceTable({
   loadError,
   canCreate,
   canUpdate,
-  selectedKeys,
-  onSelect,
+  rowSelection,
+  exportActions,
   onCreate,
   onView,
   onEdit,
@@ -125,13 +125,21 @@ function DeviceTable({
       ariaLabel="设备列表"
       className="device-table-panel"
       toolbar={
-        <>
-          <Flex align="center" gap={12}>
+        <Flex
+          className="device-table-toolbar"
+          flex={1}
+          justify="space-between"
+          align="center"
+          gap={12}
+          wrap
+        >
+          <Flex align="center" gap={12} wrap>
             {canCreate ? (
               <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
                 新增设备
               </Button>
             ) : null}
+            <TableExportActions {...exportActions} />
           </Flex>
           <Button
             icon={<ReloadOutlined />}
@@ -141,7 +149,7 @@ function DeviceTable({
           >
             刷新
           </Button>
-        </>
+        </Flex>
       }
       feedback={
         loadError ? (
@@ -162,11 +170,7 @@ function DeviceTable({
         columns,
         dataSource: devices,
         loading,
-        rowSelection: {
-          selectedRowKeys: selectedKeys,
-          onChange: onSelect,
-          columnWidth: 44,
-        },
+        rowSelection,
         locale: { emptyText: '暂无设备，请调整筛选条件或新增设备' },
       }}
       scrollX={1210}
@@ -175,7 +179,7 @@ function DeviceTable({
         pageSize,
         total,
         onChange: onPageChange,
-        showTotal: () => `已选择 ${selectedKeys.length} 项 · 共 ${total} 条记录`,
+        showTotal: () => `已选择 ${exportActions.selectedCount} 项 · 共 ${total} 条记录`,
       }}
     />
   )

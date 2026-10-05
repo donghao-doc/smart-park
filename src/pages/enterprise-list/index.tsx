@@ -8,6 +8,7 @@ import {
   reqUpdateEnterprise,
 } from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
+import { useTableExcelExport } from '@/hooks/use-table-excel-export'
 import { useUserStore } from '@/stores/user'
 import type {
   EnterpriseDetailDto,
@@ -18,11 +19,12 @@ import EnterpriseFilter from './components/enterprise-filter'
 import type { EnterpriseFilterValues } from './components/enterprise-filter'
 import EnterpriseFormModal from './components/enterprise-form-modal'
 import EnterpriseTable from './components/enterprise-table'
+import { enterpriseExportOptions } from './export-options'
 
 const DEFAULT_PAGE_SIZE = 20
 
 /**
- * 企业管理页面，提供筛选、分页、新增、查看和编辑入口
+ * 企业管理页面，提供筛选、分页、跨页勾选导出、新增、查看和编辑入口
  */
 function EnterpriseListPage() {
   const { message } = App.useApp()
@@ -39,6 +41,12 @@ function EnterpriseListPage() {
   const [submitting, setSubmitting] = useState(false)
   const canCreate = useUserStore((state) => state.hasPermission('enterprise:create'))
   const canUpdate = useUserStore((state) => state.hasPermission('enterprise:update'))
+
+  const { rowSelection, exportActions, clearSelection } = useTableExcelExport(
+    enterprises,
+    enterpriseExportOptions,
+    loading || loadError,
+  )
 
   useEffect(() => {
     let active = true
@@ -86,7 +94,7 @@ function EnterpriseListPage() {
   }
 
   /**
-   * 新增或更新企业并刷新当前页数据
+   * 新增或更新企业，清空过期选择并刷新当前页数据
    */
   async function handleSubmit(values: EnterpriseMutationRequest) {
     setSubmitting(true)
@@ -101,6 +109,7 @@ function EnterpriseListPage() {
       }
       setFormOpen(false)
       setEditingEnterprise(undefined)
+      clearSelection()
       setLoading(true)
       setReloadVersion((version) => version + 1)
     } catch {
@@ -120,9 +129,10 @@ function EnterpriseListPage() {
   }
 
   /**
-   * 应用企业筛选条件并从第一页重新加载数据
+   * 应用企业筛选条件，清空跨页选择并从第一页重新加载数据
    */
   function handleFilterSearch(values: EnterpriseFilterValues) {
+    clearSelection()
     setLoading(true)
     setPage(1)
     setFilters(values)
@@ -137,9 +147,10 @@ function EnterpriseListPage() {
   }
 
   /**
-   * 重新加载当前页企业列表
+   * 重新加载当前页企业列表并清空过期选择
    */
   function handleRetry() {
+    clearSelection()
     setLoading(true)
     setReloadVersion((version) => version + 1)
   }
@@ -160,6 +171,8 @@ function EnterpriseListPage() {
           loadError={loadError}
           canCreate={canCreate}
           canUpdate={canUpdate}
+          rowSelection={rowSelection}
+          exportActions={exportActions}
           onCreate={handleOpenCreate}
           onEdit={(enterpriseId) => void handleOpenEdit(enterpriseId)}
           onRetry={handleRetry}

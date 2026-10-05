@@ -10,12 +10,14 @@ import {
   reqUpdateVehicleStatus,
 } from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
+import { useTableExcelExport } from '@/hooks/use-table-excel-export'
 import { useUserStore } from '@/stores/user'
 import type { VehicleDto, VehicleMutationRequest } from '@/types/vehicle'
 import VehicleDetailModal from './components/vehicle-detail-modal'
 import VehicleFilter, { type VehicleFilterValues } from './components/vehicle-filter'
 import VehicleFormModal from './components/vehicle-form-modal'
 import VehicleTable from './components/vehicle-table'
+import { vehicleExportOptions } from './export-options'
 import './vehicle-list.scss'
 
 /** 车辆档案弹窗的业务模式 */
@@ -23,7 +25,7 @@ type DialogMode = 'create' | 'edit' | 'view'
 
 const DEFAULT_PAGE_SIZE = 20
 
-/** 车辆档案页面，负责分页筛选、登记、详情、编辑及独立权限下的启停操作 */
+/** 车辆档案页面，负责分页筛选、跨页勾选导出、登记、详情、编辑及独立权限下的启停操作 */
 function VehicleListPage() {
   const { message } = App.useApp()
   const [vehicles, setVehicles] = useState<VehicleDto[]>([])
@@ -51,6 +53,12 @@ function VehicleListPage() {
   const canCreate = useUserStore((state) => state.hasPermission('vehicle:create'))
   const canUpdate = useUserStore((state) => state.hasPermission('vehicle:update'))
   const canChangeStatus = useUserStore((state) => state.hasPermission('vehicle:status'))
+
+  const { rowSelection, exportActions, clearSelection } = useTableExcelExport(
+    vehicles,
+    vehicleExportOptions,
+    loading || loadError,
+  )
 
   useEffect(() => {
     let active = true
@@ -130,14 +138,16 @@ function VehicleListPage() {
     }
   }, [dialogMode, selectedId, detailVersion])
 
-  /** 刷新当前分页和筛选条件下的列表 */
+  /** 刷新当前分页和筛选条件下的列表，并清空过期选择 */
   function handleReload() {
+    clearSelection()
     setLoading(true)
     setReloadVersion((version) => version + 1)
   }
 
-  /** 应用筛选条件并从第一页重新查询 */
+  /** 应用筛选条件，清空跨页选择并从第一页重新查询 */
   function handleSearch(values: VehicleFilterValues) {
+    clearSelection()
     setLoading(true)
     setPage(1)
     setFilters(values)
@@ -230,6 +240,8 @@ function VehicleListPage() {
           loadError={loadError}
           canCreate={canCreate}
           canUpdate={canUpdate}
+          rowSelection={rowSelection}
+          exportActions={exportActions}
           canChangeStatus={canChangeStatus}
           updatingStatusId={updatingStatusId}
           onCreate={() => handleOpenDialog('create')}

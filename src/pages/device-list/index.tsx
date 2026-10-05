@@ -1,5 +1,5 @@
 import { App } from 'antd'
-import { useEffect, useState, type Key } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   reqCreateDevice,
@@ -10,6 +10,7 @@ import {
   reqUpdateDevice,
 } from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
+import { useTableExcelExport } from '@/hooks/use-table-excel-export'
 import { useUserStore } from '@/stores/user'
 import type {
   DeviceDetailDto,
@@ -22,12 +23,13 @@ import DeviceFilter, { type DeviceFilterValues } from './components/device-filte
 import DeviceFormModal from './components/device-form-modal'
 import DeviceSummary from './components/device-summary'
 import DeviceTable from './components/device-table'
+import { deviceExportOptions } from './export-options'
 import './device-list.scss'
 
 /** 设备档案弹窗的业务模式 */
 type DialogMode = 'create' | 'edit' | 'view'
 
-/** 设备管理页面，负责分页筛选、统计、档案维护及状态记录查询 */
+/** 设备管理页面，负责分页筛选、统计、跨页勾选导出、档案维护及状态记录查询 */
 function DeviceListPage() {
   const { message } = App.useApp()
   const [devices, setDevices] = useState<DeviceDto[]>([])
@@ -38,7 +40,6 @@ function DeviceListPage() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
   const [reloadVersion, setReloadVersion] = useState(0)
-  const [selectedKeys, setSelectedKeys] = useState<Key[]>([])
   const [summary, setSummary] = useState<DeviceSummaryDto>()
   const [summaryLoading, setSummaryLoading] = useState(true)
   const [summaryError, setSummaryError] = useState(false)
@@ -56,6 +57,12 @@ function DeviceListPage() {
   const canCreate = useUserStore((state) => state.hasPermission('device:create'))
   const canUpdate = useUserStore((state) => state.hasPermission('device:update'))
   const canChangeStatus = useUserStore((state) => state.hasPermission('device:status'))
+
+  const { rowSelection, exportActions, clearSelection } = useTableExcelExport(
+    devices,
+    deviceExportOptions,
+    loading || loadError,
+  )
 
   useEffect(() => {
     let active = true
@@ -157,14 +164,14 @@ function DeviceListPage() {
     setLoading(true)
     setSummaryLoading(true)
     setLocationsLoading(true)
-    setSelectedKeys([])
+    clearSelection()
     setReloadVersion((version) => version + 1)
   }
 
-  /** 应用查询条件并回到第一页 */
+  /** 应用查询条件，清空跨页选择并回到第一页 */
   function handleSearch(values: DeviceFilterValues) {
     setLoading(true)
-    setSelectedKeys([])
+    clearSelection()
     setPage(1)
     setFilters(values)
   }
@@ -243,8 +250,8 @@ function DeviceListPage() {
           loadError={loadError}
           canCreate={canCreate}
           canUpdate={canUpdate}
-          selectedKeys={selectedKeys}
-          onSelect={setSelectedKeys}
+          rowSelection={rowSelection}
+          exportActions={exportActions}
           onCreate={() => handleOpenDialog('create')}
           onView={(id) => handleOpenDialog('view', id)}
           onEdit={(id) => handleOpenDialog('edit', id)}
@@ -252,7 +259,6 @@ function DeviceListPage() {
           onPageChange={(nextPage, nextPageSize) => {
             if (page === nextPage && pageSize === nextPageSize) return
             setLoading(true)
-            setSelectedKeys([])
             setPage(nextPage)
             setPageSize(nextPageSize)
           }}

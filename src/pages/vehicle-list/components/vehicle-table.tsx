@@ -1,7 +1,8 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Alert, Button, Flex, Popconfirm, type TableColumnsType } from 'antd'
+import { Alert, Button, Flex, Popconfirm, type TableColumnsType, type TableProps } from 'antd'
 
 import DataTablePanel from '@/components/data-table-panel'
+import TableExportActions, { type TableExportActionsProps } from '@/components/table-export-actions'
 import type { VehicleDto, VehicleStatus, VehicleType } from '@/types/vehicle'
 import { formatDateTime } from '@/utils'
 import VehicleTag from './vehicle-tag'
@@ -28,6 +29,10 @@ interface VehicleTableProps {
   canChangeStatus: boolean
   /** 当前正在启停的车辆标识 */
   updatingStatusId?: string
+  /** 包含跨页勾选状态的表格选择配置 */
+  rowSelection: NonNullable<TableProps<VehicleDto>['rowSelection']>
+  /** 已选数量、导出状态及导出操作 */
+  exportActions: TableExportActionsProps
   /** 打开新增弹窗 */
   onCreate: () => void
   /** 查看指定车辆 */
@@ -42,7 +47,7 @@ interface VehicleTableProps {
   onPageChange: (page: number, pageSize: number) => void
 }
 
-/** 车辆档案表格，统一展示类型、状态、分页和基于权限的操作入口 */
+/** 车辆档案表格，统一展示类型、状态、分页、跨页勾选导出和基于权限的操作入口 */
 function VehicleTable({
   vehicles,
   total,
@@ -54,6 +59,8 @@ function VehicleTable({
   canUpdate,
   canChangeStatus,
   updatingStatusId,
+  rowSelection,
+  exportActions,
   onCreate,
   onView,
   onEdit,
@@ -147,11 +154,21 @@ function VehicleTable({
       ariaLabel="车辆档案列表"
       className="vehicle-table-panel"
       toolbar={
-        canCreate ? (
-          <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-            新增车辆
-          </Button>
-        ) : undefined
+        <Flex
+          className="vehicle-table-toolbar"
+          flex={1}
+          justify="start"
+          align="center"
+          gap={12}
+          wrap
+        >
+          {canCreate ? (
+            <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
+              新增车辆
+            </Button>
+          ) : null}
+          <TableExportActions {...exportActions} />
+        </Flex>
       }
       feedback={
         loadError ? (
@@ -169,17 +186,19 @@ function VehicleTable({
       }
       tableProps={{
         rowKey: 'id',
+        rowSelection,
         columns,
         dataSource: vehicles,
         loading,
         locale: { emptyText: '暂无车辆档案，请调整筛选条件或新增车辆' },
       }}
-      scrollX={1062 + (canUpdate ? 50 : 0) + (canChangeStatus ? 50 : 0)}
+      scrollX={1106 + (canUpdate ? 50 : 0) + (canChangeStatus ? 50 : 0)}
       pagination={{
         current: page,
         pageSize,
         total,
         onChange: onPageChange,
+        showTotal: () => `已选择 ${exportActions.selectedCount} 项 · 共 ${total} 条记录`,
       }}
     />
   )
