@@ -42,6 +42,15 @@ const routes = [
         Component: AdminLayout,
         children: [
           {
+            path: '/profile',
+            // 个人中心不依赖业务菜单权限，直接访问时仍需初始化侧栏菜单
+            loader: async () => {
+              await initializeDynamicRoutes()
+              return null
+            },
+            lazy: lazyPage(() => import('@/pages/profile')),
+          },
+          {
             index: true,
             loader: redirectToFirstMenu,
             Component: RouteLoadingFallback,

@@ -1,4 +1,11 @@
-import type { DemoAccountDto, LoginRequest, LoginResult, UserDto } from '@/types/auth'
+import type {
+  ChangePasswordRequest,
+  DemoAccountDto,
+  LoginRequest,
+  LoginResult,
+  UpdateCurrentUserRequest,
+  UserDto,
+} from '@/types/auth'
 import type { MenuItemDto } from '@/types/menu'
 import http from '@/http'
 
@@ -21,6 +28,16 @@ export async function reqLogin(payload: LoginRequest) {
  */
 export async function reqGetCurrentUser() {
   return http.get<UserDto>('/auth/me')
+}
+
+/** 更新当前登录用户的基础资料，不允许变更账号、角色或企业归属 */
+export async function reqUpdateCurrentUser(payload: UpdateCurrentUserRequest) {
+  return http.put<UserDto, UpdateCurrentUserRequest>('/auth/me', payload)
+}
+
+/** 验证原密码并修改当前用户密码，成功后所有登录会话失效 */
+export async function reqChangePassword(payload: ChangePasswordRequest) {
+  return http.post<null, ChangePasswordRequest>('/auth/change-password', payload)
 }
 
 /**

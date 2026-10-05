@@ -46,9 +46,14 @@ function AdminLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   /**
-   * 处理静态用户菜单，退出项返回登录页
+   * 打开个人中心，或清除当前会话并返回登录页
    */
   function handleAccountMenu({ key }: { key: string }) {
+    if (key === 'profile') {
+      void navigate('/profile')
+      return
+    }
+
     if (key === 'logout') {
       resetMenus()
       resetUser()

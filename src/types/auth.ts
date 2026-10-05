@@ -127,6 +127,20 @@ export interface LoginResult {
   expiresIn: number
 }
 
+/** 当前登录用户可以自行修改的基础资料 */
+export interface UpdateCurrentUserRequest {
+  /** 用户显示姓名，去除首尾空格后为 1～30 个字符 */
+  name: string
+}
+
+/** 当前登录用户修改密码的提交参数，不包含确认密码 */
+export interface ChangePasswordRequest {
+  /** 当前账号的原密码，用于验证修改操作 */
+  currentPassword: string
+  /** 与原密码不同的新密码，长度为 8～64 位 */
+  newPassword: string
+}
+
 /**
  * 登录页展示的演示账号
  */

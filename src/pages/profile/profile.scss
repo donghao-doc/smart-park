@@ -1,0 +1,130 @@
+.profile-page {
+  min-width: 0;
+  color: #0b1d4b;
+}
+
+.profile-page-title {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.profile-page-description {
+  margin: 0;
+  color: #7885a0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.profile-card.ant-card,
+.profile-loading {
+  border: 1px solid #dfe7f1;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(24 58 104 / 4%);
+}
+
+.profile-card.ant-card {
+  height: 100%;
+
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.profile-loading {
+  padding: 24px;
+}
+
+.profile-identity {
+  padding: 8px 0 24px;
+  border-bottom: 1px solid #e8eef6;
+  text-align: center;
+}
+
+.profile-avatar.ant-avatar {
+  flex-shrink: 0;
+  border: 6px solid #ecf4ff;
+  background: #4e94ee;
+  color: #fff;
+}
+
+.profile-user-name {
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.profile-username {
+  color: #7885a0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.profile-account-details.ant-descriptions {
+  margin-top: 24px;
+
+  .ant-descriptions-item-label {
+    min-width: 5em;
+    color: #7885a0;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .ant-descriptions-item-content {
+    color: #273755;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+}
+
+.profile-role-description {
+  margin: 4px 0 0;
+  padding: 14px;
+  border-radius: 6px;
+  background: #f5f8fc;
+  color: #7885a0;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.profile-settings-tabs.ant-tabs {
+  .ant-tabs-nav {
+    margin-bottom: 24px;
+  }
+
+  .ant-tabs-tab {
+    font-size: 14px;
+  }
+}
+
+.profile-section-title {
+  margin: 0 0 6px;
+  color: #0b1d4b;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.profile-section-description {
+  margin: 0 0 24px;
+  color: #7885a0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.profile-form-actions {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid #e8eef6;
+}
+
+@media (max-width: 640px) {
+  .profile-card.ant-card .ant-card-body {
+    padding: 18px;
+  }
+}

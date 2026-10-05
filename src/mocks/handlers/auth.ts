@@ -1,5 +1,5 @@
 import { http } from 'msw'
-import type { LoginRequest } from '@/types/auth'
+import type { ChangePasswordRequest, LoginRequest, UpdateCurrentUserRequest } from '@/types/auth'
 import { filterMenusByPermissions } from '../data/menus'
 import { mockRoles } from '../data/users'
 import {
@@ -86,6 +86,66 @@ export const authHandlers = [
 
     const permissions = mockRoles[auth.user.roleCode].permissions
     return createSuccessResponse(filterMenusByPermissions(permissions))
+  }),
+
+  http.put('/api/auth/me', async ({ request }) => {
+    const auth = authorizeRequest(request)
+    if ('response' in auth) return auth.response
+
+    let body: Partial<UpdateCurrentUserRequest> | null
+    try {
+      body = (await request.json()) as Partial<UpdateCurrentUserRequest> | null
+    } catch {
+      return createErrorResponse(400, 40001, '请求参数格式不正确')
+    }
+
+    const name = typeof body?.name === 'string' ? body.name.trim() : ''
+    if (!name || name.length > 30) {
+      return createErrorResponse(400, 40011, '姓名不能为空且不能超过 30 个字符')
+    }
+
+    // 只写入允许用户自行修改的资料，忽略请求中的角色和账号等字段
+    auth.user.name = name
+    auth.user.updatedAt = new Date().toISOString()
+    saveMockState(auth.state)
+    return createSuccessResponse(toUserDto(auth.state, auth.user), '个人资料已保存')
+  }),
+
+  http.post('/api/auth/change-password', async ({ request }) => {
+    const auth = authorizeRequest(request)
+    if ('response' in auth) return auth.response
+
+    let body: Partial<ChangePasswordRequest> | null
+    try {
+      body = (await request.json()) as Partial<ChangePasswordRequest> | null
+    } catch {
+      return createErrorResponse(400, 40001, '请求参数格式不正确')
+    }
+
+    if (typeof body?.currentPassword !== 'string' || !body.currentPassword) {
+      return createErrorResponse(400, 40030, '请输入当前密码')
+    }
+    if (body.currentPassword !== auth.user.password) {
+      return createErrorResponse(400, 40031, '当前密码不正确')
+    }
+    if (
+      typeof body.newPassword !== 'string' ||
+      body.newPassword.length < 8 ||
+      body.newPassword.length > 64 ||
+      !body.newPassword.trim()
+    ) {
+      return createErrorResponse(400, 40032, '新密码长度需为 8～64 位，且不能全部为空格')
+    }
+    if (body.newPassword === body.currentPassword) {
+      return createErrorResponse(400, 40033, '新密码不能与当前密码相同')
+    }
+
+    // 修改密码后撤销该账号全部会话，确保旧登录凭据不能继续访问
+    auth.user.password = body.newPassword
+    auth.user.updatedAt = new Date().toISOString()
+    auth.state.sessions = auth.state.sessions.filter((item) => item.userId !== auth.user.id)
+    saveMockState(auth.state)
+    return createSuccessResponse(null, '密码修改成功，请重新登录')
   }),
 
   http.post('/api/auth/logout', async ({ request }) => {

@@ -47,6 +47,10 @@ function HeaderBreadcrumb() {
   const menus = useMenuStore((state) => state.menus)
 
   const items = useMemo<BreadcrumbProps['items']>(() => {
+    if (pathname === '/profile') {
+      return [{ title: '个人中心' }]
+    }
+
     const menuTrail = findMenuTrail(menus, pathname)
     const detailRoute = detailRoutes.find((route) => matchPath(route.path, pathname))
 

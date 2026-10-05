@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
-import { reqGetCurrentUser } from '@/api'
-import type { PermissionCode, UserDto } from '@/types/auth'
+import { reqGetCurrentUser, reqUpdateCurrentUser } from '@/api'
+import type { PermissionCode, UpdateCurrentUserRequest, UserDto } from '@/types/auth'
 import { useAuthStore } from './auth'
 
 let pendingUserRequest: Promise<UserDto | null> | null = null
@@ -21,6 +21,8 @@ export interface UserStoreState {
   loadFailed: boolean
   /** 请求并保存当前登录用户信息，重复调用时复用缓存或进行中的请求 */
   reqLoadCurrentUser: () => Promise<UserDto | null>
+  /** 保存当前用户资料并同步全局状态，提交期间会话切换时忽略旧响应 */
+  reqUpdateProfile: (payload: UpdateCurrentUserRequest) => Promise<UserDto | null>
   /** 判断当前登录用户是否拥有指定权限 */
   hasPermission: (permission: PermissionCode) => boolean
   /** 清空当前用户及其加载状态 */
@@ -73,6 +75,16 @@ export const useUserStore = create<UserStoreState>((set, get) => ({
     return request
   },
   hasPermission: (permission) => get().currentUser?.role.permissions.includes(permission) ?? false,
+  reqUpdateProfile: async (payload) => {
+    const requestVersion = userRequestVersion
+    const currentUser = await reqUpdateCurrentUser(payload)
+    if (requestVersion !== userRequestVersion || currentUser.id !== get().currentUser?.id) {
+      return null
+    }
+
+    set({ currentUser })
+    return currentUser
+  },
   resetUser: () => {
     // 使旧会话中仍在执行的请求失效，避免响应覆盖新会话用户
     userRequestVersion += 1
