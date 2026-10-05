@@ -1,0 +1,77 @@
+.mock-delay-card.ant-card {
+  border-color: #dfe7f1;
+  box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
+
+  .ant-card-body {
+    padding: 16px 20px;
+  }
+
+  .ant-slider {
+    margin: 10px 8px 20px;
+  }
+
+  .ant-slider-track {
+    background: #1677ff;
+  }
+
+  .ant-slider-mark-text {
+    color: #53617c;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+.mock-delay-title {
+  margin: 0 0 4px;
+  color: #0b1d4b;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.mock-delay-description {
+  margin: 0 0 12px;
+  color: #7885a0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.mock-delay-control {
+  width: 100%;
+  border: 1px solid #dfe7f1;
+  border-radius: 6px;
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: #1677ff;
+    box-shadow: 0 0 0 2px rgb(22 119 255 / 10%);
+  }
+}
+
+.mock-delay-input.ant-input-number {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  .ant-input-number-input {
+    color: #0b1d4b;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.mock-delay-unit {
+  padding: 6px 14px;
+  border-left: 1px solid #dfe7f1;
+  background: #f2f6fb;
+  color: #53617c;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .mock-delay-card.ant-card .ant-card-body {
+    padding: 16px;
+  }
+}

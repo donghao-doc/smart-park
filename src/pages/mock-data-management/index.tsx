@@ -1,4 +1,4 @@
-import { Alert, App, Button, Card, Col, Flex, InputNumber, Row, Skeleton, Slider } from 'antd'
+import { Alert, App, Button, Card, Flex, Skeleton } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { reqGetMockData, reqResetMockData, reqUpdateMockSettings } from '@/api'
@@ -8,6 +8,7 @@ import { useMenuStore } from '@/stores/menu'
 import { useUserStore } from '@/stores/user'
 import type { MockDataDto, MockExceptionSetting, MockSettings } from '@/types/mock-data'
 import MockDataSummary from './components/mock-data-summary'
+import MockDelayCard from './components/mock-delay-card'
 import MockExceptionTable from './components/mock-exception-table'
 import './mock-data-management.scss'
 
@@ -54,10 +55,8 @@ function MockDataManagementPage() {
       JSON.stringify(data.exceptions) !== JSON.stringify(draft.exceptions)),
   )
 
-  /** 延迟值保持在支持范围内，滑块与数值输入同步 */
-  function handleDelayChange(value: number | null) {
-    if (value === null) return
-    const responseDelay = Math.max(0, Math.min(2000, Math.round(value)))
+  /** 接收卡片校验后的延迟值并更新配置草稿 */
+  function handleDelayChange(responseDelay: number) {
     setDraft((current) => (current ? { ...current, responseDelay } : current))
   }
 
@@ -137,42 +136,11 @@ function MockDataManagementPage() {
         <>
           <MockDataSummary data={data} />
 
-          <Card className="mock-data-panel">
-            <h2 className="mock-data-section-title">接口延迟</h2>
-            <p className="mock-data-section-description">
-              设置所有 Mock 接口的响应延迟时间，用于模拟网络环境
-            </p>
-            <Row gutter={[32, 16]} align="middle">
-              <Col xs={24} sm={18} lg={20}>
-                <Slider
-                  min={0}
-                  max={2000}
-                  step={50}
-                  marks={{ 0: '0', 500: '500', 2000: '2000' }}
-                  value={draft.responseDelay}
-                  disabled={disabled}
-                  aria-label="Mock 接口响应延迟"
-                  tooltip={{ formatter: (value) => `${value} ms` }}
-                  onChange={handleDelayChange}
-                />
-              </Col>
-              <Col xs={24} sm={6} lg={4}>
-                <Flex align="center" className="mock-data-delay-control">
-                  <InputNumber
-                    className="mock-data-delay-input"
-                    min={0}
-                    max={2000}
-                    precision={0}
-                    value={draft.responseDelay}
-                    disabled={disabled}
-                    aria-label="接口延迟毫秒数"
-                    onChange={handleDelayChange}
-                  />
-                  <span className="mock-data-delay-unit">ms</span>
-                </Flex>
-              </Col>
-            </Row>
-          </Card>
+          <MockDelayCard
+            value={draft.responseDelay}
+            disabled={disabled}
+            onChange={handleDelayChange}
+          />
 
           <Card className="mock-data-panel">
             <h2 className="mock-data-section-title">异常模拟</h2>
