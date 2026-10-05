@@ -3,26 +3,6 @@
   color: #0b1d4b;
 }
 
-.mock-data-title {
-  margin: 0 0 4px;
-  color: #07184d;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.mock-data-subtitle {
-  margin: 0;
-  color: #7885a0;
-  font-size: 14px;
-}
-
-.mock-data-date {
-  padding-top: 8px;
-  color: #7885a0;
-  font-size: 14px;
-}
-
 .mock-data-panel.ant-card {
   border-color: #dfe7f1;
   box-shadow: 0 1px 2px rgb(25 61 105 / 3%);
@@ -130,10 +110,6 @@
 }
 
 @media (max-width: 640px) {
-  .mock-data-title {
-    font-size: 24px;
-  }
-
   .mock-data-panel.ant-card .ant-card-body {
     padding: 16px;
   }

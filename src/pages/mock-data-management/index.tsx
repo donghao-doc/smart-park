@@ -1,5 +1,4 @@
 import { Alert, App, Button, Card, Col, Flex, InputNumber, Row, Skeleton, Slider } from 'antd'
-import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { reqGetMockData, reqResetMockData, reqUpdateMockSettings } from '@/api'
@@ -113,14 +112,6 @@ function MockDataManagementPage() {
 
   return (
     <Flex vertical gap={16} className="mock-data-page">
-      <Flex align="start" justify="space-between" gap={16} wrap="wrap">
-        <div>
-          <h1 className="mock-data-title">Mock 数据管理</h1>
-          <p className="mock-data-subtitle">仅超级管理员可访问</p>
-        </div>
-        <span className="mock-data-date">{dayjs().format('YYYY年M月D日 dddd')}</span>
-      </Flex>
-
       {loading ? (
         <Card className="mock-data-panel">
           <Skeleton active paragraph={{ rows: 12 }} />
