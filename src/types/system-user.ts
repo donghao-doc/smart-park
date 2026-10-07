@@ -15,7 +15,7 @@ export interface UserListParams {
   username?: string
   /** 按用户姓名独立进行模糊匹配 */
   name?: string
-  /** 按固定角色筛选 */
+  /** 按角色筛选 */
   roleCode?: RoleCode
   /** 按账号状态筛选 */
   status?: UserStatus
@@ -38,7 +38,7 @@ export interface CreateUserRequest {
   name: string
   /** 初始登录密码，至少 8 位 */
   password: string
-  /** 分配的固定角色 */
+  /** 分配的角色 */
   roleCode: RoleCode
   /** 企业用户所属企业标识，企业用户必填 */
   enterpriseId?: string
@@ -52,7 +52,7 @@ export interface UpdateUserRequest {
   username: string
   /** 用户姓名 */
   name: string
-  /** 分配的固定角色 */
+  /** 分配的角色 */
   roleCode: RoleCode
   /** 企业用户所属企业标识，企业用户必填 */
   enterpriseId?: string
@@ -74,4 +74,22 @@ export interface ResetPasswordResult {
   temporaryPassword: string
   /** 提示用户及时修改密码的说明 */
   message: string
+}
+
+/** 用户角色分配表单中的企业选项，不包含企业业务详情 */
+export interface UserEnterpriseOptionDto {
+  /** 可关联的企业唯一标识 */
+  id: string
+  /** 企业显示名称 */
+  name: string
+  /** 企业停用时禁止将账号分配给该企业 */
+  disabled: boolean
+}
+
+/** 单独分配用户角色时提交的数据，不允许修改账号资料 */
+export interface AssignUserRoleRequest {
+  /** 分配给用户的唯一角色编码 */
+  roleCode: RoleCode
+  /** 企业用户的所属企业，其他角色不提交 */
+  enterpriseId?: string
 }

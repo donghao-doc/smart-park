@@ -5,6 +5,7 @@ import { enterpriseHandlers } from './handlers/enterprises'
 import { parkProfileHandlers } from './handlers/park-profile'
 import { personnelHandlers } from './handlers/personnel'
 import { systemUserHandlers } from './handlers/system-users'
+import { systemRoleHandlers } from './handlers/system-roles'
 import { visitorAppointmentHandlers } from './handlers/visitor-appointments'
 import { visitorRecordHandlers } from './handlers/visitor-records'
 import { vehicleHandlers } from './handlers/vehicles'
@@ -27,6 +28,7 @@ export const handlers = [
   ...enterpriseHandlers,
   ...personnelHandlers,
   ...parkProfileHandlers,
+  ...systemRoleHandlers,
   ...systemUserHandlers,
   ...visitorAppointmentHandlers,
   ...visitorRecordHandlers,

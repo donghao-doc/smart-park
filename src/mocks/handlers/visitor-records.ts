@@ -97,10 +97,10 @@ function calculateChange(today: number, yesterday: number) {
   return yesterday === 0 ? null : Math.round(((today - yesterday) / yesterday) * 100)
 }
 
-/** 到访记录只读模拟接口，沿用访客权限和企业数据隔离 */
+/** 到访记录只读模拟接口，使用独立页面访问权限并保留既有企业数据隔离 */
 export const visitorRecordHandlers = [
   http.get('/api/visitor-records/summary', async ({ request }) => {
-    const auth = authorizeRequest(request, 'visitor:view')
+    const auth = authorizeRequest(request, 'visitor-record:view')
     if ('response' in auth) return auth.response
 
     const records = getScopedRecords(auth.state, auth.user)
@@ -121,7 +121,7 @@ export const visitorRecordHandlers = [
     })
   }),
   http.get('/api/visitor-records', async ({ request }) => {
-    const auth = authorizeRequest(request, 'visitor:view')
+    const auth = authorizeRequest(request, 'visitor-record:view')
     if ('response' in auth) return auth.response
 
     const params = new URL(request.url).searchParams
@@ -167,7 +167,7 @@ export const visitorRecordHandlers = [
     })
   }),
   http.get('/api/visitor-records/:id', async ({ request, params }) => {
-    const auth = authorizeRequest(request, 'visitor:view')
+    const auth = authorizeRequest(request, 'visitor-record:view')
     if ('response' in auth) return auth.response
 
     const record = getScopedRecords(auth.state, auth.user).find((item) => item.id === params.id)

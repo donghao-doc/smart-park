@@ -19,8 +19,8 @@ export interface UserStoreState {
   loaded: boolean
   /** 最近一次用户信息加载是否失败 */
   loadFailed: boolean
-  /** 请求并保存当前登录用户信息，重复调用时复用缓存或进行中的请求 */
-  reqLoadCurrentUser: () => Promise<UserDto | null>
+  /** 请求并保存当前登录用户信息，force 为 true 时重新请求，其他调用复用缓存或进行中的请求 */
+  reqLoadCurrentUser: (force?: boolean) => Promise<UserDto | null>
   /** 保存当前用户资料并同步全局状态，提交期间会话切换时忽略旧响应 */
   reqUpdateProfile: (payload: UpdateCurrentUserRequest) => Promise<UserDto | null>
   /** 判断当前登录用户是否拥有指定权限 */
@@ -37,8 +37,8 @@ export const useUserStore = create<UserStoreState>((set, get) => ({
   loading: false,
   loaded: false,
   loadFailed: false,
-  reqLoadCurrentUser: () => {
-    if (get().loaded) {
+  reqLoadCurrentUser: (force = false) => {
+    if (get().loaded && !force) {
       return Promise.resolve(get().currentUser)
     }
 
@@ -89,7 +89,12 @@ export const useUserStore = create<UserStoreState>((set, get) => ({
     // 使旧会话中仍在执行的请求失效，避免响应覆盖新会话用户
     userRequestVersion += 1
     pendingUserRequest = null
-    set({ currentUser: null, loading: false, loaded: false, loadFailed: false })
+    set({
+      currentUser: null,
+      loading: false,
+      loaded: false,
+      loadFailed: false,
+    })
   },
 }))
 

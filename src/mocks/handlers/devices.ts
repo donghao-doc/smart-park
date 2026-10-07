@@ -7,9 +7,13 @@ import {
   isDeviceType,
   normalizeDeviceCode,
 } from '@/utils/device'
-import { mockRoles } from '../data/users'
 import { saveMockState } from '../store'
-import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
+import {
+  authorizeRequest,
+  createErrorResponse,
+  createSuccessResponse,
+  getUserPermissions,
+} from '../utils'
 
 /** 解析正整数分页参数，拒绝超出安全范围的输入 */
 function parsePageNumber(value: string | null, fallback: number) {
@@ -59,7 +63,7 @@ async function handleDeviceMutation(request: Request, deviceId?: string) {
   if (
     existing &&
     existing.status !== payload.status &&
-    !mockRoles[auth.user.roleCode].permissions.includes('device:status')
+    !getUserPermissions(auth.state, auth.user).includes('device:status')
   ) {
     return createErrorResponse(403, 40302, '当前账号无权修改设备状态')
   }
@@ -105,7 +109,12 @@ export const deviceHandlers = [
     if ('response' in auth) return auth.response
     const summary: DeviceSummaryDto = {
       total: auth.state.devices.length,
-      counts: { normal: 0, fault: 0, offline: 0, disabled: 0 },
+      counts: {
+        normal: 0,
+        fault: 0,
+        offline: 0,
+        disabled: 0,
+      },
     }
     for (const device of auth.state.devices) summary.counts[device.status] += 1
     return createSuccessResponse(summary)

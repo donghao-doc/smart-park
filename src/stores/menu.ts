@@ -18,8 +18,8 @@ export interface MenuStoreState {
   loaded: boolean
   /** 最近一次菜单加载是否失败 */
   loadFailed: boolean
-  /** 请求并更新当前登录用户的菜单树，返回当前会话可访问的菜单 */
-  reqLoadMenus: () => Promise<MenuItemDto[]>
+  /** 请求并更新当前登录用户的菜单树，force 为 true 时重新请求，返回当前会话可访问的菜单 */
+  reqLoadMenus: (force?: boolean) => Promise<MenuItemDto[]>
   /** 清空菜单及其加载状态 */
   resetMenus: () => void
 }
@@ -32,8 +32,8 @@ export const useMenuStore = create<MenuStoreState>((set, get) => ({
   loading: false,
   loaded: false,
   loadFailed: false,
-  reqLoadMenus: () => {
-    if (get().loaded) {
+  reqLoadMenus: (force = false) => {
+    if (get().loaded && !force) {
       return Promise.resolve(get().menus)
     }
 
@@ -73,6 +73,11 @@ export const useMenuStore = create<MenuStoreState>((set, get) => ({
     // 使仍在执行的旧会话请求失效，避免响应覆盖新会话菜单
     menuRequestVersion += 1
     pendingMenuRequest = null
-    set({ menus: [], loading: false, loaded: false, loadFailed: false })
+    set({
+      menus: [],
+      loading: false,
+      loaded: false,
+      loadFailed: false,
+    })
   },
 }))

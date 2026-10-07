@@ -1,0 +1,20 @@
+.permission-tree-panel {
+  padding: 16px;
+  border: 1px solid #dfe7f1;
+  border-radius: 8px;
+  background: #f8faff;
+
+  .ant-tree {
+    background: transparent;
+    font-size: 14px;
+  }
+
+  .ant-tree-node-content-wrapper {
+    color: #273755;
+  }
+}
+
+.permission-tree-hint {
+  color: #64748b;
+  font-size: 12px;
+}

@@ -15,10 +15,15 @@ import {
   isWorkOrderType,
   workOrderActionLabels,
 } from '@/utils/work-order'
-import { mockRoles, type MockUserEntity } from '../data/users'
+import type { MockUserEntity } from '../data/users'
 import { workOrderSampleImages } from '../data/work-orders'
 import { saveMockState, type MockState } from '../store'
-import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
+import {
+  authorizeRequest,
+  createErrorResponse,
+  createSuccessResponse,
+  getUserPermissions,
+} from '../utils'
 
 const metricStatuses: WorkOrderStatus[] = [
   'pending_acceptance',
@@ -193,7 +198,7 @@ export const workOrderHandlers = [
               .filter(
                 (user) =>
                   user.status === 'active' &&
-                  mockRoles[user.roleCode].permissions.includes('work-order:process'),
+                  getUserPermissions(auth.state, user).includes('work-order:process'),
               )
               .map((user) => ({ id: user.id, name: user.name })),
     })
@@ -268,7 +273,7 @@ export const workOrderHandlers = [
     if ('response' in auth) return auth.response
     const order = getScopedOrders(auth.state, auth.user).find((item) => item.id === params.id)
     if (!order) return createErrorResponse(404, 404100, '工单不存在或无权操作')
-    if (!canEditWorkOrderImages(order, mockRoles[auth.user.roleCode].permissions)) {
+    if (!canEditWorkOrderImages(order, getUserPermissions(auth.state, auth.user))) {
       return createErrorResponse(403, 403100, '当前角色或工单状态不允许修改图片')
     }
     const images = validateImages(
@@ -370,7 +375,7 @@ export const workOrderHandlers = [
     }
     const availableActions = getWorkOrderActions(
       order,
-      mockRoles[auth.user.roleCode].permissions,
+      getUserPermissions(auth.state, auth.user),
       auth.user.id,
     )
     if (!availableActions.includes(action)) {
@@ -401,7 +406,7 @@ export const workOrderHandlers = [
         (user) =>
           user.id === values.assigneeId &&
           user.status === 'active' &&
-          mockRoles[user.roleCode].permissions.includes('work-order:process'),
+          getUserPermissions(auth.state, user).includes('work-order:process'),
       )
       if (!assignee) return createErrorResponse(400, 400107, '请选择有效的处理人')
       order.assigneeId = assignee.id

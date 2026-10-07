@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Alert, Button, Flex, Tag, Tooltip, type TableColumnsType } from 'antd'
+import { Alert, Button, Flex, Grid, Tag, Tooltip, type TableColumnsType } from 'antd'
 import dayjs from 'dayjs'
 
 import DataTablePanel from '@/components/data-table-panel'
@@ -24,10 +24,18 @@ interface UserTableProps {
   canCreate: boolean
   /** 是否有修改用户权限 */
   canUpdate: boolean
+  /** 是否有独立分配角色权限 */
+  canAssignRole: boolean
+  /** 加载最新用户后打开角色分配表单 */
+  onAssignRole: (id: string) => void
   /** 是否有修改账号状态权限 */
   canChangeStatus: boolean
   /** 是否有重置密码权限 */
   canResetPassword: boolean
+  /** 正在加载权限详情的用户标识 */
+  viewingPermissionsId?: string
+  /** 查看最新的生效权限 */
+  onViewPermissions: (id: string) => void
   /** 正在加载编辑资料的用户标识 */
   editingId?: string
   /** 打开新增表单 */
@@ -54,9 +62,13 @@ function UserTable({
   loadError,
   canCreate,
   canUpdate,
+  canAssignRole,
+  onAssignRole,
   canChangeStatus,
   canResetPassword,
   editingId,
+  viewingPermissionsId,
+  onViewPermissions,
   onCreate,
   onEdit,
   onChangeStatus,
@@ -64,6 +76,7 @@ function UserTable({
   onRetry,
   onPageChange,
 }: UserTableProps) {
+  const screens = Grid.useBreakpoint()
   const columns: TableColumnsType<UserDto> = [
     {
       title: '#',
@@ -120,10 +133,18 @@ function UserTable({
     {
       title: '操作',
       key: 'actions',
-      width: 215,
-      fixed: 'right',
+      width: 365,
+      fixed: screens.lg ? 'right' : undefined,
       render: (_value, user) => (
         <Flex className="user-table-actions" gap={2} align="center">
+          <Button
+            type="link"
+            loading={viewingPermissionsId === user.id}
+            disabled={Boolean(viewingPermissionsId) && viewingPermissionsId !== user.id}
+            onClick={() => onViewPermissions(user.id)}
+          >
+            查看权限
+          </Button>
           {canUpdate ? (
             <Button
               type="link"
@@ -132,6 +153,15 @@ function UserTable({
               onClick={() => onEdit(user.id)}
             >
               编辑
+            </Button>
+          ) : null}
+          {canAssignRole ? (
+            <Button
+              type="link"
+              disabled={user.role.code === 'super_admin' || Boolean(editingId)}
+              onClick={() => onAssignRole(user.id)}
+            >
+              分配角色
             </Button>
           ) : null}
           {canResetPassword ? (
@@ -196,7 +226,7 @@ function UserTable({
           emptyText: loadError ? '暂时无法获取用户数据' : '暂无符合条件的用户',
         },
       }}
-      scrollX={1125}
+      scrollX={1275}
       pagination={{
         current: page,
         pageSize,

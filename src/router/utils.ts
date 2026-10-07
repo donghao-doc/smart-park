@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 
 const LOGIN_PATH = '/login'
-const DEFAULT_AUTHENTICATED_PATH = '/dashboard'
+const DEFAULT_AUTHENTICATED_PATH = '/'
 const LAST_AUTHENTICATED_PATH_KEY = 'smart-park.last-authenticated-path'
 
 /**
@@ -54,7 +54,7 @@ function rememberAuthenticatedPath(path: string) {
 }
 
 /**
- * 获取登录成功后的安全跳转地址
+ * 获取登录成功后的安全跳转地址，未指定目标时由首页选择首个可访问菜单
  * @param search 登录页查询参数
  */
 export function getPostLoginPath(search: string) {

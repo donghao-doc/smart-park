@@ -17,7 +17,7 @@ interface UserFormModalProps {
   open: boolean
   /** 编辑时使用的最新用户详情，新增时为空 */
   user?: UserDto
-  /** 接口返回的固定角色选项 */
+  /** 接口返回的可分配角色选项 */
   roleOptions: SelectProps['options']
   /** 可分配的企业选项，已停用企业不可选择 */
   enterpriseOptions: SelectProps['options']
@@ -25,6 +25,10 @@ interface UserFormModalProps {
   optionsLoading: boolean
   /** 角色或企业选项是否加载失败 */
   optionsError: boolean
+  /** 是否仅分配角色，保留隐藏的账号字段而不修改它们 */
+  roleOnly?: boolean
+  /** 是否允许修改用户角色，普通资料编辑不包含授权能力 */
+  canAssignRole: boolean
   /** 是否正在保存资料 */
   submitting: boolean
   /** 提交通过校验的表单资料 */
@@ -44,6 +48,8 @@ function UserFormModal({
   optionsLoading,
   optionsError,
   submitting,
+  canAssignRole,
+  roleOnly = false,
   onSubmit,
   onRetryOptions,
   onCancel,
@@ -62,7 +68,7 @@ function UserFormModal({
             roleCode: user.role.code,
             enterpriseId: user.enterprise?.id,
           }
-        : { roleCode: 'park_operator' },
+        : {},
     )
   }, [form, open, user])
 
@@ -70,7 +76,7 @@ function UserFormModal({
     <ScrollableModal
       className="user-form-modal"
       open={open}
-      title={user ? '编辑用户' : '新增用户'}
+      title={roleOnly ? '分配角色' : user ? '编辑用户' : '新增用户'}
       width={640}
       okText={user ? '保存' : '创建'}
       cancelText="取消"
@@ -104,8 +110,9 @@ function UserFormModal({
         disabled={submitting}
       >
         <Row gutter={20}>
-          <Col xs={24} md={12}>
+          <Col xs={roleOnly ? 0 : 24} md={roleOnly ? 0 : 12}>
             <Form.Item
+              hidden={roleOnly}
               name="username"
               label="用户名"
               rules={[
@@ -119,8 +126,9 @@ function UserFormModal({
               <Input placeholder="请输入用户名" maxLength={32} autoComplete="off" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={roleOnly ? 0 : 24} md={roleOnly ? 0 : 12}>
             <Form.Item
+              hidden={roleOnly}
               name="name"
               label="姓名"
               rules={[
@@ -136,7 +144,11 @@ function UserFormModal({
               name="roleCode"
               label="角色"
               extra={
-                user?.role.code === 'super_admin' ? '超级管理员账号不能变更为其他角色' : undefined
+                user?.role.code === 'super_admin'
+                  ? '超级管理员账号不能变更为其他角色'
+                  : user && !roleOnly
+                    ? '调整角色请使用用户列表中的“分配角色”操作'
+                    : undefined
               }
               rules={[{ required: true, message: '请选择角色' }]}
             >
@@ -145,7 +157,12 @@ function UserFormModal({
                 options={roleOptions}
                 loading={optionsLoading}
                 disabled={
-                  submitting || optionsLoading || optionsError || user?.role.code === 'super_admin'
+                  submitting ||
+                  optionsLoading ||
+                  optionsError ||
+                  !canAssignRole ||
+                  (Boolean(user) && !roleOnly) ||
+                  user?.role.code === 'super_admin'
                 }
                 onChange={() => form.setFieldValue('enterpriseId', undefined)}
               />

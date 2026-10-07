@@ -2,9 +2,13 @@ import { http } from 'msw'
 
 import type { VehicleMutationRequest, VehicleStatus, VehicleType } from '@/types/vehicle'
 import { normalizeVehiclePlate, vehiclePlatePattern } from '@/utils/vehicle'
-import { mockRoles } from '../data/users'
 import { saveMockState } from '../store'
-import { authorizeRequest, createErrorResponse, createSuccessResponse } from '../utils'
+import {
+  authorizeRequest,
+  createErrorResponse,
+  createSuccessResponse,
+  getUserPermissions,
+} from '../utils'
 
 /** 判断车辆启停状态是否合法 */
 function isVehicleStatus(value: unknown): value is VehicleStatus {
@@ -85,7 +89,7 @@ async function handleVehicleMutation(request: Request, vehicleId?: string) {
   if (
     existing &&
     existing.status !== payload.status &&
-    !mockRoles[auth.user.roleCode].permissions.includes('vehicle:status')
+    !getUserPermissions(auth.state, auth.user).includes('vehicle:status')
   ) {
     return createErrorResponse(403, 40302, '当前账号无权启停车辆')
   }

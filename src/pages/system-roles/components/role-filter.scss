@@ -1,4 +1,4 @@
-.user-filter-panel {
+.role-filter-panel {
   flex: none;
   padding: 18px 20px;
   border: 1px solid #dfe7f1;
@@ -17,20 +17,16 @@
   }
 }
 
-.user-filter-label {
+.role-filter-label {
   display: inline-block;
-  inline-size: 3em;
+  inline-size: 4em;
   text-align: justify;
   text-align-last: justify;
   white-space: nowrap;
 }
 
 @media (max-width: 480px) {
-  .user-filter-panel {
+  .role-filter-panel {
     padding: 14px 12px;
   }
-}
-
-.user-filter-feedback {
-  margin-bottom: 16px;
 }

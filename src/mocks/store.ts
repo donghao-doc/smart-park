@@ -1,7 +1,9 @@
 import { seedEnterprises, type MockEnterpriseEntity } from './data/enterprises'
 import { seedPersonnel } from './data/personnel'
 import type { MockUserEntity } from './data/users'
-import { seedUsers } from './data/users'
+import { mockRoles, seedUsers } from './data/users'
+import type { RoleDto } from '@/types/auth'
+import type { OperationLogDetailDto } from '@/types/operation-log'
 import { seedVisitorAppointments } from './data/visitor-appointments'
 import { seedVehicles } from './data/vehicles'
 import { seedWorkOrders, workOrderSampleImages } from './data/work-orders'
@@ -31,6 +33,12 @@ export interface MockState {
   parkInfo: typeof seedParkInfo
   /** 用户种子数据版本，用于增量补充演示账号而不覆盖已有修改 */
   userSeedVersion: number
+  /** 角色权限种子版本，用于增量拆分既有访问权限 */
+  roleSeedVersion: number
+  /** 可编辑角色及其权限配置 */
+  roles: RoleDto[]
+  /** 角色维护和用户授权的历史审计快照 */
+  authorizationLogs: OperationLogDetailDto[]
   /** 当前用户数据 */
   users: MockUserEntity[]
   /** 企业摘要数据 */
@@ -56,6 +64,9 @@ function createInitialState(): MockState {
   return {
     parkInfo: structuredClone(seedParkInfo),
     userSeedVersion: 1,
+    roleSeedVersion: 1,
+    roles: structuredClone(Object.values(mockRoles)),
+    authorizationLogs: [],
     users: structuredClone(seedUsers),
     enterprises: structuredClone(seedEnterprises),
     personnel: structuredClone(seedPersonnel),
@@ -80,6 +91,8 @@ function isMockState(value: unknown): value is MockState {
     !!state.parkInfo &&
     typeof state.parkInfo === 'object' &&
     !Array.isArray(state.parkInfo) &&
+    Array.isArray(state.roles) &&
+    Array.isArray(state.authorizationLogs) &&
     Array.isArray(state.users) &&
     Array.isArray(state.enterprises) &&
     Array.isArray(state.personnel) &&
@@ -112,9 +125,17 @@ export function getMockState(): MockState {
       (!('parkInfo' in parsedState) ||
         !('vehicles' in parsedState) ||
         !('workOrders' in parsedState) ||
-        !('devices' in parsedState))
+        !('devices' in parsedState) ||
+        !('roles' in parsedState) ||
+        !('authorizationLogs' in parsedState))
         ? {
             ...parsedState,
+            roles:
+              'roles' in parsedState
+                ? parsedState.roles
+                : structuredClone(Object.values(mockRoles)),
+            authorizationLogs:
+              'authorizationLogs' in parsedState ? parsedState.authorizationLogs : [],
             parkInfo:
               'parkInfo' in parsedState ? parsedState.parkInfo : structuredClone(seedParkInfo),
             vehicles:
@@ -127,6 +148,21 @@ export function getMockState(): MockState {
           }
         : parsedState
     if (isMockState(compatibleState)) {
+      // 拆分原有访客页面访问权限，既有用户保留原访问能力，自定义授权之后不会重复补齐
+      const rolesMigrated = compatibleState.roleSeedVersion !== 1
+      if (rolesMigrated) {
+        for (const role of compatibleState.roles) {
+          if (
+            role.permissions.includes('visitor:view') &&
+            !role.permissions.includes('visitor-record:view')
+          ) {
+            role.permissions.push('visitor-record:view')
+          }
+        }
+        const administrator = compatibleState.roles.find((role) => role.code === 'super_admin')
+        if (administrator) administrator.permissions = [...mockRoles.super_admin.permissions]
+        compatibleState.roleSeedVersion = 1
+      }
       // 旧存储只补充缺失的账号，保留已编辑资料、密码、启停状态和会话
       const usersMigrated = compatibleState.userSeedVersion !== 1
       if (usersMigrated) {
@@ -154,7 +190,7 @@ export function getMockState(): MockState {
           imagesMigrated = true
         }
       }
-      if (compatibleState !== parsedState || imagesMigrated || usersMigrated) {
+      if (compatibleState !== parsedState || imagesMigrated || usersMigrated || rolesMigrated) {
         saveMockState(compatibleState)
       }
       return compatibleState

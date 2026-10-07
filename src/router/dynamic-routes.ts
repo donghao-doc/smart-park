@@ -25,6 +25,7 @@ const pageLazyLoaders: Readonly<Record<string, NonNullable<RouteObject['lazy']>>
   'work-order-detail': lazyPage(() => import('@/pages/work-order-detail')),
   'device-list': lazyPage(() => import('@/pages/device-list')),
   'system-users': lazyPage(() => import('@/pages/system-users')),
+  'system-roles': lazyPage(() => import('@/pages/system-roles')),
   'operation-logs': lazyPage(() => import('@/pages/operation-logs')),
   'mock-data-management': lazyPage(() => import('@/pages/mock-data-management')),
 }

@@ -1,19 +1,39 @@
 import { http } from 'msw'
 import type {
   CreateUserRequest,
+  AssignUserRoleRequest,
   UpdateUserRequest,
   UpdateUserStatusRequest,
 } from '@/types/system-user'
-import { mockRoles } from '../data/users'
 import { saveMockState, type MockState } from '../store'
+import type { MockUserEntity } from '../data/users'
 import {
   authorizeRequest,
+  getUserPermissions,
+  recordAuthorizationLog,
   createErrorResponse,
   createSuccessResponse,
   isRoleCode,
   isUserStatus,
   toUserDto,
 } from '../utils'
+
+/** 校验独立的角色分配权限，禁止分配高于自身权限范围的角色 */
+function validateRoleAssignment(state: MockState, operator: MockUserEntity, code: unknown) {
+  const permissions = getUserPermissions(state, operator)
+  if (!permissions.includes('system-user:assign-role')) {
+    return createErrorResponse(403, 40302, '当前账号无权分配角色')
+  }
+  const role = state.roles.find((item) => item.code === code)
+  if (!role) return createErrorResponse(400, 40012, '请选择有效角色')
+  if (
+    (role.code === 'super_admin' && operator.roleCode !== 'super_admin') ||
+    role.permissions.some((permission) => !permissions.includes(permission))
+  ) {
+    return createErrorResponse(403, 403140, '不能分配超出自身权限范围的角色')
+  }
+  return null
+}
 
 const usernamePattern = /^[a-zA-Z][a-zA-Z0-9._-]{3,31}$/
 
@@ -36,8 +56,8 @@ function validateUserFields(
     return createErrorResponse(400, 40011, '姓名不能为空且不能超过 30 个字符')
   }
 
-  if (!isRoleCode(body.roleCode)) {
-    return createErrorResponse(400, 40012, '请选择有效的固定角色')
+  if (!isRoleCode(state, body.roleCode)) {
+    return createErrorResponse(400, 40012, '请选择有效角色')
   }
 
   const duplicate = state.users.some(
@@ -74,22 +94,20 @@ function parsePositiveInteger(value: string | null, fallback: number) {
 }
 
 /**
- * 用户管理模块 Mock 接口，仅超级管理员角色具备对应权限
+ * 用户管理模块 Mock 接口，资料维护与角色分配分别鉴权
  */
 export const systemUserHandlers = [
-  http.get('/api/system/roles', async ({ request }) => {
+  http.get('/api/system/users/enterprise-options', async ({ request }) => {
     const auth = authorizeRequest(request, 'system-user:view')
-    if ('response' in auth) {
-      return auth.response
-    }
-
-    const roles = Object.values(mockRoles).map((role) => ({
-      ...role,
-      permissions: [...role.permissions],
-    }))
-    return createSuccessResponse(roles)
+    if ('response' in auth) return auth.response
+    return createSuccessResponse(
+      auth.state.enterprises.map((enterprise) => ({
+        id: enterprise.id,
+        name: enterprise.name,
+        disabled: enterprise.status === 'disabled',
+      })),
+    )
   }),
-
   http.get('/api/system/users', async ({ request }) => {
     const auth = authorizeRequest(request, 'system-user:view')
     if ('response' in auth) {
@@ -110,7 +128,7 @@ export const systemUserHandlers = [
     const status = url.searchParams.get('status')
     const enterpriseId = url.searchParams.get('enterpriseId')
 
-    if (roleCode && !isRoleCode(roleCode)) {
+    if (roleCode && !isRoleCode(auth.state, roleCode)) {
       return createErrorResponse(400, 40012, '角色筛选条件不正确')
     }
 
@@ -176,6 +194,8 @@ export const systemUserHandlers = [
       return createErrorResponse(400, 40001, '请求参数格式不正确')
     }
 
+    const assignmentError = validateRoleAssignment(auth.state, auth.user, body.roleCode)
+    if (assignmentError) return assignmentError
     const validationError = validateUserFields(auth.state, body)
     if (validationError) {
       return validationError
@@ -200,6 +220,9 @@ export const systemUserHandlers = [
     }
 
     auth.state.users.push(user)
+    recordAuthorizationLog(auth.state, auth.user, request, '分配用户角色', user.id, user.username, {
+      roleCode: user.roleCode,
+    })
     saveMockState(auth.state)
     return createSuccessResponse(toUserDto(auth.state, user), '用户创建成功', 201)
   }),
@@ -222,6 +245,10 @@ export const systemUserHandlers = [
       return createErrorResponse(400, 40001, '请求参数格式不正确')
     }
 
+    if (body.roleCode !== user.roleCode) {
+      const assignmentError = validateRoleAssignment(auth.state, auth.user, body.roleCode)
+      if (assignmentError) return assignmentError
+    }
     const validationError = validateUserFields(auth.state, body, user.id)
     if (validationError) {
       return validationError
@@ -231,13 +258,70 @@ export const systemUserHandlers = [
       return createErrorResponse(400, 40019, '超级管理员账号不能变更为其他角色')
     }
 
+    const previousRoleCode = user.roleCode
     user.username = body.username!.trim()
     user.name = body.name!.trim()
     user.roleCode = body.roleCode!
     user.enterpriseId = body.roleCode === 'enterprise_user' ? body.enterpriseId! : null
+    if (previousRoleCode !== user.roleCode) {
+      recordAuthorizationLog(
+        auth.state,
+        auth.user,
+        request,
+        '分配用户角色',
+        user.id,
+        user.username,
+        {
+          previousRoleCode,
+          roleCode: user.roleCode,
+        },
+      )
+    }
     user.updatedAt = new Date().toISOString()
     saveMockState(auth.state)
     return createSuccessResponse(toUserDto(auth.state, user), '用户信息更新成功')
+  }),
+
+  http.patch('/api/system/users/:id/role', async ({ request, params }) => {
+    const auth = authorizeRequest(request, 'system-user:assign-role')
+    if ('response' in auth) return auth.response
+    const user = auth.state.users.find((item) => item.id === params.id)
+    if (!user) return createErrorResponse(404, 40401, '用户不存在')
+    let body: Partial<AssignUserRoleRequest> | null
+    try {
+      body = (await request.json()) as typeof body
+    } catch {
+      return createErrorResponse(400, 40001, '请求参数格式不正确')
+    }
+    if (!body || typeof body !== 'object') {
+      return createErrorResponse(400, 40001, '请求参数格式不正确')
+    }
+    const assignmentError = validateRoleAssignment(auth.state, auth.user, body.roleCode)
+    if (assignmentError) return assignmentError
+    const validationError = validateUserFields(
+      auth.state,
+      {
+        username: user.username,
+        name: user.name,
+        roleCode: body.roleCode,
+        enterpriseId: body.enterpriseId,
+      },
+      user.id,
+    )
+    if (validationError) return validationError
+    if (user.roleCode === 'super_admin' && body.roleCode !== 'super_admin') {
+      return createErrorResponse(400, 40019, '超级管理员账号不能变更为其他角色')
+    }
+    const previousRoleCode = user.roleCode
+    user.roleCode = body.roleCode!
+    user.enterpriseId = body.roleCode === 'enterprise_user' ? body.enterpriseId! : null
+    user.updatedAt = new Date().toISOString()
+    recordAuthorizationLog(auth.state, auth.user, request, '分配用户角色', user.id, user.username, {
+      previousRoleCode,
+      roleCode: user.roleCode,
+    })
+    saveMockState(auth.state)
+    return createSuccessResponse(toUserDto(auth.state, user), '用户角色已更新')
   }),
 
   http.patch('/api/system/users/:id/status', async ({ request, params }) => {

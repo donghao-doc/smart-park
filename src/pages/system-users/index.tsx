@@ -1,11 +1,13 @@
 import { App, Flex, Typography, type SelectProps } from 'antd'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 
 import {
   reqCreateUser,
-  reqGetEnterprises,
+  reqAssignUserRole,
+  reqGetUserEnterpriseOptions,
   reqGetRoles,
+  reqGetPermissionCatalog,
   reqGetUser,
   reqGetUsers,
   reqResetUserPassword,
@@ -13,19 +15,29 @@ import {
   reqUpdateUserStatus,
 } from '@/api'
 import { DataTablePageLayout } from '@/components/data-table-panel'
+import RolePermissionModal from '@/components/role-permission-modal'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 import type { UserDto } from '@/types/auth'
+import type { PermissionNodeDto } from '@/types/system-role'
 import UserFilter, { type UserFilterValues } from './components/user-filter'
 import UserFormModal, { type UserFormValues } from './components/user-form-modal'
 import UserTable from './components/user-table'
 
-/** 用户管理页面，负责账号查询、资料维护、启停及模拟密码重置 */
-function SystemUsersPage() {
+interface SystemUsersPageProps {
+  /** 从角色管理或查询参数传入的初始角色筛选条件 */
+  initialRoleCode?: string
+}
+
+/** 用户管理页面，负责账号维护、角色分配和生效权限查看 */
+function SystemUsersPage({ initialRoleCode }: SystemUsersPageProps) {
   const { message, modal } = App.useApp()
   const navigate = useNavigate()
   const currentUser = useUserStore((state) => state.currentUser)
-  const canCreate = useUserStore((state) => state.hasPermission('system-user:create'))
+  const canAssignRole = useUserStore((state) => state.hasPermission('system-user:assign-role'))
+  const canManageRoles = useUserStore((state) => state.hasPermission('system-role:view'))
+  const canCreate =
+    useUserStore((state) => state.hasPermission('system-user:create')) && canAssignRole
   const canUpdate = useUserStore((state) => state.hasPermission('system-user:update'))
   const canChangeStatus = useUserStore((state) => state.hasPermission('system-user:status'))
   const canResetPassword = useUserStore((state) =>
@@ -35,11 +47,12 @@ function SystemUsersPage() {
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
-  const [filters, setFilters] = useState<UserFilterValues>({})
+  const [filters, setFilters] = useState<UserFilterValues>({ roleCode: initialRoleCode })
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
   const [reloadVersion, setReloadVersion] = useState(0)
   const [formOpen, setFormOpen] = useState(false)
+  const [roleOnly, setRoleOnly] = useState(false)
   const [editingUser, setEditingUser] = useState<UserDto>()
   const [editingId, setEditingId] = useState<string>()
   const [submitting, setSubmitting] = useState(false)
@@ -48,6 +61,29 @@ function SystemUsersPage() {
   const [optionsLoading, setOptionsLoading] = useState(true)
   const [optionsError, setOptionsError] = useState(false)
   const [optionsVersion, setOptionsVersion] = useState(0)
+  const [permissionUser, setPermissionUser] = useState<UserDto>()
+  const [permissionNodes, setPermissionNodes] = useState<PermissionNodeDto[]>([])
+  const [viewingPermissionsId, setViewingPermissionsId] = useState<string>()
+  const [roleOptionsError, setRoleOptionsError] = useState(false)
+  const [assignableRoleOptions, setAssignableRoleOptions] = useState<SelectProps['options']>([])
+
+  useEffect(() => {
+    let active = true
+    void (async () => {
+      try {
+        const roles = await reqGetRoles()
+        if (active) {
+          setRoleOptions(roles.map((role) => ({ value: role.code, label: role.name })))
+          setRoleOptionsError(false)
+        }
+      } catch {
+        if (active) setRoleOptionsError(true)
+      }
+    })()
+    return () => {
+      active = false
+    }
+  }, [reloadVersion, optionsVersion])
 
   useEffect(() => {
     let active = true
@@ -95,27 +131,26 @@ function SystemUsersPage() {
       try {
         const [roles, enterprises] = await Promise.all([
           reqGetRoles(),
-          reqGetEnterprises({ page: 1, pageSize: 100 }),
+          reqGetUserEnterpriseOptions(),
         ])
-        const allEnterprises = [...enterprises.list]
-        // 企业接口有单页上限，分页加载完整选项，避免遗漏后续企业
-        for (let nextPage = 2; allEnterprises.length < enterprises.total; nextPage += 1) {
-          const nextResult = await reqGetEnterprises({
-            page: nextPage,
-            pageSize: 100,
-          })
-          if (!active) return
-          if (nextResult.list.length === 0) break
-          allEnterprises.push(...nextResult.list)
-        }
         if (active) {
           setRoleOptions(roles.map((role) => ({ value: role.code, label: role.name })))
+          setAssignableRoleOptions(
+            roles.map((role) => ({
+              value: role.code,
+              label: role.name,
+              disabled:
+                (role.code === 'super_admin' && currentUser?.role.code !== 'super_admin') ||
+                role.permissions.some(
+                  (permission) => !currentUser?.role.permissions.includes(permission),
+                ),
+            })),
+          )
           setEnterpriseOptions(
-            allEnterprises.map((enterprise) => ({
+            enterprises.map((enterprise) => ({
               value: enterprise.id,
-              label:
-                enterprise.status === 'disabled' ? `${enterprise.name}（已停用）` : enterprise.name,
-              disabled: enterprise.status === 'disabled',
+              label: enterprise.disabled ? `${enterprise.name}（已停用）` : enterprise.name,
+              disabled: enterprise.disabled,
             })),
           )
           setOptionsError(false)
@@ -129,7 +164,7 @@ function SystemUsersPage() {
     return () => {
       active = false
     }
-  }, [formOpen, optionsVersion])
+  }, [formOpen, optionsVersion, currentUser])
 
   /** 重新加载当前筛选条件下的列表 */
   function handleReload() {
@@ -145,12 +180,13 @@ function SystemUsersPage() {
   }
 
   /** 打开表单前加载最新用户详情，避免以过期资料覆盖账号设置 */
-  async function handleEdit(id: string) {
+  async function handleEdit(id: string, assignRole = false) {
     if (editingId) return
     setEditingId(id)
     try {
       const user = await reqGetUser(id)
       setEditingUser(user)
+      setRoleOnly(assignRole)
       setOptionsLoading(true)
       setOptionsError(false)
       setFormOpen(true)
@@ -158,6 +194,21 @@ function SystemUsersPage() {
       // 详情请求失败时不打开表单，统一 HTTP 层展示错误
     } finally {
       setEditingId(undefined)
+    }
+  }
+
+  /** 查看最新用户的角色权限，失败时不展示过期或不完整的配置 */
+  async function handleViewPermissions(id: string) {
+    if (viewingPermissionsId) return
+    setViewingPermissionsId(id)
+    try {
+      const [user, nodes] = await Promise.all([reqGetUser(id), reqGetPermissionCatalog()])
+      setPermissionUser(user)
+      setPermissionNodes(nodes)
+    } catch {
+      // 加载失败由统一 HTTP 层展示错误
+    } finally {
+      setViewingPermissionsId(undefined)
     }
   }
 
@@ -173,12 +224,17 @@ function SystemUsersPage() {
     setSubmitting(true)
     try {
       if (editingUser) {
-        const updatedUser = await reqUpdateUser(editingUser.id, payload)
+        const updatedUser = roleOnly
+          ? await reqAssignUserRole(editingUser.id, {
+              roleCode: payload.roleCode,
+              enterpriseId: payload.enterpriseId,
+            })
+          : await reqUpdateUser(editingUser.id, payload)
         // 同步当前账号的姓名和角色信息，保持顶部用户菜单与服务端一致
         if (updatedUser.id === currentUser?.id) {
           useUserStore.setState({ currentUser: updatedUser })
         }
-        void message.success('用户信息已更新')
+        void message.success(roleOnly ? '用户角色已更新' : '用户信息已更新')
       } else {
         if (!values.password) return
         await reqCreateUser({ ...payload, password: values.password })
@@ -265,7 +321,13 @@ function SystemUsersPage() {
   return (
     <>
       <DataTablePageLayout className="system-users-page">
-        <UserFilter onSearch={handleSearch} />
+        <UserFilter
+          onSearch={handleSearch}
+          initialRoleCode={initialRoleCode}
+          roleOptions={roleOptions}
+          rolesError={roleOptionsError}
+          onRetryRoles={() => setOptionsVersion((version) => version + 1)}
+        />
         <UserTable
           users={users}
           total={total}
@@ -275,10 +337,15 @@ function SystemUsersPage() {
           loadError={loadError}
           canCreate={canCreate}
           canUpdate={canUpdate}
+          canAssignRole={canAssignRole}
+          onAssignRole={(id) => void handleEdit(id, true)}
           canChangeStatus={canChangeStatus}
           canResetPassword={canResetPassword}
           editingId={editingId}
+          viewingPermissionsId={viewingPermissionsId}
+          onViewPermissions={(id) => void handleViewPermissions(id)}
           onCreate={() => {
+            setRoleOnly(false)
             setEditingUser(undefined)
             setOptionsLoading(true)
             setOptionsError(false)
@@ -296,11 +363,23 @@ function SystemUsersPage() {
           }}
         />
       </DataTablePageLayout>
+      <RolePermissionModal
+        key={permissionUser?.id ?? 'closed'}
+        open={Boolean(permissionUser)}
+        role={permissionUser?.role}
+        nodes={permissionNodes}
+        title={`${permissionUser?.username ?? ''} 的生效权限`}
+        readOnly
+        onManageRoles={canManageRoles ? () => void navigate('/system/roles') : undefined}
+        onCancel={() => setPermissionUser(undefined)}
+      />
       <UserFormModal
         open={formOpen}
         user={editingUser}
-        roleOptions={roleOptions}
+        roleOnly={roleOnly}
+        roleOptions={assignableRoleOptions}
         enterpriseOptions={enterpriseOptions}
+        canAssignRole={canAssignRole}
         optionsLoading={optionsLoading}
         optionsError={optionsError}
         submitting={submitting}
@@ -317,4 +396,9 @@ function SystemUsersPage() {
   )
 }
 
-export default SystemUsersPage
+/** 按角色查询参数初始化独立列表，角色管理跳转或历史导航时同步筛选表单 */
+export default function SystemUsersRoute() {
+  const [params] = useSearchParams()
+  const roleCode = params.get('roleCode') ?? undefined
+  return <SystemUsersPage key={roleCode ?? 'all'} initialRoleCode={roleCode} />
+}

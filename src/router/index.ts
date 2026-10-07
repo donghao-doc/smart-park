@@ -1,6 +1,7 @@
 import { createBrowserRouter, redirect, type RouteObject } from 'react-router'
 
 import RouteLoadingFallback from '@/components/route-loading'
+import AuthenticatedSession from '@/components/authenticated-session'
 import AdminLayout from '@/layout'
 import { useAuthStore } from '@/stores/auth'
 import { DYNAMIC_ROUTE_PARENT_ID, getFirstMenuPath, initializeMenuRoutes } from './dynamic-routes'
@@ -19,7 +20,7 @@ async function redirectToFirstMenu() {
     return null
   }
 
-  throw redirect(getFirstMenuPath(menus) ?? '/403')
+  throw redirect(getFirstMenuPath(menus) ?? '/profile')
 }
 
 const routes = [
@@ -31,6 +32,7 @@ const routes = [
   },
   {
     id: 'authenticated-root',
+    Component: AuthenticatedSession,
     loader: requireAuthentication,
     HydrateFallback: RouteLoadingFallback,
     // 共同父级路由保持不变时也重新校验，以同步最后访问的已登录页面

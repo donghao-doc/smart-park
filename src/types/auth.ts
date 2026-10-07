@@ -1,7 +1,7 @@
 /**
- * 系统内置角色编码
+ * 系统角色的稳定编码，包含内置角色及管理员创建的自定义角色
  */
-export type RoleCode = 'super_admin' | 'park_operator' | 'enterprise_user'
+export type RoleCode = string
 
 /**
  * 角色可访问的数据范围
@@ -29,6 +29,7 @@ export type PermissionCode =
   | 'personnel:update'
   | 'personnel:status'
   | 'visitor:view'
+  | 'visitor-record:view'
   | 'visitor:create'
   | 'visitor:approve'
   | 'visitor:check-in'
@@ -54,17 +55,25 @@ export type PermissionCode =
   | 'system-user:update'
   | 'system-user:status'
   | 'system-user:reset-password'
+  | 'system-user:assign-role'
+  | 'system-role:view'
+  | 'system-role:create'
+  | 'system-role:update'
+  | 'system-role:grant'
+  | 'system-role:delete'
   | 'operation-log:view'
   | 'mock-data:manage'
 
 /**
- * 固定角色及其权限配置
+ * 可分配给用户的单角色及其权限配置
  */
 export interface RoleDto {
   /** 角色编码，用于接口鉴权 */
   code: RoleCode
   /** 角色显示名称 */
   name: string
+  /** 是否为不可删除的系统内置角色 */
+  builtIn: boolean
   /** 角色适用场景说明 */
   description: string
   /** 角色可访问的数据范围 */
@@ -93,7 +102,7 @@ export interface UserDto {
   username: string
   /** 用户姓名 */
   name: string
-  /** 当前固定角色 */
+  /** 当前分配的唯一角色 */
   role: RoleDto
   /** 企业用户所属企业，非企业角色为 null */
   enterprise: UserEnterpriseDto | null

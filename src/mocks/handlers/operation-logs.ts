@@ -71,7 +71,7 @@ export const operationLogHandlers = [
       return createErrorResponse(400, 400123, '请选择有效的操作时间范围')
     }
 
-    const logs = seedOperationLogs
+    const logs = [...seedOperationLogs, ...auth.state.authorizationLogs]
       .filter(
         (log) =>
           (!operatorName || log.operatorName.toLowerCase().includes(operatorName)) &&
@@ -94,7 +94,9 @@ export const operationLogHandlers = [
     const auth = authorizeRequest(request, 'operation-log:view')
     if ('response' in auth) return auth.response
 
-    const log = seedOperationLogs.find((item) => item.id === params.id)
+    const log = [...seedOperationLogs, ...auth.state.authorizationLogs].find(
+      (item) => item.id === params.id,
+    )
     if (!log) return createErrorResponse(404, 404120, '操作日志不存在')
     return createSuccessResponse(log)
   }),

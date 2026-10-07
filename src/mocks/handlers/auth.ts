@@ -1,7 +1,6 @@
 import { http } from 'msw'
 import type { ChangePasswordRequest, LoginRequest, UpdateCurrentUserRequest } from '@/types/auth'
 import { filterMenusByPermissions } from '../data/menus'
-import { mockRoles } from '../data/users'
 import {
   createMockSession,
   getMockState,
@@ -23,8 +22,8 @@ export const authHandlers = [
         username: user.username,
         password: user.password,
         roleCode: user.roleCode,
-        roleName: mockRoles[user.roleCode].name,
-        description: mockRoles[user.roleCode].description,
+        roleName: state.roles.find((role) => role.code === user.roleCode)!.name,
+        description: state.roles.find((role) => role.code === user.roleCode)!.description,
       }))
     return createSuccessResponse(demoAccounts)
   }),
@@ -84,7 +83,9 @@ export const authHandlers = [
       return auth.response
     }
 
-    const permissions = mockRoles[auth.user.roleCode].permissions
+    const permissions = auth.state.roles.find(
+      (role) => role.code === auth.user.roleCode,
+    )!.permissions
     return createSuccessResponse(filterMenusByPermissions(permissions))
   }),
 

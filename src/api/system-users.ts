@@ -1,20 +1,16 @@
-import type { RoleDto, UserDto } from '@/types/auth'
+import type { UserDto } from '@/types/auth'
 import type {
   CreateUserRequest,
+  AssignUserRoleRequest,
   ResetPasswordResult,
   UpdateUserRequest,
   UpdateUserStatusRequest,
   UserListParams,
+  UserEnterpriseOptionDto,
   UserPageResult,
 } from '@/types/system-user'
 import http from '@/http'
-
-/**
- * 查询固定角色及权限，用于用户表单和权限展示
- */
-export async function reqGetRoles() {
-  return http.get<RoleDto[]>('/system/roles')
-}
+import { notifyAccessChanged } from '@/utils/access-events'
 
 /**
  * 分页查询系统用户
@@ -41,7 +37,9 @@ export async function reqCreateUser(payload: CreateUserRequest) {
  * 更新指定系统用户资料
  */
 export async function reqUpdateUser(userId: string, payload: UpdateUserRequest) {
-  return http.put<UserDto, UpdateUserRequest>(`/system/users/${userId}`, payload)
+  const user = await http.put<UserDto, UpdateUserRequest>(`/system/users/${userId}`, payload)
+  notifyAccessChanged()
+  return user
 }
 
 /**
@@ -56,4 +54,19 @@ export async function reqUpdateUserStatus(userId: string, payload: UpdateUserSta
  */
 export async function reqResetUserPassword(userId: string) {
   return http.post<ResetPasswordResult>(`/system/users/${userId}/reset-password`)
+}
+
+/** 查询用户角色分配所需的企业选项，使用用户管理权限独立鉴权 */
+export async function reqGetUserEnterpriseOptions() {
+  return http.get<UserEnterpriseOptionDto[]>('/system/users/enterprise-options')
+}
+
+/** 单独分配用户角色，使用角色分配权限而非资料编辑权限鉴权 */
+export async function reqAssignUserRole(userId: string, payload: AssignUserRoleRequest) {
+  const user = await http.patch<UserDto, AssignUserRoleRequest>(
+    `/system/users/${userId}/role`,
+    payload,
+  )
+  notifyAccessChanged()
+  return user
 }

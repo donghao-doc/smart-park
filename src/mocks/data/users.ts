@@ -12,7 +12,7 @@ export interface MockUserEntity {
   name: string
   /** Mock 登录密码，不得直接返回给页面 */
   password: string
-  /** 固定角色编码 */
+  /** 角色编码 */
   roleCode: RoleCode
   /** 企业用户所属企业标识 */
   enterpriseId: string | null
@@ -39,6 +39,7 @@ const superAdminPermissions: PermissionCode[] = [
   'personnel:update',
   'personnel:status',
   'visitor:view',
+  'visitor-record:view',
   'visitor:create',
   'visitor:approve',
   'visitor:check-in',
@@ -64,6 +65,12 @@ const superAdminPermissions: PermissionCode[] = [
   'system-user:update',
   'system-user:status',
   'system-user:reset-password',
+  'system-user:assign-role',
+  'system-role:view',
+  'system-role:create',
+  'system-role:update',
+  'system-role:grant',
+  'system-role:delete',
   'operation-log:view',
   'mock-data:manage',
 ]
@@ -80,6 +87,7 @@ const operatorPermissions: PermissionCode[] = [
   'personnel:update',
   'personnel:status',
   'visitor:view',
+  'visitor-record:view',
   'visitor:create',
   'visitor:approve',
   'visitor:check-in',
@@ -105,6 +113,7 @@ const enterpriseUserPermissions: PermissionCode[] = [
   'enterprise:view',
   'personnel:view',
   'visitor:view',
+  'visitor-record:view',
   'visitor:create',
   'visitor:cancel',
   'vehicle:view',
@@ -115,12 +124,13 @@ const enterpriseUserPermissions: PermissionCode[] = [
 ]
 
 /**
- * 系统固定角色配置
+ * 系统角色配置
  */
 export const mockRoles: Record<RoleCode, RoleDto> = {
   super_admin: {
     code: 'super_admin',
     name: '超级管理员',
+    builtIn: true,
     description: '负责系统维护，可访问全部数据并管理账号与 Mock 配置',
     dataScope: 'all',
     permissions: superAdminPermissions,
@@ -128,6 +138,7 @@ export const mockRoles: Record<RoleCode, RoleDto> = {
   park_operator: {
     code: 'park_operator',
     name: '园区运营人员',
+    builtIn: true,
     description: '负责当前园区的日常运营及业务流程处理',
     dataScope: 'park',
     permissions: operatorPermissions,
@@ -135,6 +146,7 @@ export const mockRoles: Record<RoleCode, RoleDto> = {
   enterprise_user: {
     code: 'enterprise_user',
     name: '企业用户',
+    builtIn: true,
     description: '查看所属企业数据并发起访客预约和工单',
     dataScope: 'enterprise',
     permissions: enterpriseUserPermissions,
