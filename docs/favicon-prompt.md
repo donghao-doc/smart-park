@@ -2,7 +2,7 @@
 
 使用内置 imagegen 工具生成，透明背景输出，再通过 macOS `sips` 缩放为 64×64 PNG
 
-项目资源：`public/favicon-smart-park.png`
+项目资源：`public/favicon.png`
 
 ## 完整提示词
 
