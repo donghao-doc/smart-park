@@ -350,6 +350,15 @@ export const visitorAppointmentHandlers = [
       return createErrorResponse(403, 40306, '无权操作其他企业的访客预约')
     }
 
+    // 页面可能一直停留在待到访状态，执行动作前重新判断过期并保存状态
+    if (refreshExpiredAppointments([appointment])) {
+      saveMockState(auth.state)
+    }
+
+    if (body.action === 'check_in' && appointment.status === 'expired') {
+      return createErrorResponse(409, 40930, '预约已过期，无法签到，请刷新预约列表')
+    }
+
     if (!actionRule.allowedStatuses.includes(appointment.status)) {
       return createErrorResponse(409, 40930, '当前预约状态不支持此操作，请刷新后重试')
     }
