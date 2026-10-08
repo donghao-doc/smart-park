@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Divider, Form, Input, Spin } from 'antd'
+import { App, Button, Checkbox, Divider, Form, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
@@ -18,6 +18,7 @@ const REMEMBERED_ACCOUNT_KEY = 'smart-park.remembered-account'
  * 登录页：展示演示账号并通过认证接口建立会话
  */
 function LoginPage() {
+  const { message } = App.useApp()
   const navigate = useNavigate()
   const { search } = useLocation()
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
@@ -58,7 +59,7 @@ function LoginPage() {
   }, [])
 
   /**
-   * 登录成功后建立会话，仅在勾选时记住账号名称
+   * 登录成功后建立会话并提示用户，仅在勾选时记住账号名称
    */
   async function handleSubmit(values: LoginRequest) {
     setSubmitting(true)
@@ -77,6 +78,7 @@ function LoginPage() {
         localStorage.removeItem(REMEMBERED_ACCOUNT_KEY)
       }
 
+      void message.success('登录成功')
       void navigate(getPostLoginPath(search), { replace: true })
     } catch {
       // 登录错误由统一 HTTP 层展示，保留表单内容便于重试
