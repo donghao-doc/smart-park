@@ -1,2 +1,4 @@
+engineStrict: true
+pmOnFail: error
 allowBuilds:
   msw: true
